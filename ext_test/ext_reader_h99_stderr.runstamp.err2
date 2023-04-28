@@ -1,0 +1,24 @@
+Using pipe communication.
+Forked: struct_writer
+
+struct_writer: About to allocate array: 56 B
+struct_writer: About to allocate array: 8 B
+struct_writer: Done (12470 events, 0.8 MB, 0.0 MB to clients).     
+Using pipe communication.
+Forked: struct_writer
+
+struct_writer: About to allocate array: 56 B
+struct_writer: About to allocate array: 8 B
+struct_writer: Done (12470 events, 0.8 MB, 0.0 MB to clients).     
+Using pipe communication.
+Forked: struct_writer
+
+struct_writer: About to allocate array: 56 B
+struct_writer: About to allocate array: 8 B
+struct_writer: Done (12470 events, 0.8 MB, 0.0 MB to clients).     
+Using pipe communication.
+Forked: struct_writer
+
+struct_writer: About to allocate array: 56 B
+struct_writer: About to allocate array: 8 B
+struct_writer: Done (12470 events, 0.8 MB, 0.0 MB to clients).     

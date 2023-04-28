@@ -1,0 +1,7 @@
+Using pipe communication.
+Forked: struct_writer
+
+struct_writer: About to allocate array: 56 B
+struct_writer: About to allocate array: 8 B
+struct_writer: Wrote structure header file ext_test/ext_h99.h.
+struct_writer: Done (0 events, 0.0 MB, 0.0 MB to clients).     

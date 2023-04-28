@@ -1,0 +1,9 @@
+Using pipe communication.
+Forked: root_writer
+
+root_writer: Opened ext_test/ext_writer_test.root (Title).
+root_writer: Tree h99 (TestTree)
+root_writer: About to allocate array: 56 B
+root_writer: Tree h98 (TestTree2)
+root_writer: About to allocate array: 8 B
+root_writer: Closed file (12470 events in 2 trees).

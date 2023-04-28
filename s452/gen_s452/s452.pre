@@ -1,0 +1,465 @@
+# 1 "s452.spec"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
+# 1 "s452.spec"
+
+
+# 1 "aida_data.spec" 1
+# 29 "aida_data.spec"
+AIDA()
+{
+    MEMBER(DATA8 module[13000] NO_INDEX_LIST); MEMBER(DATA8 channel[13000] NO_INDEX_LIST); MEMBER(DATA8 info[13000] NO_INDEX_LIST); MEMBER(DATA16 adc[13000] NO_INDEX_LIST); MEMBER(DATA32 ts_low[13000] NO_INDEX_LIST); MEMBER(DATA32 ts_med[13000] NO_INDEX_LIST); MEMBER(DATA32 ts_high[13000] NO_INDEX_LIST);
+
+    select several
+    {
+        mod[0] = AIDA_MODULE(module_id = 0, module = module, channel = channel, info = info, adc = adc, ts_low = ts_low, ts_med = ts_med, ts_high = ts_high);
+        mod[1] = AIDA_MODULE(module_id = 1, module = module, channel = channel, info = info, adc = adc, ts_low = ts_low, ts_med = ts_med, ts_high = ts_high);
+        mod[2] = AIDA_MODULE(module_id = 2, module = module, channel = channel, info = info, adc = adc, ts_low = ts_low, ts_med = ts_med, ts_high = ts_high);
+        mod[3] = AIDA_MODULE(module_id = 3, module = module, channel = channel, info = info, adc = adc, ts_low = ts_low, ts_med = ts_med, ts_high = ts_high);
+        mod[4] = AIDA_MODULE(module_id = 4, module = module, channel = channel, info = info, adc = adc, ts_low = ts_low, ts_med = ts_med, ts_high = ts_high);
+        mod[5] = AIDA_MODULE(module_id = 5, module = module, channel = channel, info = info, adc = adc, ts_low = ts_low, ts_med = ts_med, ts_high = ts_high);
+        mod[6] = AIDA_MODULE(module_id = 6, module = module, channel = channel, info = info, adc = adc, ts_low = ts_low, ts_med = ts_med, ts_high = ts_high);
+        mod[7] = AIDA_MODULE(module_id = 7, module = module, channel = channel, info = info, adc = adc, ts_low = ts_low, ts_med = ts_med, ts_high = ts_high);
+        mod[8] = AIDA_MODULE(module_id = 8, module = module, channel = channel, info = info, adc = adc, ts_low = ts_low, ts_med = ts_med, ts_high = ts_high);
+        mod[9] = AIDA_MODULE(module_id = 9, module = module, channel = channel, info = info, adc = adc, ts_low = ts_low, ts_med = ts_med, ts_high = ts_high);
+        mod[10] = AIDA_MODULE(module_id = 10, module = module, channel = channel, info = info, adc = adc, ts_low = ts_low, ts_med = ts_med, ts_high = ts_high);
+        mod[11] = AIDA_MODULE(module_id = 11, module = module, channel = channel, info = info, adc = adc, ts_low = ts_low, ts_med = ts_med, ts_high = ts_high);
+# 55 "aida_data.spec"
+    }
+}
+
+AIDA_MODULE(module_id, module, channel, info, adc, ts_low, ts_med, ts_high)
+{
+    MEMBER(DATA8 module[13000] NO_INDEX_LIST); MEMBER(DATA8 channel[13000] NO_INDEX_LIST); MEMBER(DATA8 info[13000] NO_INDEX_LIST); MEMBER(DATA16 adc[13000] NO_INDEX_LIST); MEMBER(DATA32 ts_low[13000] NO_INDEX_LIST); MEMBER(DATA32 ts_med[13000] NO_INDEX_LIST); MEMBER(DATA32 ts_high[13000] NO_INDEX_LIST);
+
+    select several
+    {
+        i = AIDA_INFO(module_id = module_id, module = module, channel = channel, info = info, adc = adc, ts_low = ts_low, ts_med = ts_med, ts_high = ts_high);
+        d = AIDA_ADC(module_id = module_id, module = module, channel = channel, info = info, adc = adc, ts_low = ts_low, ts_med = ts_med, ts_high = ts_high);
+    }
+}
+
+AIDA_INFO(module_id, module, channel, info, adc, ts_low, ts_med, ts_high)
+{
+    MEMBER(DATA8 module[13000] NO_INDEX_LIST); MEMBER(DATA8 channel[13000] NO_INDEX_LIST); MEMBER(DATA8 info[13000] NO_INDEX_LIST); MEMBER(DATA16 adc[13000] NO_INDEX_LIST); MEMBER(DATA32 ts_low[13000] NO_INDEX_LIST); MEMBER(DATA32 ts_med[13000] NO_INDEX_LIST); MEMBER(DATA32 ts_high[13000] NO_INDEX_LIST);
+
+    UINT32 wordA NOENCODE
+    {
+        0_19: info_field;
+        20_23: info_code = RANGE(2, 15);
+        24_29: module_id = MATCH(module_id);
+        30_31: 0x2;
+    }
+
+    UINT32 wordB NOENCODE
+    {
+        0_27: info_time;
+        28_31: 0;
+    };
+
+    ENCODE(module APPEND_LIST, (value = static_cast<uint8_t>(module_id)));
+    ENCODE(info APPEND_LIST, (value = wordA.info_code));
+    ENCODE(ts_low APPEND_LIST, (value = wordB.info_time));
+
+    ENCODE(channel APPEND_LIST, (value = 255));
+
+
+    if (wordA.info_code == 2 || wordA.info_code == 4 || wordA.info_code == 7)
+    {
+        ENCODE(ts_med APPEND_LIST, (value = wordA.info_field));
+        ENCODE(ts_high APPEND_LIST, (value = 0));
+        ENCODE(adc APPEND_LIST, (value = 0));
+    }
+
+
+    if (wordA.info_code == 5 || wordA.info_code == 8)
+    {
+        ENCODE(ts_high APPEND_LIST, (value = wordA.info_field));
+        ENCODE(ts_med APPEND_LIST, (value = 0));
+        ENCODE(adc APPEND_LIST, (value = 0));
+    }
+
+
+    if (wordA.info_code == 6)
+    {
+        ENCODE(adc APPEND_LIST, (value = 0));
+        ENCODE(ts_med APPEND_LIST, (value = wordA.info_field));
+        ENCODE(ts_high APPEND_LIST, (value = 0));
+    }
+}
+
+AIDA_ADC(module_id, module, channel, info, adc, ts_low, ts_med, ts_high)
+{
+    MEMBER(DATA8 module[13000] NO_INDEX_LIST); MEMBER(DATA8 channel[13000] NO_INDEX_LIST); MEMBER(DATA8 info[13000] NO_INDEX_LIST); MEMBER(DATA16 adc[13000] NO_INDEX_LIST); MEMBER(DATA32 ts_low[13000] NO_INDEX_LIST); MEMBER(DATA32 ts_med[13000] NO_INDEX_LIST); MEMBER(DATA32 ts_high[13000] NO_INDEX_LIST);
+
+    UINT32 wordA NOENCODE
+    {
+
+        0_15: adc_value;
+        16_21: channel_id = RANGE(0, 63);
+        22_27: module_id = MATCH(module_id);
+        28: adc_range;
+        29: 0;
+        30_31: 0x3;
+    }
+
+    UINT32 wordB NOENCODE
+    {
+        0_27: ts;
+        28_31: 0;
+    }
+
+    ENCODE(module APPEND_LIST, (value = static_cast<uint8_t>(module_id)));
+    ENCODE(adc APPEND_LIST, (value = wordA.adc_value));
+    ENCODE(channel APPEND_LIST, (value = wordA.channel_id));
+    ENCODE(ts_low APPEND_LIST, (value = wordB.ts));
+    ENCODE(ts_med APPEND_LIST, (value = 0));
+    ENCODE(ts_high APPEND_LIST, (value = 0));
+
+    ENCODE(info APPEND_LIST, (value = 255));
+}
+# 4 "s452.spec" 2
+
+
+# 1 "fatima_data.spec" 1
+FATIMA_VME()
+{
+    select optional
+    {
+        scaler = FATIMA_SCALER();
+    }
+    select several
+    {
+        dummy = DUMMY();
+    }
+}
+
+FATIMA_TAMEX()
+{
+
+    select several
+    {
+        dummy = DUMMY();
+    }
+}
+
+
+
+FATIMA_SCALER()
+{
+
+    MEMBER(DATA32 scalers[16] ZERO_SUPPRESS_LIST);
+
+    UINT32 header NOENCODE
+    {
+        0_31: h = 0x7a001000;
+
+    }
+
+    list(0 <= index < 16)
+    {
+        UINT32 ch_data NOENCODE;
+        ENCODE(scalers[index], (value = ch_data));
+    }
+
+    UINT32 trailer NOENCODE
+    {
+        0_31: t = 0x7c000000;
+    }
+
+}
+
+FATIMA_QDC()
+{
+
+}
+
+FATIMA_TDC()
+{
+
+}
+# 7 "s452.spec" 2
+# 1 "frs_data.spec" 1
+FRS()
+{
+    select several
+    {
+        dummy = DUMMY();
+    }
+}
+
+FRS_MAIN()
+{
+ MEMBER(DATA32 scalers[32] ZERO_SUPPRESS_LIST);
+   UINT32 no NOENCODE;
+
+   if (no == 0xbabababa)
+   {
+     UINT32 sc NOENCODE;
+     if ((sc & 0xFFFF0000) == 0x0c800000)
+     {
+        list (0 <= index < 32)
+        {
+    UINT32 ch_data NOENCODE;
+    ENCODE(scalers[index], (value=ch_data));
+        }
+     }
+   }
+}
+
+FRS_FRS()
+{
+    MEMBER(DATA32 scalers[32] ZERO_SUPPRESS_LIST);
+    UINT32 no NOENCODE;
+
+    if ((no & 0xFFFF0000) == 0x04400000)
+    {
+        list (0 <= index < 32)
+        {
+        UINT32 ch_data NOENCODE;
+        ENCODE(scalers[index], (value=ch_data));
+        }
+    }
+}
+
+TRLOII_TPAT(id)
+{
+ MEMBER(DATA32 n);
+ MEMBER(DATA32 tpat[170] NO_INDEX_LIST);
+ MEMBER(DATA8 trig[170] NO_INDEX_LIST);
+ MEMBER(DATA32 ts_lo[170] NO_INDEX_LIST);
+ MEMBER(DATA32 ts_hi[170] NO_INDEX_LIST);
+
+ UINT32 header NOENCODE {
+  0_11: uint32_num;
+  12_23: event_num;
+  24_31: id = MATCH(id);
+  ENCODE(n, (value=uint32_num / 3));
+ }
+
+ list(0 <= index < header.uint32_num / 3) {
+  UINT32 time_lo NOENCODE {
+   0_31: t;
+   ENCODE(ts_lo APPEND_LIST, (value=t));
+  }
+  UINT32 time_hi NOENCODE {
+   0_30: t;
+   31: overflow;
+   ENCODE(ts_hi APPEND_LIST, (value=t));
+  }
+  UINT32 trigger NOENCODE {
+   0_23: tpat;
+   24_27: encoded;
+   28_31: lec;
+   ENCODE(tpat APPEND_LIST, (value=tpat));
+   ENCODE(trig APPEND_LIST, (value=encoded));
+  }
+ }
+}
+# 8 "s452.spec" 2
+# 1 "whiterabbit.spec" 1
+TIMESTAMP_WHITERABBIT(id)
+{
+ MEMBER(DATA12 subsystem_id);
+ MEMBER(DATA16 t1);
+ MEMBER(DATA16 t2);
+ MEMBER(DATA16 t3);
+ MEMBER(DATA16 t4);
+
+ UINT32 header NOENCODE {
+  0_11: id = MATCH(id);
+  12_15: 0;
+     16: error_bit;
+  17_31: 0;
+  ENCODE(subsystem_id, (value=id));
+ };
+ UINT32 d1 NOENCODE {
+  0_15: t1;
+  16_31: 0x03e1;
+  ENCODE(t1, (value=t1));
+ };
+ UINT32 d2 NOENCODE {
+  0_15: t2;
+  16_31: 0x04e1;
+  ENCODE(t2, (value=t2));
+ };
+ UINT32 d3 NOENCODE {
+  0_15: t3;
+  16_31: 0x05e1;
+  ENCODE(t3, (value=t3));
+ };
+ UINT32 d4 NOENCODE {
+  0_15: t4;
+  16_31: 0x06e1;
+  ENCODE(t4, (value=t4));
+ };
+}
+
+TIMESTAMP_WHITERABBIT_EXTENDED(id)
+{
+ MEMBER(DATA16 subsystem_id);
+ MEMBER(DATA16 t1);
+ MEMBER(DATA16 t2);
+ MEMBER(DATA16 t3);
+ MEMBER(DATA16 t4);
+
+ UINT32 header NOENCODE {
+  0_12: id = MATCH(id);
+  13_15: 0;
+     16: error_bit;
+  17_31: 0;
+  ENCODE(subsystem_id, (value=id));
+ };
+ UINT32 d1 NOENCODE {
+  0_15: t1;
+  16_31: 0x03e1;
+  ENCODE(t1, (value=t1));
+ };
+ UINT32 d2 NOENCODE {
+  0_15: t2;
+  16_31: 0x04e1;
+  ENCODE(t2, (value=t2));
+ };
+ UINT32 d3 NOENCODE {
+  0_15: t3;
+  16_31: 0x05e1;
+  ENCODE(t3, (value=t3));
+ };
+ UINT32 d4 NOENCODE {
+  0_15: t4;
+  16_31: 0x06e1;
+  ENCODE(t4, (value=t4));
+ };
+}
+
+WR_MULTI()
+{
+ MEMBER(DATA32 time_hi);
+ MEMBER(DATA32 time_lo);
+
+ UINT32 hi NOENCODE {
+  0_31: time;
+  ENCODE(time_hi, (value = time));
+ }
+ UINT32 lo NOENCODE {
+  0_31: time;
+  ENCODE(time_lo, (value = time));
+ }
+}
+# 9 "s452.spec" 2
+
+
+
+external EXT_FATIMA_VME();
+
+DUMMY()
+{
+  UINT32 no NOENCODE;
+}
+
+SUBEVENT(aida_subev)
+{
+  ts = TIMESTAMP_WHITERABBIT(id=0x700);
+
+  subev = AIDA();
+}
+
+SUBEVENT(germanium_subev)
+{
+  ts = TIMESTAMP_WHITERABBIT(id=0x400);
+
+
+
+}
+
+
+SUBEVENT(plastic_subev)
+{
+  ts = TIMESTAMP_WHITERABBIT(id=0x500);
+
+}
+
+
+SUBEVENT(fatima_vme_subev)
+{
+  ts = TIMESTAMP_WHITERABBIT_EXTENDED(id=0x1500);
+
+  external data = EXT_FATIMA_VME();
+}
+
+SUBEVENT(fatima_tamex_subev)
+{
+  ts = TIMESTAMP_WHITERABBIT_EXTENDED(id=0x1600);
+  subev = FATIMA_TAMEX();
+}
+
+SUBEVENT(frs_subev1)
+{
+  ts = TIMESTAMP_WHITERABBIT(id=0x100);
+  subev = FRS();
+}
+
+SUBEVENT(frs_main_subev)
+{
+
+  select several
+  {
+    subev = FRS_MAIN();
+  }
+}
+
+SUBEVENT(frs_tpat_subev)
+{
+
+
+
+  dummy = DUMMY();
+  tpat = TRLOII_TPAT(id = 0xcf);
+}
+
+SUBEVENT(frs_subev4)
+{
+  ts = TIMESTAMP_WHITERABBIT(id=0x100);
+  subev = FRS();
+}
+
+SUBEVENT(frs_frs_subev)
+{
+
+  select several
+  {
+    subev = FRS_FRS();
+  }
+}
+
+SUBEVENT(frs_subev6)
+{
+  ts = TIMESTAMP_WHITERABBIT(id=0x100);
+  subev = FRS();
+}
+
+EVENT
+{
+
+
+
+
+
+
+
+  fatima_vme = fatima_vme_subev(type = 10, subtype = 1, procid = 70, control = 20, subcrate = 0);
+
+
+
+
+
+  frs_main = frs_main_subev(type = 12, subtype = 1, procid = 10, control = 20, subcrate = 0);
+  frs_tpat = frs_tpat_subev(type = 36, subtype = 3600, procid = 10, control = 20, subcrate = 0);
+
+  frs_frs = frs_frs_subev(type = 12, subtype = 1, procid = 30, control = 20, subcrate = 0);
+
+
+  ignore_unknown_subevent;
+}

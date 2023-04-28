@@ -1,0 +1,661 @@
+/** BEGIN_FUNCTION_CALL_PER_MEMBER *************************************
+ *
+ * Recursive function calls per member.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_fcncall_define.hh"
+
+#ifndef USER_DEF_AIDA_INFO
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(AIDA_INFO)::FCNCALL_NAME(AIDA_INFO)
+{
+  FCNCALL_INIT;
+  FCNCALL_RET;
+}
+#endif//USER_DEF_AIDA_INFO
+
+#ifndef USER_DEF_AIDA_ADC
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(AIDA_ADC)::FCNCALL_NAME(AIDA_ADC)
+{
+  FCNCALL_INIT;
+  FCNCALL_RET;
+}
+#endif//USER_DEF_AIDA_ADC
+
+#ifndef USER_DEF_AIDA_MODULE
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(AIDA_MODULE)::FCNCALL_NAME(AIDA_MODULE)
+{
+  FCNCALL_INIT;
+  // AIDA_INFO i;
+  {
+  FCNCALL_SUBNAME("i");
+  { FCNCALL_CALL_CTRL_WRAP(i,i.FCNCALL_CALL(i)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // AIDA_ADC d;
+  {
+  FCNCALL_SUBNAME("d");
+  { FCNCALL_CALL_CTRL_WRAP(d,d.FCNCALL_CALL(d)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_AIDA_MODULE
+
+#ifndef USER_DEF_AIDA
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(AIDA)::FCNCALL_NAME(AIDA)
+{
+  FCNCALL_INIT;
+  // raw_list_ii_zero_suppress<DATA8,DATA8,13000> module;
+  {
+  FCNCALL_SUBNAME("module");
+  { FCNCALL_CALL_CTRL_WRAP(module,module.FCNCALL_CALL(module)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_list_ii_zero_suppress<DATA8,DATA8,13000> channel;
+  {
+  FCNCALL_SUBNAME("channel");
+  { FCNCALL_CALL_CTRL_WRAP(channel,channel.FCNCALL_CALL(channel)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_list_ii_zero_suppress<DATA8,DATA8,13000> info;
+  {
+  FCNCALL_SUBNAME("info");
+  { FCNCALL_CALL_CTRL_WRAP(info,info.FCNCALL_CALL(info)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_list_ii_zero_suppress<DATA16,DATA16,13000> adc;
+  {
+  FCNCALL_SUBNAME("adc");
+  { FCNCALL_CALL_CTRL_WRAP(adc,adc.FCNCALL_CALL(adc)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_list_ii_zero_suppress<DATA32,DATA32,13000> ts_low;
+  {
+  FCNCALL_SUBNAME("ts_low");
+  { FCNCALL_CALL_CTRL_WRAP(ts_low,ts_low.FCNCALL_CALL(ts_low)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_list_ii_zero_suppress<DATA32,DATA32,13000> ts_med;
+  {
+  FCNCALL_SUBNAME("ts_med");
+  { FCNCALL_CALL_CTRL_WRAP(ts_med,ts_med.FCNCALL_CALL(ts_med)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_list_ii_zero_suppress<DATA32,DATA32,13000> ts_high;
+  {
+  FCNCALL_SUBNAME("ts_high");
+  { FCNCALL_CALL_CTRL_WRAP(ts_high,ts_high.FCNCALL_CALL(ts_high)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // AIDA_MODULE mod[12];
+  {
+  FCNCALL_SUBNAME("mod");
+  FCNCALL_FOR(__i0,12)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(mod__i0,,__i0,mod[__i0].FCNCALL_CALL(mod[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_AIDA
+
+#ifndef USER_DEF_DUMMY
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(DUMMY)::FCNCALL_NAME(DUMMY)
+{
+  FCNCALL_INIT;
+  FCNCALL_RET;
+}
+#endif//USER_DEF_DUMMY
+
+#ifndef USER_DEF_FATIMA_QDC
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(FATIMA_QDC)::FCNCALL_NAME(FATIMA_QDC)
+{
+  FCNCALL_INIT;
+  FCNCALL_RET;
+}
+#endif//USER_DEF_FATIMA_QDC
+
+#ifndef USER_DEF_FATIMA_SCALER
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(FATIMA_SCALER)::FCNCALL_NAME(FATIMA_SCALER)
+{
+  FCNCALL_INIT;
+  // raw_list_zero_suppress<DATA32,DATA32,16> scalers;
+  {
+  FCNCALL_SUBNAME("scalers");
+  { FCNCALL_CALL_CTRL_WRAP(scalers,scalers.FCNCALL_CALL(scalers)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_FATIMA_SCALER
+
+#ifndef USER_DEF_FATIMA_TAMEX
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(FATIMA_TAMEX)::FCNCALL_NAME(FATIMA_TAMEX)
+{
+  FCNCALL_INIT;
+  // DUMMY dummy;
+  {
+  FCNCALL_SUBNAME("dummy");
+  { FCNCALL_CALL_CTRL_WRAP(dummy,dummy.FCNCALL_CALL(dummy)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_FATIMA_TAMEX
+
+#ifndef USER_DEF_FATIMA_TDC
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(FATIMA_TDC)::FCNCALL_NAME(FATIMA_TDC)
+{
+  FCNCALL_INIT;
+  FCNCALL_RET;
+}
+#endif//USER_DEF_FATIMA_TDC
+
+#ifndef USER_DEF_FATIMA_VME
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(FATIMA_VME)::FCNCALL_NAME(FATIMA_VME)
+{
+  FCNCALL_INIT;
+  // FATIMA_SCALER scaler;
+  {
+  FCNCALL_SUBNAME("scaler");
+  { FCNCALL_CALL_CTRL_WRAP(scaler,scaler.FCNCALL_CALL(scaler)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DUMMY dummy;
+  {
+  FCNCALL_SUBNAME("dummy");
+  { FCNCALL_CALL_CTRL_WRAP(dummy,dummy.FCNCALL_CALL(dummy)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_FATIMA_VME
+
+#ifndef USER_DEF_FRS
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(FRS)::FCNCALL_NAME(FRS)
+{
+  FCNCALL_INIT;
+  // DUMMY dummy;
+  {
+  FCNCALL_SUBNAME("dummy");
+  { FCNCALL_CALL_CTRL_WRAP(dummy,dummy.FCNCALL_CALL(dummy)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_FRS
+
+#ifndef USER_DEF_FRS_FRS
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(FRS_FRS)::FCNCALL_NAME(FRS_FRS)
+{
+  FCNCALL_INIT;
+  // raw_list_zero_suppress<DATA32,DATA32,32> scalers;
+  {
+  FCNCALL_SUBNAME("scalers");
+  { FCNCALL_CALL_CTRL_WRAP(scalers,scalers.FCNCALL_CALL(scalers)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_FRS_FRS
+
+#ifndef USER_DEF_FRS_MAIN
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(FRS_MAIN)::FCNCALL_NAME(FRS_MAIN)
+{
+  FCNCALL_INIT;
+  // raw_list_zero_suppress<DATA32,DATA32,32> scalers;
+  {
+  FCNCALL_SUBNAME("scalers");
+  { FCNCALL_CALL_CTRL_WRAP(scalers,scalers.FCNCALL_CALL(scalers)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_FRS_MAIN
+
+#ifndef USER_DEF_TIMESTAMP_WHITERABBIT
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(TIMESTAMP_WHITERABBIT)::FCNCALL_NAME(TIMESTAMP_WHITERABBIT)
+{
+  FCNCALL_INIT;
+  // DATA12 subsystem_id;
+  {
+  FCNCALL_SUBNAME("subsystem_id");
+  { FCNCALL_CALL_CTRL_WRAP(subsystem_id,subsystem_id.FCNCALL_CALL(subsystem_id)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA16 t1;
+  {
+  FCNCALL_SUBNAME("t1");
+  { FCNCALL_CALL_CTRL_WRAP(t1,t1.FCNCALL_CALL(t1)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA16 t2;
+  {
+  FCNCALL_SUBNAME("t2");
+  { FCNCALL_CALL_CTRL_WRAP(t2,t2.FCNCALL_CALL(t2)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA16 t3;
+  {
+  FCNCALL_SUBNAME("t3");
+  { FCNCALL_CALL_CTRL_WRAP(t3,t3.FCNCALL_CALL(t3)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA16 t4;
+  {
+  FCNCALL_SUBNAME("t4");
+  { FCNCALL_CALL_CTRL_WRAP(t4,t4.FCNCALL_CALL(t4)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_TIMESTAMP_WHITERABBIT
+
+#ifndef USER_DEF_TIMESTAMP_WHITERABBIT_EXTENDED
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(TIMESTAMP_WHITERABBIT_EXTENDED)::FCNCALL_NAME(TIMESTAMP_WHITERABBIT_EXTENDED)
+{
+  FCNCALL_INIT;
+  // DATA16 subsystem_id;
+  {
+  FCNCALL_SUBNAME("subsystem_id");
+  { FCNCALL_CALL_CTRL_WRAP(subsystem_id,subsystem_id.FCNCALL_CALL(subsystem_id)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA16 t1;
+  {
+  FCNCALL_SUBNAME("t1");
+  { FCNCALL_CALL_CTRL_WRAP(t1,t1.FCNCALL_CALL(t1)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA16 t2;
+  {
+  FCNCALL_SUBNAME("t2");
+  { FCNCALL_CALL_CTRL_WRAP(t2,t2.FCNCALL_CALL(t2)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA16 t3;
+  {
+  FCNCALL_SUBNAME("t3");
+  { FCNCALL_CALL_CTRL_WRAP(t3,t3.FCNCALL_CALL(t3)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA16 t4;
+  {
+  FCNCALL_SUBNAME("t4");
+  { FCNCALL_CALL_CTRL_WRAP(t4,t4.FCNCALL_CALL(t4)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_TIMESTAMP_WHITERABBIT_EXTENDED
+
+#ifndef USER_DEF_TRLOII_TPAT
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(TRLOII_TPAT)::FCNCALL_NAME(TRLOII_TPAT)
+{
+  FCNCALL_INIT;
+  // DATA32 n;
+  {
+  FCNCALL_SUBNAME("n");
+  { FCNCALL_CALL_CTRL_WRAP(n,n.FCNCALL_CALL(n)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_list_ii_zero_suppress<DATA32,DATA32,170> tpat;
+  {
+  FCNCALL_SUBNAME("tpat");
+  { FCNCALL_CALL_CTRL_WRAP(tpat,tpat.FCNCALL_CALL(tpat)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_list_ii_zero_suppress<DATA8,DATA8,170> trig;
+  {
+  FCNCALL_SUBNAME("trig");
+  { FCNCALL_CALL_CTRL_WRAP(trig,trig.FCNCALL_CALL(trig)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_list_ii_zero_suppress<DATA32,DATA32,170> ts_lo;
+  {
+  FCNCALL_SUBNAME("ts_lo");
+  { FCNCALL_CALL_CTRL_WRAP(ts_lo,ts_lo.FCNCALL_CALL(ts_lo)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_list_ii_zero_suppress<DATA32,DATA32,170> ts_hi;
+  {
+  FCNCALL_SUBNAME("ts_hi");
+  { FCNCALL_CALL_CTRL_WRAP(ts_hi,ts_hi.FCNCALL_CALL(ts_hi)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_TRLOII_TPAT
+
+#ifndef USER_DEF_WR_MULTI
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(WR_MULTI)::FCNCALL_NAME(WR_MULTI)
+{
+  FCNCALL_INIT;
+  // DATA32 time_hi;
+  {
+  FCNCALL_SUBNAME("time_hi");
+  { FCNCALL_CALL_CTRL_WRAP(time_hi,time_hi.FCNCALL_CALL(time_hi)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA32 time_lo;
+  {
+  FCNCALL_SUBNAME("time_lo");
+  { FCNCALL_CALL_CTRL_WRAP(time_lo,time_lo.FCNCALL_CALL(time_lo)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_WR_MULTI
+
+#ifndef USER_DEF_aida_subev
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(aida_subev)::FCNCALL_NAME(aida_subev)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // TIMESTAMP_WHITERABBIT ts;
+  {
+  FCNCALL_SUBNAME("ts");
+  { FCNCALL_CALL_CTRL_WRAP(ts,ts.FCNCALL_CALL(ts)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // EXT_AIDA data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_aida_subev
+
+#ifndef USER_DEF_fatima_tamex_subev
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(fatima_tamex_subev)::FCNCALL_NAME(fatima_tamex_subev)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // TIMESTAMP_WHITERABBIT_EXTENDED ts;
+  {
+  FCNCALL_SUBNAME("ts");
+  { FCNCALL_CALL_CTRL_WRAP(ts,ts.FCNCALL_CALL(ts)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // EXT_FATIMA_TAMEX data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_fatima_tamex_subev
+
+#ifndef USER_DEF_fatima_vme_subev
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(fatima_vme_subev)::FCNCALL_NAME(fatima_vme_subev)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // TIMESTAMP_WHITERABBIT_EXTENDED ts;
+  {
+  FCNCALL_SUBNAME("ts");
+  { FCNCALL_CALL_CTRL_WRAP(ts,ts.FCNCALL_CALL(ts)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // EXT_FATIMA_VME data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_fatima_vme_subev
+
+#ifndef USER_DEF_frs_frs_subev
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(frs_frs_subev)::FCNCALL_NAME(frs_frs_subev)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // FRS_FRS subev;
+  {
+  FCNCALL_SUBNAME("subev");
+  { FCNCALL_CALL_CTRL_WRAP(subev,subev.FCNCALL_CALL(subev)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_frs_frs_subev
+
+#ifndef USER_DEF_frs_main_subev
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(frs_main_subev)::FCNCALL_NAME(frs_main_subev)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // FRS_MAIN subev;
+  {
+  FCNCALL_SUBNAME("subev");
+  { FCNCALL_CALL_CTRL_WRAP(subev,subev.FCNCALL_CALL(subev)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_frs_main_subev
+
+#ifndef USER_DEF_frs_subev1
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(frs_subev1)::FCNCALL_NAME(frs_subev1)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // TIMESTAMP_WHITERABBIT ts;
+  {
+  FCNCALL_SUBNAME("ts");
+  { FCNCALL_CALL_CTRL_WRAP(ts,ts.FCNCALL_CALL(ts)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FRS subev;
+  {
+  FCNCALL_SUBNAME("subev");
+  { FCNCALL_CALL_CTRL_WRAP(subev,subev.FCNCALL_CALL(subev)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_frs_subev1
+
+#ifndef USER_DEF_frs_subev4
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(frs_subev4)::FCNCALL_NAME(frs_subev4)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // TIMESTAMP_WHITERABBIT ts;
+  {
+  FCNCALL_SUBNAME("ts");
+  { FCNCALL_CALL_CTRL_WRAP(ts,ts.FCNCALL_CALL(ts)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FRS subev;
+  {
+  FCNCALL_SUBNAME("subev");
+  { FCNCALL_CALL_CTRL_WRAP(subev,subev.FCNCALL_CALL(subev)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_frs_subev4
+
+#ifndef USER_DEF_frs_subev6
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(frs_subev6)::FCNCALL_NAME(frs_subev6)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // TIMESTAMP_WHITERABBIT ts;
+  {
+  FCNCALL_SUBNAME("ts");
+  { FCNCALL_CALL_CTRL_WRAP(ts,ts.FCNCALL_CALL(ts)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FRS subev;
+  {
+  FCNCALL_SUBNAME("subev");
+  { FCNCALL_CALL_CTRL_WRAP(subev,subev.FCNCALL_CALL(subev)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_frs_subev6
+
+#ifndef USER_DEF_frs_tpat_subev
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(frs_tpat_subev)::FCNCALL_NAME(frs_tpat_subev)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // DUMMY dummy;
+  {
+  FCNCALL_SUBNAME("dummy");
+  { FCNCALL_CALL_CTRL_WRAP(dummy,dummy.FCNCALL_CALL(dummy)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // TRLOII_TPAT tpat;
+  {
+  FCNCALL_SUBNAME("tpat");
+  { FCNCALL_CALL_CTRL_WRAP(tpat,tpat.FCNCALL_CALL(tpat)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_frs_tpat_subev
+
+#ifndef USER_DEF_germanium_subev
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(germanium_subev)::FCNCALL_NAME(germanium_subev)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // TIMESTAMP_WHITERABBIT ts;
+  {
+  FCNCALL_SUBNAME("ts");
+  { FCNCALL_CALL_CTRL_WRAP(ts,ts.FCNCALL_CALL(ts)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // EXT_GERMANIUM data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_germanium_subev
+
+#ifndef USER_DEF_plastic_subev
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(plastic_subev)::FCNCALL_NAME(plastic_subev)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // TIMESTAMP_WHITERABBIT ts;
+  {
+  FCNCALL_SUBNAME("ts");
+  { FCNCALL_CALL_CTRL_WRAP(ts,ts.FCNCALL_CALL(ts)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_plastic_subev
+
+#ifndef USER_DEF_unpack_event
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(unpack_event)::FCNCALL_NAME(unpack_event)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_event_base,FCNCALL_CLASS_NAME(unpack_event_base)::FCNCALL_CALL_BASE());
+  // germanium_subev germanium;
+  {
+  FCNCALL_SUBNAME("germanium");
+  { FCNCALL_CALL_CTRL_WRAP(germanium,germanium.FCNCALL_CALL(germanium)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // fatima_vme_subev fatima_vme;
+  {
+  FCNCALL_SUBNAME("fatima_vme");
+  { FCNCALL_CALL_CTRL_WRAP(fatima_vme,fatima_vme.FCNCALL_CALL(fatima_vme)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // fatima_tamex_subev fatima_tamex;
+  {
+  FCNCALL_SUBNAME("fatima_tamex");
+  { FCNCALL_CALL_CTRL_WRAP(fatima_tamex,fatima_tamex.FCNCALL_CALL(fatima_tamex)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // aida_subev aida;
+  {
+  FCNCALL_SUBNAME("aida");
+  { FCNCALL_CALL_CTRL_WRAP(aida,aida.FCNCALL_CALL(aida)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // frs_main_subev frs_main;
+  {
+  FCNCALL_SUBNAME("frs_main");
+  { FCNCALL_CALL_CTRL_WRAP(frs_main,frs_main.FCNCALL_CALL(frs_main)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // frs_tpat_subev frs_tpat;
+  {
+  FCNCALL_SUBNAME("frs_tpat");
+  { FCNCALL_CALL_CTRL_WRAP(frs_tpat,frs_tpat.FCNCALL_CALL(frs_tpat)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // frs_frs_subev frs_frs;
+  {
+  FCNCALL_SUBNAME("frs_frs");
+  { FCNCALL_CALL_CTRL_WRAP(frs_frs,frs_frs.FCNCALL_CALL(frs_frs)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_unpack_event
+
+#ifndef USER_DEF_unpack_sticky_event
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(unpack_sticky_event)::FCNCALL_NAME(unpack_sticky_event)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_sticky_event_base,FCNCALL_CLASS_NAME(unpack_sticky_event_base)::FCNCALL_CALL_BASE());
+  FCNCALL_RET;
+}
+#endif//USER_DEF_unpack_sticky_event
+
+#include "gen/default_fcncall_undef.hh"
+
+
+/** END_FUNCTION_CALL_PER_MEMBER **************************************/

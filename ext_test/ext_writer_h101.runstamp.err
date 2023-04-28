@@ -1,0 +1,11 @@
+Reading mapping/calibration file 'empty/gen_empty/data_mapping.hh'...
+Optional map/calib file 'empty/calibration.hh' does not exist, is ok.
+Using shm communication.
+Forked: struct_writer
+
+Storage size: 12 bytes.
+struct_writer: About to allocate array: 12 B
+struct_writer: Reading data from: -
+struct_writer: Done (0 events, 0.0 MB, 0.0 MB to clients).     
+Events: 10   10             (0 errors)                
+

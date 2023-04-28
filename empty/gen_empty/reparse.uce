@@ -1,0 +1,36 @@
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+/**********************************************************
+ * The event definition:
+ */
+
+EVENT
+{
+  ignore_unknown_subevent;
+}
+
+/**********************************************************
+ * The sticky_event definition:
+ */
+
+STICKY_EVENT
+{
+  ignore_unknown_subevent;
+}
+
+/**********************************************************
+ * Signal name mappings:
+ */
+
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/

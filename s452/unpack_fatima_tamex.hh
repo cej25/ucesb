@@ -1,7 +1,8 @@
 #ifndef __FAT_TAMEX_UNPACK__
 #define __FAT_TAMEX_UNPACK__
 
-#include "unpack_defs.hh"
+#include "config/setup.hh"
+
 #include "data_src.hh"
 #include "dummy_external.hh"
 #include "external_data.hh"

@@ -1,74 +1,28 @@
 // header link
 #include "ext_unpacking.hh"
+#include "unpack_structures.hh"
 
 // ucesb internals
+#include "data_src.hh"
 #include "enumerate.hh"
 #include "simple_data_ops.hh"
 #include "zero_suppress.hh"
 #include "zero_suppress_map.hh"
 #include "error.hh"
 
+// c++ stuff
 #include <algorithm>
 #include <iterator>
 #include <set>
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cmath>
 
-// Copied from zero_supress_map.cc to generate our own template
-struct used_zero_suppress_info
-{
-    public:
-        used_zero_suppress_info(const zero_suppress_info *info)
-        {
-            _info = info;
-            _used = false;
-        }
-
-        ~used_zero_suppress_info()
-        {
-            if (!_used)
-                delete _info;
-        }
-
-    public:
-        const zero_suppress_info *_info;
-        bool                      _used;
-};
-
-//  This feels dumb honestly
-template<typename Tsingle,typename T,int n>
-void raw_list_ii_zero_suppress<Tsingle,T,n>::zero_suppress_info_ptrs(used_zero_suppress_info &used_info)
-{
-    for (int i = 0; i < n; ++i)
-    {
-        zero_suppress_info *info =
-	    new zero_suppress_info(used_info._info,true);
-        zzp_on_insert_index(i,*info);
-        used_zero_suppress_info sub_used_info(info);
-
-        call_zero_suppress_info_ptrs(&_items[i],sub_used_info);
-    }
-}
-
-// Copied from struct_fcns.cc
-template<typename T>
-void show_members(const signal_id &id, const char *unit)
-{
-    char buf[256];
-    id.format(buf, sizeof(buf));
-
-    char buf_paw[256];
-    id.format_paw(buf_paw, sizeof(buf_paw));
-
-    printf ("%-30s %-30s %s\n",buf_paw,buf,unit ? unit : "");
-
-}
 
 void EXT_GERMANIUM::load_board_channel_file()
 {
-    // path may need updating
-    std::ifstream file("s452/Germanium_Detector_Map.txt");
+    std::ifstream file("s452/config/Germanium_Detector_Map.txt");
 
     if (file.fail())
     {

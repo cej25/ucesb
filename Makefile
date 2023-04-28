@@ -540,7 +540,7 @@ ridf: $(DEPENDENCIES)
 #########################################################
 
 clean: clean-dir-ucesbgen clean-dir-psdc clean-dir-file_input \
-	clean-dir-rfiocmd clean-dir-hbook clean-dir-tdcpm \
+	clean-dir-rfiocmd clean-dir-hbook clean-dir-tdcpm clean-unp-s452 \
 	$(UNPACKERS:%=clean-unp-%) $(UNPACKERS_EXT:%=clean-unp-%) \
 	$(UNPACKERS_is446:%=clean-unp-is446-%) \
 	$(UNPACKERS_xtst:%=clean-unp-xtst-%)

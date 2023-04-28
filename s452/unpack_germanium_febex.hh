@@ -1,13 +1,17 @@
 #ifndef __GE_FEBEX_UNPACK_HH__
 #define __GE_FEBEX_UNPACK_HH__
 
-#include "unpack_defs.hh"
+#include "config/setup.hh"
 
 #include "data_src.hh"
 #include "dummy_external.hh"
 #include "external_data.hh"
 #include "zero_suppress.hh"
+#include <iostream>
+#include <fstream>
+#include <sstream>
 #include <map>
+#include <limits>
 
 DUMMY_EXTERNAL_MAP_STRUCT_FORW(EXT_GERMANIUM);
 
@@ -29,7 +33,6 @@ struct febex_item
     uint32 crystal_ids[GE_MAX_HITS]; // int
 
     void __clean() {};
-    //void reset_fired_channels();
 
     void dump(const signal_id &id,pretty_dump_info &pdi) const;
     void show_members(const signal_id &id,const char *unit) const;
@@ -38,7 +41,6 @@ struct febex_item
     const char* get_name(const std::string &name, int index) const;
 
 };
-
 
 class EXT_GERMANIUM
 {

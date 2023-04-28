@@ -1,7 +1,7 @@
 #ifndef __AIDA_UNPACK__
 #define __AIDA_UNPACK__
 
-#include "unpack_defs.hh"
+#include "config/setup.hh"
 
 #include "data_src.hh"
 #include "dummy_external.hh"

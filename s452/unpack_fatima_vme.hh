@@ -1,7 +1,7 @@
 #ifndef __FAT_VME_UNPACK_HH__
 #define __FAT_VME_UNPACK_HH__
 
-#include "unpack_defs.hh"
+#include "config/setup.hh"
 
 #include "data_src.hh"
 #include "dummy_external.hh"

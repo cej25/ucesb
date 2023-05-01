@@ -89,7 +89,6 @@ class EXT_FATIMA_TAMEX
         void calibrate_OFFLINE();
 
         void get_Calib_type();
-        void reset_edges();
 
         void dump(const signal_id &id,pretty_dump_info &pdi) const;
         void show_members(const signal_id &id,const char *unit) const;

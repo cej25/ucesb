@@ -6,7 +6,7 @@ external EXT_AIDA();
 external EXT_GERMANIUM();
 external EXT_FATIMA_VME();
 external EXT_FATIMA_TAMEX();
-// external EXT_PLASTIC_TAMEX();
+external EXT_PLASTIC();
 
 DUMMY()
 {
@@ -40,7 +40,7 @@ SUBEVENT(fatima_tamex_subev)
 SUBEVENT(plastic_subev)
 {
     ts = TIMESTAMP_WHITERABBIT(id=0x500);
-    // external data = EXT_PLASTIC_TAMEX();
+    external data = EXT_PLASTIC();
 }
 
 EVENT
@@ -49,7 +49,7 @@ EVENT
     germanium = germanium_subev(type = 10, subtype = 1, procid = 60, control = 20, subcrate = 0);
     fatima_vme = fatima_vme_subev(type = 10, subtype = 1, procid = 70, control = 20, subcrate = 0);
     fatima_tamex = fatima_tamex_subev(type = 10, subtype = 1, procid = 75, control = 20, subcrate = 0);
-    //plastic = plastic_subev(type = 10, subtype = 1, procid = 80, control = 20, subcrate = 0);
+    plastic = plastic_subev(type = 10, subtype = 1, procid = 80, control = 20, subcrate = 0);
 
     // frs stuff
 

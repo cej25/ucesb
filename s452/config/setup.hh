@@ -27,7 +27,7 @@
 #define MAX_CHA_INPUT 33
 
 // bplast tamex
-
+#define PLASTIC_MAX_HITS 1000 // made up for now
 
 // frs
 

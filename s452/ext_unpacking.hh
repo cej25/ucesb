@@ -5,5 +5,6 @@
 #include "unpack_germanium_febex.hh"
 #include "unpack_fatima_vme.hh"
 #include "unpack_fatima_tamex.hh"
+#include "unpack_plastic_tamex.hh"
 
 #endif /* __UNPACK_HH__ */

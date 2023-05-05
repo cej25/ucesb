@@ -17,60 +17,60 @@ DUMMY_EXTERNAL_MAP_STRUCT_FORW(EXT_PLASTIC);
 
 struct plastic_tamex_item
 {
-    public:
-      
-        // PLASTIC_TAMEX MBS words
-        int add = 2781;
-        int aa = 170;
-        int six_eight = 104;
-        int six_f = 6;
-        int trailer_code = 187;
-        int error_code = 238;
-        int tamex_identifier = 52;
-
-        int iterator[100];
-        int tamex_id[100];
-
-        int tamex_iter;
-
-        int am_fired[100];
-        int sfp_id[100];
-        int trigger_type[100];
-
-        double coarse_T[100];
-        double fine_T[100];
-        uint32 ch_ID[100];
-
-        int lead_arr[100][100];
-        int leading_hits[100][100];
-        int trailing_hits[100][100];
-
-        double edge_coarse[100][100];
-        double edge_fine[100][100];
-        uint32 ch_ID_edge[100][100];
-        uint32 ch_num[100][100];
-     
-        bool tamex_end;
-        bool written;
-        bool no_edges[100];
-        bool error;
-        bool leading_hit = false;
     
-        // calibration stuff?
-        bool CALIBRATE = false;
-        bool Calibration_Done = false;
-        int cal_count = 0;
+    // PLASTIC_TAMEX MBS words
+    int add = 2781;
+    int aa = 170;
+    int six_eight = 104;
+    int six_f = 6;
+    int trailer_code = 187;
+    int error_code = 238;
+    int tamex_identifier = 52;
 
-        int Pre_Trigger_Window = 0;
-        int Post_Trigger_Window = 0;
+    uint32 iterator[PLASTIC_MAX_ITER]; // int
+    uint32 tamex_id[PLASTIC_MAX_ITER]; // int
 
-        void __clean() {};
+    int tamex_iter;
 
-        void dump(const signal_id &id,pretty_dump_info &pdi) const;
-        void show_members(const signal_id &id,const char *unit) const;
-        void enumerate_members(const signal_id &__id, const enumerate_info &__info, enumerate_fcn __callback, void *__extra) const;
-        void zero_suppress_info_ptrs(used_zero_suppress_info& used_info);
-        const char* get_name(const std::string &name, int index) const;
+    uint32 am_fired[PLASTIC_MAX_ITER]; // int
+    uint32 sfp_id[PLASTIC_MAX_ITER]; // int
+    uint32 trigger_type[PLASTIC_MAX_ITER]; // int
+
+    double coarse_T[PLASTIC_MAX_ITER]; // 0-2 (first 3)
+    double fine_T[PLASTIC_MAX_ITER]; 
+    uint32 ch_ID[PLASTIC_MAX_ITER];
+
+    uint32 lead_arr[PLASTIC_MAX_ITER][100]; // was 100 100 // int
+    int leading_hits[PLASTIC_MAX_ITER][100]; // unused
+    int trailing_hits[PLASTIC_MAX_ITER][100]; // unused
+
+    double edge_coarse[PLASTIC_MAX_ITER][100];
+    double edge_fine[PLASTIC_MAX_ITER][100];
+    uint32 ch_ID_edge[PLASTIC_MAX_ITER][100];
+    uint32 ch_num[PLASTIC_MAX_ITER][100];
+     
+    bool tamex_end;
+    bool written;
+    bool no_edges[PLASTIC_MAX_ITER]; // how the fuck do i unpack a bool. turn it into 1 vs 0?
+    bool error;
+    bool leading_hit = false;
+    
+    // calibration stuff?
+    bool CALIBRATE = false;
+    bool Calibration_Done = false;
+    int cal_count = 0;
+
+    int Pre_Trigger_Window = 0;
+    int Post_Trigger_Window = 0;
+
+    void __clean() {};
+
+    void dump(const signal_id &id,pretty_dump_info &pdi) const;
+    void show_members(const signal_id &id,const char *unit) const;
+    void enumerate_members(const signal_id &__id, const enumerate_info &__info, enumerate_fcn __callback, void *__extra) const;
+    void zero_suppress_info_ptrs(used_zero_suppress_info& used_info);
+    const char* get_name(const std::string &name, int index) const;
+    const char* get_name2(const std::string &name, int index, int index2) const;
 };
 
 class EXT_PLASTIC
@@ -106,7 +106,7 @@ class EXT_PLASTIC
 
     public:
         raw_list_ii_zero_suppress<plastic_tamex_item, plastic_tamex_item, PLASTIC_MAX_HITS> plastic_info;
-
+        int tamex_err_count;
 
 };
 

@@ -36,12 +36,10 @@ void EXT_PLASTIC::__clean()
 
 EXT_DECL_DATA_SRC_FCN(void, EXT_PLASTIC::__unpack)
 {   
-    uint32 counter = 0;
 
     while (!__buffer.empty())
     {   
         auto & item = plastic_info.append_item();
-        counter++;
 
         item.tamex_end = false;
         item.tamex_iter = 0;
@@ -55,16 +53,19 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_PLASTIC::__unpack)
             {
                 item.tamex_iter++;
                 __buffer.advance(4);
+                if (item.tamex_iter > 3)
+                {
+                    std::cout << "iter over 3" << std::endl;
+                }
             }   
             //__buffer.advance(4);
 
         }
 
-        std::cout << "counter: " << counter << std::endl;
-
         // calibration??
-
     }
+
+    //std::cout << "err count: " << tamex_err_count << std::endl;
 
 }
 
@@ -83,8 +84,6 @@ void EXT_PLASTIC::Process_TAMEX(__data_src_t &__buffer, plastic_tamex_item &item
         uint32 trigger_window = 0;
         __buffer.peek_uint32(&trigger_window);
 
-        std::cout << "trigger_window: " << std::hex  << trigger_window << std::dec << std::endl;
-
         item.Pre_Trigger_Window = (trigger_window & 0xFFFF);
         item.Post_Trigger_Window = ((trigger_window >> 16) & 0xFFFF);
 
@@ -96,14 +95,11 @@ void EXT_PLASTIC::Process_TAMEX(__data_src_t &__buffer, plastic_tamex_item &item
     uint32 tamex_header = 0;
     __buffer.peek_uint32(&tamex_header);
 
-    std::cout << "tamex_header: " << std::hex  << tamex_header << std::dec << std::endl;
-
     bool ongoing = ((tamex_header & 0xFF) == item.tamex_identifier) && (((tamex_header >> 24) & 0xFF) == 0) && ((((tamex_header >> 12) & 0xF) == 1) || (((tamex_header >> 12) & 0xF) == 0));
     
     if (!ongoing)
     {
         item.tamex_end = true;
-        std::cout << "tamex end is true (1). buffer left is: " << __buffer.left() << std::endl;
         return;
     }
     if (item.tamex_iter > 0)
@@ -111,7 +107,6 @@ void EXT_PLASTIC::Process_TAMEX(__data_src_t &__buffer, plastic_tamex_item &item
         if (((tamex_header >> 16) & 0xFF) <= item.tamex_id[item.tamex_iter - 1])
         {
             item.tamex_end = true;
-            std::cout << "tamex end is true (2). buffer left is: " << __buffer.left() << std::endl;
             return;
         }
     }
@@ -124,7 +119,6 @@ void EXT_PLASTIC::Process_TAMEX(__data_src_t &__buffer, plastic_tamex_item &item
 
     uint32 tamex_fired = 0;
     __buffer.peek_uint32(&tamex_fired);
-    std::cout << "tamex_fired: " << std::hex  << tamex_fired << std::dec << std::endl;
     item.am_fired[item.tamex_iter] = (tamex_fired & 0xFFF) / 4 - 2;
 
     if (item.am_fired[item.tamex_iter] < 0)
@@ -139,7 +133,6 @@ void EXT_PLASTIC::Process_TAMEX(__data_src_t &__buffer, plastic_tamex_item &item
 
     uint32 tamex_begin = 0;
     __buffer.peek_uint32(&tamex_begin);
-    std::cout << "tamex_begin: " << std::hex  << tamex_begin << std::dec << std::endl;
     if (((tamex_begin >> 24) & 0xFF) != item.aa)
     {
         std::cerr << "error in TAMEX format! 0xAA... word not found after fired amount!" << std::endl;
@@ -173,9 +166,8 @@ void EXT_PLASTIC::skip_padding(__data_src_t &__buffer, plastic_tamex_item &item)
     {
         uint32 padding = 0;
         __buffer.peek_uint32(&padding);
-        std::cout << "padding: " << std::hex  << padding << std::dec << std::endl;
 
-        if (((padding >> 20) & 0xFFF) == item.add)
+        if (((padding >> 20) & 0xFFF) == 0xADD) // item.add
         {   
             __buffer.advance(4);
         }
@@ -188,12 +180,12 @@ void EXT_PLASTIC::get_trigger(__data_src_t &__buffer, plastic_tamex_item &item)
 {
     uint32 place_holder = 0;
     __buffer.peek_uint32(&place_holder);
-    std::cout << "place_holder: " << std::hex  << place_holder << std::dec << std::endl;
 
-    // unused things with placeholder // ERRORR?R?R??R?R
-    if (((place_holder >> 28) & 0xF) != item.six_f)
+    // unused things with placeholder // error checking
+    if (((place_holder >> 28) & 0xF) != 6) // item.six_f
     {
-        std::cerr << "place holder error in TAMEX!" << std::endl;
+        //std::cerr << "place holder error in TAMEX!" << std::endl;
+        tamex_err_count++;
         return;
     }
 
@@ -201,12 +193,13 @@ void EXT_PLASTIC::get_trigger(__data_src_t &__buffer, plastic_tamex_item &item)
 
     uint32 tamex_data = 0;
     __buffer.peek_uint32(&tamex_data);
-    std::cout << "tamex_data: " << std::hex  << tamex_data << std::dec << std::endl;
 
     if (item.error == false)
     {
-        item.coarse_T[item.tamex_iter] = (double) (tamex_data & 0x7FF);
+        item.coarse_T[item.tamex_iter] = (double)(tamex_data & 0x7FF);// (double)
+        //std::cout << "coarse: " << item.coarse_T[item.tamex_iter] << std::endl;
         item.fine_T[item.tamex_iter] = (double) ((tamex_data >> 12) & 0x3FF);
+        //std::cout << "fine: " << item.fine_T[item.tamex_iter] << std::endl;
         item.ch_ID[item.tamex_iter] = ((tamex_data >> 22) & 0x7F);
     }
 
@@ -215,7 +208,7 @@ void EXT_PLASTIC::get_trigger(__data_src_t &__buffer, plastic_tamex_item &item)
 
 void EXT_PLASTIC::reset_edges(plastic_tamex_item &item)
 {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < PLASTIC_MAX_ITER; i++)
     {
         for (int j = 0; j < 100; ++j)
         {
@@ -239,10 +232,8 @@ void EXT_PLASTIC::get_edges(__data_src_t &__buffer, plastic_tamex_item &item)
     while (no_error_reached(__buffer, item))
     {   
 
-        std::cout << "apparently no error reached - error code = " << std::hex  << item.error_code << std::dec << std::endl;
         uint32 place_holder = 0;
         __buffer.peek_uint32(&place_holder);
-        std::cout << "place_holder: " << std::hex  << place_holder << std::dec << std::endl;
 
         if (((place_holder >> 28) & 0xF) != item.six_f && item.written)
         {
@@ -254,7 +245,8 @@ void EXT_PLASTIC::get_edges(__data_src_t &__buffer, plastic_tamex_item &item)
             item.written = false;
         }
 
-         // unused things with placeholder // ERRORR?R?R??R?R
+
+         // unused things with placeholder // error checking
         /*if (((place_holder >> 28) & 0xF) != item.six_f)
         {
             std::cerr << "place holder error in TAMEX!" << std::endl;
@@ -266,7 +258,6 @@ void EXT_PLASTIC::get_edges(__data_src_t &__buffer, plastic_tamex_item &item)
 
         uint32 tamex_data = 0;
         __buffer.peek_uint32(&tamex_data);
-        std::cout << "tamex_data: " << std::hex  << tamex_data << std::dec << std::endl;
 
         if (item.iterator[item.tamex_iter] > 100) break;
         if (item.error == true) break;
@@ -298,10 +289,9 @@ bool EXT_PLASTIC::no_error_reached(__data_src_t &__buffer, plastic_tamex_item &i
 {
     uint32 tamex_error = 0;
     __buffer.peek_uint32(&tamex_error);
-    std::cout << "tamex_error: " << std::hex  << tamex_error << std::dec << std::endl;
 
     // 238 or "error_code"
-    return (((tamex_error >> 24) & 0xFF) != item.error_code);
+    return (((tamex_error >> 24) & 0xFF) != 238); // item.error_code
 }
 
 template<typename __data_src_t>
@@ -311,12 +301,10 @@ void EXT_PLASTIC::check_trailer(__data_src_t &__buffer, plastic_tamex_item &item
 
     uint32 tamex_trailer = 0;
     __buffer.peek_uint32(&tamex_trailer);
-    std::cout << "tamex_trailer: " << std::hex  << tamex_trailer << std::dec << std::endl;
 
-    // 187 or trailer_code
-    if (((tamex_trailer >> 24) & 0xFF) != item.trailer_code)
+    if (((tamex_trailer >> 24) & 0xFF) != 187) // item.trailer_code
     {
-        // print something?
+        // std::cout << 
     }
 
 }
@@ -325,16 +313,162 @@ void EXT_PLASTIC::check_trailer(__data_src_t &__buffer, plastic_tamex_item &item
 
 void EXT_PLASTIC::dump(const signal_id &id, pretty_dump_info &pdi) const
 {
+    plastic_info.dump(signal_id(id, "plastic_info"), pdi);
 }
 
 void EXT_PLASTIC::show_members(const signal_id& id, const char* unit) const
 {
+    plastic_info.show_members(signal_id(id, "plastic_info"), unit);
 }
 
 void EXT_PLASTIC::enumerate_members(const signal_id &__id, const enumerate_info &__info, enumerate_fcn __callback, void *__extra) const
 {
+    {
+        const signal_id &__shadow_id = __id;
+        signal_id __id(__shadow_id, "plastic_info");
+        {
+            plastic_info.enumerate_members(__id, __info, __callback, __extra);
+        }
+    }
 }
 
 void EXT_PLASTIC::zero_suppress_info_ptrs(used_zero_suppress_info& used_info)
 {
+    plastic_info.zero_suppress_info_ptrs(used_info);
 }
+
+void plastic_tamex_item::dump(const signal_id &id, pretty_dump_info &pdi) const
+{
+    for (int i = 0; i < PLASTIC_MAX_ITER; i++)
+    {   
+        ::dump_uint32(am_fired[i], signal_id(id, get_name("am_fired_", i)), pdi);
+        ::dump_uint32(sfp_id[i], signal_id(id, get_name("sfp_id_", i)), pdi);
+        ::dump_uint32(trigger_type[i], signal_id(id, get_name("trigger_type_", i)), pdi);
+
+        ::dump_double(coarse_T[i], signal_id(id, get_name("coarse_T_", i)), pdi);
+        ::dump_double(fine_T[i], signal_id(id, get_name("fine_T_", i)), pdi);
+        ::dump_uint32(ch_ID[i], signal_id(id, get_name("ch_ID_", i)), pdi);
+
+        // not tested
+        ::dump_uint32(iterator[i], signal_id(id, get_name("iterator_", i)), pdi);
+        ::dump_uint32(tamex_id[i], signal_id(id, get_name("tamex_id_", i)), pdi);
+
+        for (int j = 0; j < 100; j++)
+        {
+            ::dump_uint32(lead_arr[i][j], signal_id(id, get_name2("lead_arr_", i, j)), pdi);
+
+            // not tested
+            ::dump_double(edge_coarse[i][j], signal_id(id, get_name2("edge_coarse_", i, j)), pdi);
+            ::dump_double(edge_fine[i][j], signal_id(id, get_name2("edge_fine_", i, j)), pdi);
+            ::dump_uint32(ch_ID_edge[i][j], signal_id(id, get_name2("ch_ID_edge_", i, j)), pdi);
+            ::dump_uint32(ch_num[i][j], signal_id(id, get_name2("ch_num_", i, j)), pdi);
+
+        }
+    }
+}
+
+void plastic_tamex_item::show_members(const signal_id& id, const char* unit) const
+{   
+    for (int i = 0; i < PLASTIC_MAX_ITER; i++)
+    {   
+        ::show_members<uint32>(signal_id(id, get_name("am_fired_", i)), unit);
+        ::show_members<uint32>(signal_id(id, get_name("sfp_id_", i)), unit);
+        ::show_members<uint32>(signal_id(id, get_name("trigger_type_", i)), unit);
+
+        ::show_members<double>(signal_id(id, get_name("coarse_T_", i)), unit);
+        ::show_members<double>(signal_id(id, get_name("fine_T_", i)), unit);
+        ::show_members<uint32>(signal_id(id, get_name("ch_ID_", i)), unit);
+
+        // not tested
+        ::show_members<uint32>(signal_id(id, get_name("iterator_", i)), unit);
+        ::show_members<uint32>(signal_id(id, get_name("tamex_id_", i)), unit);
+
+        for (int j = 0; j < 100; j++)
+        {
+            ::show_members<uint32>(signal_id(id, get_name2("lead_arr_", i, j)), unit);
+
+            // not 
+            ::show_members<double>(signal_id(id, get_name2("edge_coarse_", i, j)), unit);
+            ::show_members<double>(signal_id(id, get_name2("edge_fine_", i, j)), unit);
+            ::show_members<uint32>(signal_id(id, get_name2("ch_ID_edge_", i, j)), unit);
+            ::show_members<uint32>(signal_id(id, get_name2("ch_num_", i, j)), unit);
+        }
+    }
+}
+
+void plastic_tamex_item::enumerate_members(const signal_id &id, const enumerate_info &info, enumerate_fcn callback, void *extra) const
+{   
+    for (int i = 0; i < PLASTIC_MAX_ITER; i++)
+    {   
+        callback(signal_id(id, get_name("am_fired_", i)), enumerate_info(info, &am_fired[i], ENUM_TYPE_UINT), extra);
+        callback(signal_id(id, get_name("sfp_id_", i)), enumerate_info(info, &sfp_id[i], ENUM_TYPE_UINT), extra);
+        callback(signal_id(id, get_name("trigger_type_", i)), enumerate_info(info, &trigger_type[i], ENUM_TYPE_UINT), extra);
+
+        callback(signal_id(id, get_name("coarse_T_", i)), enumerate_info(info, &coarse_T[i], ENUM_TYPE_DOUBLE), extra);
+        callback(signal_id(id, get_name("fine_T_", i)), enumerate_info(info, &fine_T[i], ENUM_TYPE_DOUBLE), extra);
+        callback(signal_id(id, get_name("ch_ID_", i)), enumerate_info(info, &ch_ID[i], ENUM_TYPE_UINT), extra);
+
+        // not tested
+        callback(signal_id(id, get_name("iterator_", i)), enumerate_info(info, &iterator[i], ENUM_TYPE_UINT), extra);
+        callback(signal_id(id, get_name("tamex_id_", i)), enumerate_info(info, &tamex_id[i], ENUM_TYPE_UINT), extra);
+
+        for (int j = 0; j < 100; j++)
+        {
+            callback(signal_id(id, get_name2("lead_arr_", i, j)), enumerate_info(info, &lead_arr[i][j], ENUM_TYPE_UINT), extra);
+
+            // not tested 
+            callback(signal_id(id, get_name2("edge_coarse_", i, j)), enumerate_info(info, &edge_coarse[i][j], ENUM_TYPE_DOUBLE), extra);
+            callback(signal_id(id, get_name2("edge_fine_", i, j)), enumerate_info(info, &edge_fine[i][j], ENUM_TYPE_DOUBLE), extra);
+            callback(signal_id(id, get_name2("ch_ID_edge_", i, j)), enumerate_info(info, &ch_ID_edge[i][j], ENUM_TYPE_UINT), extra);
+            callback(signal_id(id, get_name2("ch_num_", i, j)), enumerate_info(info, &ch_num[i][j], ENUM_TYPE_UINT), extra);
+        }
+
+    }
+}    
+
+void plastic_tamex_item::zero_suppress_info_ptrs(used_zero_suppress_info& used_info)
+{
+    for (int i = 0; i < PLASTIC_MAX_ITER; i++)
+    {
+        ::zero_suppress_info_ptrs(&am_fired[i], used_info);
+        ::zero_suppress_info_ptrs(&sfp_id[i], used_info);
+        ::zero_suppress_info_ptrs(&trigger_type[i], used_info);
+
+        ::zero_suppress_info_ptrs(&coarse_T[i], used_info);
+        ::zero_suppress_info_ptrs(&fine_T[i], used_info);
+        ::zero_suppress_info_ptrs(&ch_ID[i], used_info);
+
+        // not tested
+        ::zero_suppress_info_ptrs(&iterator[i], used_info);
+        ::zero_suppress_info_ptrs(&tamex_id[i], used_info);
+
+        for (int j = 0; j < 100; j++)
+        {
+            ::zero_suppress_info_ptrs(&lead_arr[i][j], used_info);
+
+            // not tested
+            ::zero_suppress_info_ptrs(&edge_coarse[i][j], used_info);
+            ::zero_suppress_info_ptrs(&edge_fine[i][j], used_info);
+            ::zero_suppress_info_ptrs(&ch_ID_edge[i][j], used_info);
+            ::zero_suppress_info_ptrs(&ch_num[i][j], used_info);
+        }
+    }
+}
+
+const char* plastic_tamex_item::get_name(const std::string &name, int index) const
+{
+    std::ostringstream oss;
+    oss << name << index;
+    std::string str_name = oss.str();
+    const char* cstr_name = str_name.c_str();
+    return cstr_name;
+} 
+
+const char* plastic_tamex_item::get_name2(const std::string &name, int index, int index2) const
+{
+    std::ostringstream oss;
+    oss << name << index << "_" << index2;
+    std::string str_name = oss.str();
+    const char* cstr_name = str_name.c_str();
+    return cstr_name;
+} 

@@ -28,6 +28,8 @@
 
 // bplast tamex
 #define PLASTIC_MAX_HITS 1000 // made up for now
+// this never goes over 3. Was initially 100.
+#define PLASTIC_MAX_ITER 3
 
 // frs
 

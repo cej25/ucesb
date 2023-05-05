@@ -80,7 +80,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_GERMANIUM::__unpack)
         //std::cout << "Now inside __buffer.empty() loop:" << std::endl;
         //std::cout << "-----------------------------------" << std::endl;
 
-        auto &item = febex_info.append_item();
+        auto & item = febex_info.append_item();
 
         int fired_FEBEX_amount = 0;
         int num_channels_fired = 0;
@@ -183,7 +183,6 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_GERMANIUM::__unpack)
                     }
                 }
 
-                // move to DEADBEEF somehow
                 __buffer.get_uint32(&deadbeef);
                 //std::cout << "deadbeef: " << std::hex << deadbeef << std::dec << std::endl;
 
@@ -408,7 +407,6 @@ void febex_item::enumerate_members(const signal_id &id, const enumerate_info &in
 
     for (int i = 0; i < GE_MAX_HITS; i++)
     {   
-       
         callback(signal_id(id, get_name("Sum_Time_lo_", i)), enumerate_info(info, &Sum_Time_lo[i], ENUM_TYPE_UINT), extra);
         callback(signal_id(id, get_name("Sum_Time_hi_", i)), enumerate_info(info, &Sum_Time_hi[i], ENUM_TYPE_UINT), extra);
         callback(signal_id(id, get_name("Hit_Pattern_", i)), enumerate_info(info, &Hit_Pattern[i], ENUM_TYPE_UINT), extra);

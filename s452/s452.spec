@@ -38,9 +38,21 @@ SUBEVENT(fatima_tamex_subev)
 }
 
 SUBEVENT(plastic_subev)
-{
+{   
     ts = TIMESTAMP_WHITERABBIT(id=0x500);
     external data = EXT_PLASTIC();
+   
+}
+
+SUBEVENT(frs_subev_one)
+{
+    ts = TIMESTAMP_WHITERABBIT(id=0x100);
+}
+
+
+SUBEVENT(frs_subev_three)
+{
+    ////////////////////ts = TIMESTAMP_WHITERABBIT(id=0x100);
 }
 
 EVENT
@@ -52,6 +64,12 @@ EVENT
     plastic = plastic_subev(type = 10, subtype = 1, procid = 80, control = 20, subcrate = 0);
 
     // frs stuff
+    frs_one = frs_subev_one(type = 10, subtype = 1, procid = 10, control = 20);
+    //frs_two = frs_subev_two(type = 12, subtype = 1, procid = 10, control = 20);
+    //frs_three = frs_subev_three(type = 36, subtype = 3600, procid = 10, control = 20); // tpat
+    //frs_four = frs_subev_four(type = 12, subtype = 1, procid = 35, control = 20);
+    //frs_five = frs_subev_five(type = 12, subtype = 1, procid = 30, control = 20);
+    //frs_six = frs_subev_six(type = 12, subtype = 1, procid = 20, control = 21); // frs_main_scaler
 
     ignore_unknown_subevent;
 };

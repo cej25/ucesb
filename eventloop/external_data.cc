@@ -74,6 +74,17 @@ EXT_DECL_DATA_SRC_FCN(void,EXTERNAL_DATA_INFO::__unpack/*_ARG:,any arguments*/)
 
 EXT_FORCE_IMPL_DATA_SRC_FCN(void,EXTERNAL_DATA_INFO::__unpack/*_ARG:,any arguments*/);
 
+
+/*EXT_DECL_DATA_SRC_FCN_HDR(void, EXTERNAL_DATA_INFO::__unpack_subevent)
+{
+  _data   = (char*) __buffer._data;
+  _length = (size_t) (__buffer._end - __buffer._data);
+
+  _swapping = __buffer.is_swapping();
+}*/
+
+//EXT_FORCE_IMPL_DATA_SRC_FCN_HDR(void,EXTERNAL_DATA_INFO::__unpack_subevent/*_ARG:,any arguments*/);
+
 /*---------------------------------------------------------------------------*/
 
 #if !defined(USE_EBYE_INPUT_32)

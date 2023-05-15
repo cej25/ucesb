@@ -229,7 +229,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_TRACES::__unpack)
 
                     //traces.at(i).SetEnergy(energy);
                     
-                    // temporary fix to see hist properly
+                    // temporary fix to see hist properly // ah lol this is so wanky
                     if (tmp_chan_energy > 4000000000)
                     {
                         traces.SetEnergy(0);
@@ -383,7 +383,8 @@ void TraceEvent::zero_suppress_info_ptrs(used_zero_suppress_info &used_info)
     ::zero_suppress_info_ptrs(&fmult, used_info);
     //trace_array.zero_suppress_info_ptrs(used_info);
     for (int i = 0; i < 4000; i++)
-    {
+    {   
+       // std::cout << trace_array._items[i] << std::endl;
         ::zero_suppress_info_ptrs(&trace_array._items[i], used_info);
     }
 }

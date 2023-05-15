@@ -41,8 +41,8 @@ struct plastic_tamex_item
     uint32 ch_ID[PLASTIC_MAX_ITER];
 
     uint32 lead_arr[PLASTIC_MAX_ITER][100]; // was 100 100 // int
-    int leading_hits[PLASTIC_MAX_ITER][100]; // unused
-    int trailing_hits[PLASTIC_MAX_ITER][100]; // unused
+    //int leading_hits[PLASTIC_MAX_ITER][100]; // unused
+    //int trailing_hits[PLASTIC_MAX_ITER][100]; // unused
 
     double edge_coarse[PLASTIC_MAX_ITER][100];
     double edge_fine[PLASTIC_MAX_ITER][100];

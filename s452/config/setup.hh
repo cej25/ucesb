@@ -32,6 +32,7 @@
 #define PLASTIC_MAX_ITER 3
 
 // frs
+#define FRS_TPAT_MAX_HITS 30 // idek if this is needed seriously. append item? cmon.
 
 
 #endif /* _DESPEC_SETUP_ */

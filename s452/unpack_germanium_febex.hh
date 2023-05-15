@@ -49,7 +49,9 @@ class EXT_GERMANIUM
         ~EXT_GERMANIUM();
 
         void __clean();
+
         EXT_DECL_UNPACK();
+        //EXT_DECL_UNPACK_HDR();
 
         void load_board_channel_file();
 

@@ -76,6 +76,7 @@ public:
   EXT_DECL_MATCH_ARG(size_t length = (size_t) -1/*_ARG:any arguments*/)
   { return true; }
 
+
 public:
   DUMMY_EXTERNAL_DUMP(EXTERNAL_DATA_SKIP);
   // DUMMY_EXTERNAL_MAP_MEMBERS(EXTERNAL_DATA_SKIP); moved to .._map class

@@ -139,6 +139,10 @@ class EXT_TRACES
         //TraceEvent trEvent;
         raw_list_ii_zero_suppress<Trace, Trace, SIZE> trace;
         raw_array_zero_suppress<uint32, uint32, SIZE> trace_array;
+        
+        
+        // this is how the unpacker code looks from spec file generation for febex_withtraces
+        //raw_array_zero_suppress<DATA12, DATA12, 1000> trace[16]; // 16 channels, length 1000
     
 };
 

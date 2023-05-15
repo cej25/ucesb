@@ -76,7 +76,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_GERMANIUM::__unpack)
 
     while (!__buffer.empty())
     {   
-
+            
         //std::cout << "Now inside __buffer.empty() loop:" << std::endl;
         //std::cout << "-----------------------------------" << std::endl;
 
@@ -95,6 +95,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_GERMANIUM::__unpack)
         //std::cout << "febex add: " << std::hex << febex_add << std::dec << std::endl;
 
         // MOST significant 12 bits.
+        // can change this to "febex padding"  i think, in line with "tamex padding"
         while ((febex_add & 0xFFF00000) == 0xadd00000)
         {
             __buffer.get_uint32(&febex_add);

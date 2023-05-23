@@ -15,7 +15,7 @@
 
 DUMMY_EXTERNAL_MAP_STRUCT_FORW(EXT_PLASTIC_TP);
 
-struct plastic_tamex_item
+struct plastic_twinpeaks_item
 {
     
     // PLASTIC_TAMEX MBS words
@@ -27,33 +27,33 @@ struct plastic_tamex_item
     int error_code = 238;
     int tamex_identifier = 52;
 
-    uint32 iterator[PLASTIC_MAX_ITER]; // int
-    uint32 tamex_id[PLASTIC_MAX_ITER]; // int
+    uint32 iterator[PLASTIC_TWINPEAKS_MAX_ITER]; // int
+    uint32 tamex_id[PLASTIC_TWINPEAKS_MAX_ITER]; // int
 
     int tamex_iter;
 
-    uint32 am_fired[PLASTIC_MAX_ITER]; // int
-    uint32 sfp_id[PLASTIC_MAX_ITER]; // int
-    uint32 trigger_type[PLASTIC_MAX_ITER]; // int
+    uint32 am_fired[PLASTIC_TWINPEAKS_MAX_ITER]; // int
+    uint32 sfp_id[PLASTIC_TWINPEAKS_MAX_ITER]; // int
+    uint32 trigger_type[PLASTIC_TWINPEAKS_MAX_ITER]; // int
 
-    double coarse_T[PLASTIC_MAX_ITER]; // 0-2 (first 3)
-    double fine_T[PLASTIC_MAX_ITER]; 
-    uint32 ch_ID[PLASTIC_MAX_ITER];
+    double coarse_T[PLASTIC_TWINPEAKS_MAX_ITER]; // 0-2 (first 3)
+    double fine_T[PLASTIC_TWINPEAKS_MAX_ITER]; 
+    uint32 ch_ID[PLASTIC_TWINPEAKS_MAX_ITER];
 
-    uint32 lead_arr[PLASTIC_MAX_ITER][100]; // was 100 100 // int
-    //int leading_hits[PLASTIC_MAX_ITER][100]; // unused
-    //int trailing_hits[PLASTIC_MAX_ITER][100]; // unused
+    uint32 lead_arr[BPLAST_TAMEX_MODULES][PLASTIC_TWINPEAKS_MAX_ITER]; // was 100 100 // int
+    //int leading_hits[BPLAST_TAMEX_MODULES][PLASTIC_TWINPEAKS_MAX_ITER]; // unused leaving for now
+    //int trailing_hits[BPLAST_TAMEX_MODULES][PLASTIC_TWINPEAKS_MAX_ITER]; // unused leaving for now
 
-    double edge_coarse[PLASTIC_MAX_ITER][100];
-    double edge_fine[PLASTIC_MAX_ITER][100];
-    uint32 ch_ID_edge[PLASTIC_MAX_ITER][100];
-    uint32 ch_num[PLASTIC_MAX_ITER][100];
+    double edge_coarse[BPLAST_TAMEX_MODULES][PLASTIC_TWINPEAKS_MAX_ITER];
+    double edge_fine[BPLAST_TAMEX_MODULES][PLASTIC_TWINPEAKS_MAX_ITER];
+    uint32 ch_ID_edge[BPLAST_TAMEX_MODULES][PLASTIC_TWINPEAKS_MAX_ITER];
+    uint32 ch_num[BPLAST_TAMEX_MODULES][PLASTIC_TWINPEAKS_MAX_ITER];
      
     bool tamex_end;
     bool written;
-    bool no_edges[PLASTIC_MAX_ITER]; // how the fuck do i unpack a bool. turn it into 1 vs 0?
+    bool no_edges[PLASTIC_TWINPEAKS_MAX_ITER]; // how the fuck do i unpack a bool. turn it into 1 vs 0?
     bool error;
-    bool leading_hit = false;
+    bool leading_hit; // = false;
     
     // calibration stuff?
     bool CALIBRATE = false;
@@ -82,20 +82,20 @@ class EXT_PLASTIC_TP
         EXT_DECL_UNPACK();
 
         void __clean();
-        void reset_edges(plastic_tamex_item &item);
+        void reset_edges(plastic_twinpeaks_item &item);
 
         template<typename __data_src_t>
-        bool no_error_reached(__data_src_t &__buffer, plastic_tamex_item &item);
+        bool no_error_reached(__data_src_t &__buffer, plastic_twinpeaks_item &item);
         template<typename __data_src_t>
-        void check_trailer(__data_src_t &__buffer, plastic_tamex_item &item);
+        void check_trailer(__data_src_t &__buffer, plastic_twinpeaks_item &item);
         template<typename __data_src_t>
-        void get_edges(__data_src_t &__buffer, plastic_tamex_item &item);
+        void get_edges(__data_src_t &__buffer, plastic_twinpeaks_item &item);
         template<typename __data_src_t>
-        void get_trigger(__data_src_t &__buffer, plastic_tamex_item &item);
+        void get_trigger(__data_src_t &__buffer, plastic_twinpeaks_item &item);
         template<typename __data_src_t>
-        void skip_padding(__data_src_t &__buffer, plastic_tamex_item &item);
+        void skip_padding(__data_src_t &__buffer, plastic_twinpeaks_item &item);
         template<typename __data_src_t>
-        void Process_TAMEX(__data_src_t &__buffer, plastic_tamex_item &item);
+        void Process_TAMEX(__data_src_t &__buffer, plastic_twinpeaks_item &item);
         void calibrate_ONLINE();
         void calibrate_OFFLINE();
     
@@ -105,7 +105,7 @@ class EXT_PLASTIC_TP
         void zero_suppress_info_ptrs(used_zero_suppress_info &used_info);
 
     public:
-        raw_list_ii_zero_suppress<plastic_tamex_item, plastic_tamex_item, PLASTIC_MAX_HITS> plastic_tp_info;
+        raw_list_ii_zero_suppress<plastic_twinpeaks_item, plastic_twinpeaks_item, PLASTIC_MAX_HITS> plastic_tp_info;
         int tamex_err_count;
 
 };

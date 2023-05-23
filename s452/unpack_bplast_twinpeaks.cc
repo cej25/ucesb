@@ -40,7 +40,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_PLASTIC_TP::__unpack)
 
     while (!__buffer.empty())
     {   
-        auto & item = plastic_info.append_item();
+        auto & item = plastic_tp_info.append_item();
 
         item.tamex_end = false;
         item.tamex_iter = 0;
@@ -138,9 +138,9 @@ void EXT_PLASTIC_TP::Process_TAMEX(__data_src_t &__buffer, plastic_twinpeaks_ite
     {
         std::cerr << "error in TAMEX format! 0xAA... word not found after fired amount!" << std::endl;
         std::cerr << "TAMEX word: " << std::hex << tamex_begin << std::endl;
-        item.error = true;
+        item.error = true; // not used in twin peaks go4
     }
-    else item.error = false;
+    else item.error = false; // not used in twin peaks go4
 
     __buffer.advance(4);
 
@@ -163,9 +163,9 @@ template<typename __data_src_t>
 void EXT_PLASTIC_TP::skip_padding(__data_src_t &__buffer, plastic_twinpeaks_item &item)
 {
     bool still_padding = true;
+    uint32 padding = 0;
     while (still_padding)
     {
-        uint32 padding = 0;
         __buffer.peek_uint32(&padding);
 
         if (((padding >> 20) & 0xFFF) == 0xADD) // item.add
@@ -182,7 +182,7 @@ void EXT_PLASTIC_TP::get_trigger(__data_src_t &__buffer, plastic_twinpeaks_item 
     uint32 place_holder = 0;
     __buffer.peek_uint32(&place_holder);
 
-    // unused things with placeholder // error checking
+    // unused things with placeholder // error checking - needed?
     if (((place_holder >> 28) & 0xF) != 6) // item.six_f
     {
         //std::cerr << "place holder error in TAMEX!" << std::endl;
@@ -195,6 +195,8 @@ void EXT_PLASTIC_TP::get_trigger(__data_src_t &__buffer, plastic_twinpeaks_item 
     uint32 tamex_data = 0;
     __buffer.peek_uint32(&tamex_data);
 
+    // CEJ: this condition is not used with twinpeaks but is with regular tamex
+    // needs testing with S450 data (or anything with TP)
     if (item.error == false)
     {
         item.coarse_T[item.tamex_iter] = (double)(tamex_data & 0x7FF);// (double)
@@ -205,18 +207,21 @@ void EXT_PLASTIC_TP::get_trigger(__data_src_t &__buffer, plastic_twinpeaks_item 
     }
 
     __buffer.advance(4);
+
 }
 
 void EXT_PLASTIC_TP::reset_edges(plastic_twinpeaks_item &item)
-{
-    for (int i = 0; i < PLASTIC_MAX_ITER; i++)
-    {
-        for (int j = 0; j < 100; ++j)
+{   
+    for (int i = 0; i < BPLAST_TAMEX_MODULES; i++)
+    {   
+        // these were 100 in regular tamex?
+        for (int j = 0; j < 200; ++j)
         {
-            //item.leading_hits[i][j] = 0; // unused
-            //item.trailing_hits[i][j] = 0; // unused
-            // these were all 131313
-            item.ch_num[i][j] = 0;
+            //item.leading_hits[i][j] = 0; // unused leaving for now
+            //item.trailing_hits[i][j] = 0; // unused leaving for now
+            // CEJ: these were all 131313 in go4 code
+            // change back
+            // item.ch_num[i][j] = 0; // CEJ: doesn't exist with TP?
             item.edge_coarse[i][j] = 0;
             item.edge_fine[i][j] = 0;
             item.ch_ID_edge[i][j] = 0;
@@ -234,19 +239,21 @@ void EXT_PLASTIC_TP::get_edges(__data_src_t &__buffer, plastic_twinpeaks_item &i
     while (no_error_reached(__buffer, item))
     {   
 
+        // CEJ: this section is quite different:
+        // must be checked with S450 data at some point
+
         uint32 place_holder = 0;
         __buffer.peek_uint32(&place_holder);
 
-        if (((place_holder >> 28) & 0xF) != item.six_f && item.written)
+        if (((place_holder >> 28) & 0xF) == item.six_f) // six_f is just 6..idk
         {
             __buffer.advance(4);
             continue;
         }
-        else if (((place_holder >> 28) & 0xF) == item.six_f)
+        if (((place_holder >> 28) & 0xF) != item.six_f)
         {
             item.written = false;
         }
-
 
          // unused things with placeholder // error checking
         /*if (((place_holder >> 28) & 0xF) != item.six_f)
@@ -256,33 +263,35 @@ void EXT_PLASTIC_TP::get_edges(__data_src_t &__buffer, plastic_twinpeaks_item &i
             break;
         }*/
 
-        __buffer.advance(4);
-
+        //__buffer.advance(4); // no advance here with TP
+        
         uint32 tamex_data = 0;
         __buffer.peek_uint32(&tamex_data);
 
-        if (item.iterator[item.tamex_iter] > 100) break;
-        if (item.error == true) break;
+        // here is the difference for twinpeaks
+        item.leading_hit = ((tamex_data >> 11) & 0x1);
 
-        item.edge_coarse[item.tamex_iter][item.iterator[item.tamex_iter]] = (double) (tamex_data & 0x7FF);
-        item.edge_fine[item.tamex_iter][item.iterator[item.tamex_iter]] = (double) ((tamex_data >> 12) & 0x3FF);
-        item.ch_ID_edge[item.tamex_iter][item.iterator[item.tamex_iter]] = ((tamex_data >> 22) & 0x7F);
-
-        item.lead_arr[item.tamex_iter][item.iterator[item.tamex_iter]] = (((tamex_data >> 22) & 0x7F) % 2);
-
-        if (item.ch_ID_edge[item.tamex_iter][item.iterator[item.tamex_iter]] % 2 == 0) 
+        if (item.leading_hit == 1)
         {
-            item.ch_num[item.tamex_iter][item.iterator[item.tamex_iter]] = (item.ch_ID_edge[item.tamex_iter][item.iterator[item.tamex_iter]]) / 2 - 1;
+            item.edge_coarse[item.tamex_iter][item.iterator[item.tamex_iter]] = (double) (tamex_data & 0x7FF);
+            item.edge_fine[item.tamex_iter][item.iterator[item.tamex_iter]] = (double) ((tamex_data >> 12) & 0x3FF);
+            item.ch_ID_edge[item.tamex_iter][item.iterator[item.tamex_iter]] = ((tamex_data >> 22) & 0x7F);
+            item.lead_arr[item.tamex_iter][item.iterator[item.tamex_iter]] = (((tamex_data >> 22) & 0x7F) % 2);
         }
-        else
+        else if (item.leading_hit == 0)
         {
-            item.ch_num[item.tamex_iter][item.iterator[item.tamex_iter]] = (item.ch_ID_edge[item.tamex_iter][item.iterator[item.tamex_iter]] + 1) / 2 - 1;
+            // stuff
+            item.edge_coarse[item.tamex_iter][item.iterator[item.tamex_iter]] = (double) (tamex_data & 0x7FF);
+            item.edge_fine[item.tamex_iter][item.iterator[item.tamex_iter]] = (double) ((tamex_data >> 12) & 0x3FF);
+            item.ch_ID_edge[item.tamex_iter][item.iterator[item.tamex_iter]] = ((tamex_data >> 22) & 0x7F) + MAX_CHA_INPUT;
         }
-
+        
         item.iterator[item.tamex_iter]++;
+        if (item.iterator[item.tamex_iter] > 100) break;
+         // if (item.error == true) break; // not used with TP..should remove?
         item.written = true;
-
         __buffer.advance(4);
+
     }
 }
 
@@ -314,34 +323,46 @@ void EXT_PLASTIC_TP::check_trailer(__data_src_t &__buffer, plastic_twinpeaks_ite
 
 
 void EXT_PLASTIC_TP::dump(const signal_id &id, pretty_dump_info &pdi) const
-{
-    plastic_info.dump(signal_id(id, "plastic_info"), pdi);
+{   
+    if (IS_PLASTIC_TWINPEAKS)
+    {
+        plastic_tp_info.dump(signal_id(id, "plastic_tp_info"), pdi);
+    }
 }
 
 void EXT_PLASTIC_TP::show_members(const signal_id& id, const char* unit) const
 {
-    plastic_info.show_members(signal_id(id, "plastic_info"), unit);
+    if (IS_PLASTIC_TWINPEAKS)
+    {
+        plastic_tp_info.show_members(signal_id(id, "plastic_tp_info"), unit);
+    }
 }
 
 void EXT_PLASTIC_TP::enumerate_members(const signal_id &__id, const enumerate_info &__info, enumerate_fcn __callback, void *__extra) const
-{
+{   
+    if (IS_PLASTIC_TWINPEAKS)
     {
-        const signal_id &__shadow_id = __id;
-        signal_id __id(__shadow_id, "plastic_info");
-        {
-            plastic_info.enumerate_members(__id, __info, __callback, __extra);
+        { // not sure what this is for particularly
+            const signal_id &__shadow_id = __id;
+            signal_id __id(__shadow_id, "plastic_tp_info");
+            {
+                plastic_tp_info.enumerate_members(__id, __info, __callback, __extra);
+            }
         }
     }
 }
 
 void EXT_PLASTIC_TP::zero_suppress_info_ptrs(used_zero_suppress_info& used_info)
 {
-    plastic_info.zero_suppress_info_ptrs(used_info);
+    if (IS_PLASTIC_TWINPEAKS)
+    {
+        plastic_tp_info.zero_suppress_info_ptrs(used_info);
+    }
 }
 
 void plastic_twinpeaks_item::dump(const signal_id &id, pretty_dump_info &pdi) const
 {
-    for (int i = 0; i < PLASTIC_MAX_ITER; i++)
+    for (int i = 0; i < BPLAST_TAMEX_MODULES; i++)
     {   
         ::dump_uint32(am_fired[i], signal_id(id, get_name("am_fired_", i)), pdi);
         ::dump_uint32(sfp_id[i], signal_id(id, get_name("sfp_id_", i)), pdi);
@@ -355,7 +376,7 @@ void plastic_twinpeaks_item::dump(const signal_id &id, pretty_dump_info &pdi) co
         ::dump_uint32(iterator[i], signal_id(id, get_name("iterator_", i)), pdi);
         ::dump_uint32(tamex_id[i], signal_id(id, get_name("tamex_id_", i)), pdi);
 
-        for (int j = 0; j < 100; j++)
+        for (int j = 0; j < PLASTIC_TWINPEAKS_MAX_ITER; j++)
         {
             ::dump_uint32(lead_arr[i][j], signal_id(id, get_name2("lead_arr_", i, j)), pdi);
 
@@ -371,7 +392,7 @@ void plastic_twinpeaks_item::dump(const signal_id &id, pretty_dump_info &pdi) co
 
 void plastic_twinpeaks_item::show_members(const signal_id& id, const char* unit) const
 {   
-    for (int i = 0; i < PLASTIC_MAX_ITER; i++)
+    for (int i = 0; i < BPLAST_TAMEX_MODULES; i++)
     {   
         ::show_members<uint32>(signal_id(id, get_name("am_fired_", i)), unit);
         ::show_members<uint32>(signal_id(id, get_name("sfp_id_", i)), unit);
@@ -384,7 +405,7 @@ void plastic_twinpeaks_item::show_members(const signal_id& id, const char* unit)
         ::show_members<uint32>(signal_id(id, get_name("iterator_", i)), unit);
         ::show_members<uint32>(signal_id(id, get_name("tamex_id_", i)), unit);
 
-        for (int j = 0; j < 100; j++)
+        for (int j = 0; j < PLASTIC_TWINPEAKS_MAX_ITER; j++)
         {
             ::show_members<uint32>(signal_id(id, get_name2("lead_arr_", i, j)), unit);
  
@@ -398,7 +419,7 @@ void plastic_twinpeaks_item::show_members(const signal_id& id, const char* unit)
 
 void plastic_twinpeaks_item::enumerate_members(const signal_id &id, const enumerate_info &info, enumerate_fcn callback, void *extra) const
 {   
-    for (int i = 0; i < PLASTIC_MAX_ITER; i++)
+    for (int i = 0; i < BPLAST_TAMEX_MODULES; i++)
     {   
         callback(signal_id(id, get_name("am_fired_", i)), enumerate_info(info, &am_fired[i], ENUM_TYPE_UINT), extra);
         callback(signal_id(id, get_name("sfp_id_", i)), enumerate_info(info, &sfp_id[i], ENUM_TYPE_UINT), extra);
@@ -411,14 +432,14 @@ void plastic_twinpeaks_item::enumerate_members(const signal_id &id, const enumer
         callback(signal_id(id, get_name("iterator_", i)), enumerate_info(info, &iterator[i], ENUM_TYPE_UINT), extra);
         callback(signal_id(id, get_name("tamex_id_", i)), enumerate_info(info, &tamex_id[i], ENUM_TYPE_UINT), extra);
 
-        for (int j = 0; j < 100; j++)
+        for (int j = 0; j < PLASTIC_TWINPEAKS_MAX_ITER; j++)
         {
 
             callback(signal_id(id, get_name2("lead_arr_", i, j)), enumerate_info(info, &lead_arr[i][j], ENUM_TYPE_UINT), extra);
 
             // not tested 
             callback(signal_id(id, get_name2("edge_coarse_", i, j)), enumerate_info(info, &edge_coarse[i][j], ENUM_TYPE_DOUBLE), extra);
-            //callback(signal_id(id, get_name2("edge_fine_", i, j)), enumerate_info(info, &edge_fine[i][j], ENUM_TYPE_DOUBLE), extra);
+            callback(signal_id(id, get_name2("edge_fine_", i, j)), enumerate_info(info, &edge_fine[i][j], ENUM_TYPE_DOUBLE), extra);
             callback(signal_id(id, get_name2("ch_ID_edge_", i, j)), enumerate_info(info, &ch_ID_edge[i][j], ENUM_TYPE_UINT), extra);
             callback(signal_id(id, get_name2("ch_num_", i, j)), enumerate_info(info, &ch_num[i][j], ENUM_TYPE_UINT), extra);
         }
@@ -428,7 +449,7 @@ void plastic_twinpeaks_item::enumerate_members(const signal_id &id, const enumer
 
 void plastic_twinpeaks_item::zero_suppress_info_ptrs(used_zero_suppress_info& used_info)
 {
-    for (int i = 0; i < PLASTIC_MAX_ITER; i++)
+    for (int i = 0; i < BPLAST_TAMEX_MODULES; i++)
     {
         ::zero_suppress_info_ptrs(&am_fired[i], used_info);
         ::zero_suppress_info_ptrs(&sfp_id[i], used_info);
@@ -441,7 +462,7 @@ void plastic_twinpeaks_item::zero_suppress_info_ptrs(used_zero_suppress_info& us
         ::zero_suppress_info_ptrs(&iterator[i], used_info);
         ::zero_suppress_info_ptrs(&tamex_id[i], used_info);
 
-        for (int j = 0; j < 100; j++)
+        for (int j = 0; j < PLASTIC_TWINPEAKS_MAX_ITER; j++)
         {
             ::zero_suppress_info_ptrs(&lead_arr[i][j], used_info);
 

@@ -6,6 +6,7 @@
 #include "unpack_fatima_vme.hh"
 #include "unpack_fatima_tamex.hh"
 #include "unpack_plastic_tamex.hh"
+#include "unpack_bplast_twinpeaks.hh"
 #include "unpack_frs.hh"
 
 #endif /* __UNPACK_HH__ */

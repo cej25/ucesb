@@ -162,9 +162,9 @@ template<typename __data_src_t>
 void EXT_PLASTIC::skip_padding(__data_src_t &__buffer, plastic_tamex_item &item)
 {
     bool still_padding = true;
+    uint32 padding = 0;
     while (still_padding)
     {
-        uint32 padding = 0;
         __buffer.peek_uint32(&padding);
 
         if (((padding >> 20) & 0xFFF) == 0xADD) // item.add
@@ -198,7 +198,7 @@ void EXT_PLASTIC::get_trigger(__data_src_t &__buffer, plastic_tamex_item &item)
     {
         item.coarse_T[item.tamex_iter] = (double)(tamex_data & 0x7FF);// (double)
         //std::cout << "coarse: " << item.coarse_T[item.tamex_iter] << std::endl;
-        item.fine_T[item.tamex_iter] = (double) ((tamex_data >> 12) & 0x3FF);
+        item.fine_T[item.tamex_iter] = (double)((tamex_data >> 12) & 0x3FF);
         //std::cout << "fine: " << item.fine_T[item.tamex_iter] << std::endl;
         item.ch_ID[item.tamex_iter] = ((tamex_data >> 22) & 0x7F);
     }
@@ -208,13 +208,13 @@ void EXT_PLASTIC::get_trigger(__data_src_t &__buffer, plastic_tamex_item &item)
 
 void EXT_PLASTIC::reset_edges(plastic_tamex_item &item)
 {
-    for (int i = 0; i < PLASTIC_MAX_ITER; i++)
+    for (int i = 0; i < 4; i++)
     {
-        for (int j = 0; j < 100; ++j)
+        for (int j = 0; j < PLASTIC_MAX_ITER; ++j)
         {
             //item.leading_hits[i][j] = 0; // unused
             //item.trailing_hits[i][j] = 0; // unused
-            // these were all 131313
+            // ---- CEJ: these were all 131313 in g04 code ---- 
             item.ch_num[i][j] = 0;
             item.edge_coarse[i][j] = 0;
             item.edge_fine[i][j] = 0;
@@ -314,33 +314,45 @@ void EXT_PLASTIC::check_trailer(__data_src_t &__buffer, plastic_tamex_item &item
 
 void EXT_PLASTIC::dump(const signal_id &id, pretty_dump_info &pdi) const
 {
-    plastic_info.dump(signal_id(id, "plastic_info"), pdi);
+    if (!IS_PLASTIC_TWINPEAKS)
+    {
+        plastic_info.dump(signal_id(id, "plastic_info"), pdi);
+    }
 }
 
 void EXT_PLASTIC::show_members(const signal_id& id, const char* unit) const
-{
-    plastic_info.show_members(signal_id(id, "plastic_info"), unit);
+{   
+    if (!IS_PLASTIC_TWINPEAKS)
+    {
+        plastic_info.show_members(signal_id(id, "plastic_info"), unit);
+    }
 }
 
 void EXT_PLASTIC::enumerate_members(const signal_id &__id, const enumerate_info &__info, enumerate_fcn __callback, void *__extra) const
-{
+{   
+    if (!IS_PLASTIC_TWINPEAKS)
     {
-        const signal_id &__shadow_id = __id;
-        signal_id __id(__shadow_id, "plastic_info");
         {
-            plastic_info.enumerate_members(__id, __info, __callback, __extra);
+            const signal_id &__shadow_id = __id;
+            signal_id __id(__shadow_id, "plastic_info");
+            {
+                plastic_info.enumerate_members(__id, __info, __callback, __extra);
+            }
         }
     }
 }
 
 void EXT_PLASTIC::zero_suppress_info_ptrs(used_zero_suppress_info& used_info)
-{
-    plastic_info.zero_suppress_info_ptrs(used_info);
+{   
+    if (!IS_PLASTIC_TWINPEAKS)
+    {
+        plastic_info.zero_suppress_info_ptrs(used_info);
+    }
 }
 
 void plastic_tamex_item::dump(const signal_id &id, pretty_dump_info &pdi) const
 {
-    for (int i = 0; i < PLASTIC_MAX_ITER; i++)
+    for (int i = 0; i < 4; i++)
     {   
         ::dump_uint32(am_fired[i], signal_id(id, get_name("am_fired_", i)), pdi);
         ::dump_uint32(sfp_id[i], signal_id(id, get_name("sfp_id_", i)), pdi);
@@ -350,16 +362,13 @@ void plastic_tamex_item::dump(const signal_id &id, pretty_dump_info &pdi) const
         ::dump_double(fine_T[i], signal_id(id, get_name("fine_T_", i)), pdi);
         ::dump_uint32(ch_ID[i], signal_id(id, get_name("ch_ID_", i)), pdi);
 
-        // not tested
         ::dump_uint32(iterator[i], signal_id(id, get_name("iterator_", i)), pdi);
         ::dump_uint32(tamex_id[i], signal_id(id, get_name("tamex_id_", i)), pdi);
 
-        for (int j = 0; j < 100; j++)
+        for (int j = 0; j < PLASTIC_MAX_ITER; j++)
         {
             ::dump_uint32(lead_arr[i][j], signal_id(id, get_name2("lead_arr_", i, j)), pdi);
-
-            // not tested
-            ::dump_double(edge_coarse[i][j], signal_id(id, get_name2("edge_coarse_", i, j)), pdi);
+            ::dump_double(edge_coarse[i][j], signal_id(id, get_name2("edge_coarse", i, j)), pdi); // there is some issue here. edge_coarse works but edge_coarse_ doesn't for double digit <j>s
             ::dump_double(edge_fine[i][j], signal_id(id, get_name2("edge_fine_", i, j)), pdi);
             ::dump_uint32(ch_ID_edge[i][j], signal_id(id, get_name2("ch_ID_edge_", i, j)), pdi);
             ::dump_uint32(ch_num[i][j], signal_id(id, get_name2("ch_num_", i, j)), pdi);
@@ -370,7 +379,7 @@ void plastic_tamex_item::dump(const signal_id &id, pretty_dump_info &pdi) const
 
 void plastic_tamex_item::show_members(const signal_id& id, const char* unit) const
 {   
-    for (int i = 0; i < PLASTIC_MAX_ITER; i++)
+    for (int i = 0; i < 4; i++)
     {   
         ::show_members<uint32>(signal_id(id, get_name("am_fired_", i)), unit);
         ::show_members<uint32>(signal_id(id, get_name("sfp_id_", i)), unit);
@@ -383,11 +392,10 @@ void plastic_tamex_item::show_members(const signal_id& id, const char* unit) con
         ::show_members<uint32>(signal_id(id, get_name("iterator_", i)), unit);
         ::show_members<uint32>(signal_id(id, get_name("tamex_id_", i)), unit);
 
-        for (int j = 0; j < 100; j++)
+        for (int j = 0; j < PLASTIC_MAX_ITER; j++)
         {
             ::show_members<uint32>(signal_id(id, get_name2("lead_arr_", i, j)), unit);
- 
-            ::show_members<double>(signal_id(id, get_name2("edge_coarse_", i, j)), unit);
+            ::show_members<double>(signal_id(id, get_name2("edge_coarse", i, j)), unit);
             ::show_members<double>(signal_id(id, get_name2("edge_fine_", i, j)), unit);
             ::show_members<uint32>(signal_id(id, get_name2("ch_ID_edge_", i, j)), unit);
             ::show_members<uint32>(signal_id(id, get_name2("ch_num_", i, j)), unit);
@@ -397,7 +405,7 @@ void plastic_tamex_item::show_members(const signal_id& id, const char* unit) con
 
 void plastic_tamex_item::enumerate_members(const signal_id &id, const enumerate_info &info, enumerate_fcn callback, void *extra) const
 {   
-    for (int i = 0; i < PLASTIC_MAX_ITER; i++)
+    for (int i = 0; i < 4; i++)
     {   
         callback(signal_id(id, get_name("am_fired_", i)), enumerate_info(info, &am_fired[i], ENUM_TYPE_UINT), extra);
         callback(signal_id(id, get_name("sfp_id_", i)), enumerate_info(info, &sfp_id[i], ENUM_TYPE_UINT), extra);
@@ -410,14 +418,12 @@ void plastic_tamex_item::enumerate_members(const signal_id &id, const enumerate_
         callback(signal_id(id, get_name("iterator_", i)), enumerate_info(info, &iterator[i], ENUM_TYPE_UINT), extra);
         callback(signal_id(id, get_name("tamex_id_", i)), enumerate_info(info, &tamex_id[i], ENUM_TYPE_UINT), extra);
 
-        for (int j = 0; j < 100; j++)
+        for (int j = 0; j < PLASTIC_MAX_ITER; j++)
         {
 
             callback(signal_id(id, get_name2("lead_arr_", i, j)), enumerate_info(info, &lead_arr[i][j], ENUM_TYPE_UINT), extra);
-
-            // not tested 
-            callback(signal_id(id, get_name2("edge_coarse_", i, j)), enumerate_info(info, &edge_coarse[i][j], ENUM_TYPE_DOUBLE), extra);
-            //callback(signal_id(id, get_name2("edge_fine_", i, j)), enumerate_info(info, &edge_fine[i][j], ENUM_TYPE_DOUBLE), extra);
+            callback(signal_id(id, get_name2("edge_coarse", i, j)), enumerate_info(info, &edge_coarse[i][j], ENUM_TYPE_DOUBLE), extra);
+            callback(signal_id(id, get_name2("edge_fine_", i, j)), enumerate_info(info, &edge_fine[i][j], ENUM_TYPE_DOUBLE), extra);
             callback(signal_id(id, get_name2("ch_ID_edge_", i, j)), enumerate_info(info, &ch_ID_edge[i][j], ENUM_TYPE_UINT), extra);
             callback(signal_id(id, get_name2("ch_num_", i, j)), enumerate_info(info, &ch_num[i][j], ENUM_TYPE_UINT), extra);
         }
@@ -427,7 +433,7 @@ void plastic_tamex_item::enumerate_members(const signal_id &id, const enumerate_
 
 void plastic_tamex_item::zero_suppress_info_ptrs(used_zero_suppress_info& used_info)
 {
-    for (int i = 0; i < PLASTIC_MAX_ITER; i++)
+    for (int i = 0; i < 4; i++)
     {
         ::zero_suppress_info_ptrs(&am_fired[i], used_info);
         ::zero_suppress_info_ptrs(&sfp_id[i], used_info);
@@ -440,10 +446,9 @@ void plastic_tamex_item::zero_suppress_info_ptrs(used_zero_suppress_info& used_i
         ::zero_suppress_info_ptrs(&iterator[i], used_info);
         ::zero_suppress_info_ptrs(&tamex_id[i], used_info);
 
-        for (int j = 0; j < 100; j++)
+        for (int j = 0; j < PLASTIC_MAX_ITER; j++)
         {
             ::zero_suppress_info_ptrs(&lead_arr[i][j], used_info);
-
             ::zero_suppress_info_ptrs(&edge_coarse[i][j], used_info);
             ::zero_suppress_info_ptrs(&edge_fine[i][j], used_info);
             ::zero_suppress_info_ptrs(&ch_ID_edge[i][j], used_info);

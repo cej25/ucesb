@@ -24,15 +24,27 @@
 #define MAX_SCALERS_VME 32
 
 // fatima tamex
-#define MAX_CHA_INPUT 33
+#define MAX_CHA_INPUT 33 // maximum physical input channels per module. must be modulo 4 -- CEJ: is this same for fatima and bplast tp?
+
 
 // bplast tamex
-#define PLASTIC_MAX_HITS 1000 // made up for now
-// this never goes over 3. Was initially 100.
-#define PLASTIC_MAX_ITER 3
+// this is something made up for append_item
+// depending on data readout, maybe 1 works? not for all detectors but..
+#define PLASTIC_MAX_HITS 1 // something made up for item_append purposes // CEJ fix... 1000? 100? 10?
+// this never goes over 3 for test file. Was initially 100.
+#define PLASTIC_MAX_ITER 100
+// 0 for regular tamex, 1 for twinpeaks
+#define IS_PLASTIC_TWINPEAKS 0
+#define BPLAST_TAMEX_MODULES 9 // 9 in S450?
+#define PLASTIC_TWINPEAKS_MAX_ITER 200
 
 // frs
 #define FRS_TPAT_MAX_HITS 30 // idek if this is needed seriously. append item? cmon.
-
+#define FRS_CRATE_MAX_HITS 30
+#define FRS_MAIN_CRATE_MAX_HITS 30
+#define FRS_MAX_HITS 30
+#define VFTX_N 1
+#define VFTX_MAX_CHN 32
+#define VFTX_MAX_HITS 20
 
 #endif /* _DESPEC_SETUP_ */

@@ -40,20 +40,20 @@ struct plastic_tamex_item
     double fine_T[PLASTIC_MAX_ITER]; 
     uint32 ch_ID[PLASTIC_MAX_ITER];
 
-    uint32 lead_arr[PLASTIC_MAX_ITER][100]; // was 100 100 // int
-    //int leading_hits[PLASTIC_MAX_ITER][100]; // unused
-    //int trailing_hits[PLASTIC_MAX_ITER][100]; // unused
+    uint32 lead_arr[4][PLASTIC_MAX_ITER]; // was 100 100 // int
+    //int leading_hits[4][PLASTIC_MAX_ITER]; // unused
+    //int trailing_hits[4][PLASTIC_MAX_ITER]; // unused
 
-    double edge_coarse[PLASTIC_MAX_ITER][100];
-    double edge_fine[PLASTIC_MAX_ITER][100];
-    uint32 ch_ID_edge[PLASTIC_MAX_ITER][100];
-    uint32 ch_num[PLASTIC_MAX_ITER][100];
+    double edge_coarse[4][PLASTIC_MAX_ITER];
+    double edge_fine[4][PLASTIC_MAX_ITER];
+    uint32 ch_ID_edge[4][PLASTIC_MAX_ITER];
+    uint32 ch_num[4][PLASTIC_MAX_ITER];
      
     bool tamex_end;
     bool written;
     bool no_edges[PLASTIC_MAX_ITER]; // how the fuck do i unpack a bool. turn it into 1 vs 0?
     bool error;
-    bool leading_hit = false;
+    bool leading_hit; // = false;
     
     // calibration stuff?
     bool CALIBRATE = false;

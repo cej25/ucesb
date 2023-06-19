@@ -122,7 +122,7 @@ void EXT_FATIMA_TAMEX::Process_TAMEX(__data_src_t &__buffer, fatima_tamex_item &
     uint32 tamex_header = 0;
     __buffer.peek_uint32(&tamex_header);
 
-    bool ongoing = ((tamex_header & 0xFF) == item.tamex_identifier) && (((tamex_header >> 24) & 0xFF) == 0) && ((((tamex_header >> 12) & 0xF) == 1) || (((tamex_header >> 12) & 0xF) == 0));
+    bool ongoing = ((tamex_header & 0xFF) == (uint32)item.tamex_identifier) && (((tamex_header >> 24) & 0xFF) == 0) && ((((tamex_header >> 12) & 0xF) == 1) || (((tamex_header >> 12) & 0xF) == 0));
 
     if (!ongoing)
     {
@@ -132,7 +132,7 @@ void EXT_FATIMA_TAMEX::Process_TAMEX(__data_src_t &__buffer, fatima_tamex_item &
 
     if (item.tamex_iter > 0)
     {
-        if (((tamex_header >> 16) & 0xFF) <= item.tamex_id[item.tamex_iter - 1])
+        if (((tamex_header >> 16) & 0xFF) <= (uint32) item.tamex_id[item.tamex_iter - 1])
         {   
             item.tamex_end = true;
             return;

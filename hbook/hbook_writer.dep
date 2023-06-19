@@ -1,0 +1,24 @@
+hbook_writer.dep hbook_writer: \
+  \
+  array_heap.h\
+  ../common/strndup.hh\
+  ../eventloop/optimise.hh\
+  ext_data_client.c\
+  ext_data_client.h\
+  ext_data_proto.h\
+  ext_file_error.hh\
+  ext_file_merge.cc\
+  ext_file_writer.cc\
+  ext_file_writer.hh\
+  hbook.cc\
+  hbook.hh\
+  ../lu_common/colourtext.c\
+  ../lu_common/colourtext.cc\
+  ../lu_common/colourtext.h\
+  ../lu_common/colourtext.hh\
+  /usr/include/cfortran/cfortran.h\
+  /usr/include/cfortran/hbook.h\
+  /usr/include/cfortran/kuip.h\
+  /usr/include/cfortran/minuit.h\
+  /usr/include/cfortran/packlib.h\
+  /usr/include/cfortran/zebra.h\

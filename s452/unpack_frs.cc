@@ -18,6 +18,7 @@
 #include <fstream>
 #include <sstream>
 #include <cmath>
+#include <vector>
 
 EXT_FRS::EXT_FRS()
 {
@@ -37,7 +38,7 @@ void EXT_FRS::__clean()
 EXT_DECL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, int subtype)
 {
 
-    int lenMax = __buffer.left() / 4; // number of words left
+    int lenMax = (int) __buffer.left() / 4; // number of words left
     int len = 0;
     uint32 data = 0;
 
@@ -122,7 +123,7 @@ EXT_DECL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, int sub
                     if (len < lenMax)
                     {   
                         __buffer.peek_uint32(&data);
-                        int vme_geo = getbits(data, 1, 1, 5);
+                        //int vme_geo = getbits(data, 1, 1, 5); // unusued in this scope
                         int vme_type = getbits(data, 2, 12, 5);
                         
                         __buffer.advance(4);
@@ -194,8 +195,9 @@ EXT_DECL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, int sub
                                     // TDC trailer
                                     if (vme_type == 16)
                                     {   
-                                        __buffer.peek_uint32(&data);
-                                        int vme_geoEnd = getbits(data, 1, 1, 5);
+                                        //__buffer.peek_uint32(&data);
+                                        // unusused here entirely
+                                        //int vme_geoEnd = getbits(data, 1, 1, 5); 
                                         
                                         __buffer.advance(4);
                                         len++;
@@ -224,8 +226,8 @@ EXT_DECL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, int sub
                     // Next is V830 scaler
                     {   
                         __buffer.peek_uint32(&data);
-                        int vme_geo = getbits(data, 2, 12, 5);
-                        int vme_type = getbits(data, 2, 9, 3);
+                        //int vme_geo = getbits(data, 2, 12, 5); // unused in this scope
+                        //int vme_type = getbits(data, 2, 9, 3); // unused in this scope
                         int vme_nlw = getbits(data, 2, 3, 6);
 
                         __buffer.advance(4);
@@ -262,7 +264,7 @@ EXT_DECL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, int sub
                             for (int i = 0; i < vme_nlw; i++)
                             {   
                                 __buffer.peek_uint32(&data);
-                                vme_geo = getbits(data, 2, 12, 5);
+                                //vme_geo = getbits(data, 2, 12, 5); // commenting out for now since it gets reassigned
                                 vme_type = getbits(data, 2, 9, 3);
                                 vme_chn = getbits(data, 2, 1, 5);
 
@@ -349,7 +351,7 @@ EXT_DECL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, int sub
                                 item.tmp_nhit_prev = item.nhit_v1190_tpcs2[ch_tpc_v1190];
                                 item.nhit_v1190_tpcs2[ch_tpc_v1190]++;
 
-                                if(item.tmp_nhit_prev < 16) // ..
+                                if(item.tmp_nhit_prev < 16) // max 16 prepared. 64 used in sort.
                                 {
                                     item.leading_v1190_tpcs2[ch_tpc_v1190][item.tmp_nhit_prev] = data_tpc_v1190;
                                 }
@@ -448,6 +450,10 @@ EXT_DECL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, int sub
                             {   
                                 __buffer.peek_uint32(&data);
                                 item.scaler_frs[i_ch] = data;
+                                item.scaler_frs_elements.push_back(i_ch);
+                                std::cout << "nlw:" << vme_nlw << std::endl;
+                                std::cout << "i_ch: " << i_ch << std::endl;
+                                std::cout << "vector [30]: " << item.scaler_frs_elements[30] << std::endl;
                                 
                                 __buffer.advance(4);
                                 len++;
@@ -554,7 +560,7 @@ EXT_DECL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, int sub
                                 __buffer.advance(4);
                                 len++; // i think this is necessary, but it is not done in GO4 code.
 
-                                channel = getbits(p32_tmp, 2, 11, 5);
+                                channel = (uint16) getbits(p32_tmp, 2, 11, 5);
 
                                 if (item.vftx_mult[module][channel] < VFTX_MAX_HITS)
                                 {
@@ -598,7 +604,7 @@ EXT_DECL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, int sub
 
                             __buffer.peek_uint32(&data);
                             int vme_type = getbits(data, 2, 15, 2);
-                            int module_id = getbits(data, 2, 1, 8);
+                            //int module_id = getbits(data, 2, 1, 8); // unused in this scope
 
                             if (vme_type == 1) // header
                             {
@@ -616,7 +622,7 @@ EXT_DECL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, int sub
                                         __buffer.peek_uint32(&data);
                                         int vme_chn = getbits(data, 2, 1, 5);
                                         int value = getbits(data, 1, 1, 12);
-                                        int overflow = getbits(data, 1, 16, 1);
+                                        //int overflow = getbits(data, 1, 16, 1); // unusued in this scope
                                         
                                         if (value > 0)
                                         {
@@ -643,11 +649,11 @@ EXT_DECL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, int sub
                             __buffer.advance(4);
                             len++;
                             __buffer.peek_uint32(&data);
-                            int module_id = getbits(data, 2, 1, 8);
+                            //int module_id = getbits(data, 2, 1, 8); // unused in this scope
                             int vme_type = getbits(data, 2, 15, 2);
-                            int hit = 0;
+                            //int hit = 0; // unused in this scope
 
-                            if (vme_type = 1)
+                            if (vme_type == 1) // oh shit is this going to screw things up..
                             {
                                 int vme_nlw = getbits(data, 1, 1, 12);
 
@@ -661,7 +667,7 @@ EXT_DECL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, int sub
                                     if (vme_type == 0)
                                     {
                                         int vme_chn = getbits(data, 2, 1, 5);
-                                        int vme_trig = getbits(data, 2, 6, 1); // entirely unused in available GO4 code.
+                                        //int vme_trig = getbits(data, 2, 6, 1); // entirely unused in available GO4 code.
 
                                         item.vme_tof[vme_geo][vme_chn] = value;
                                     }
@@ -738,7 +744,7 @@ void EXT_FRS::show_members(const signal_id& id, const char* unit) const
 
 void EXT_FRS::enumerate_members(const signal_id &__id, const enumerate_info &__info, enumerate_fcn __callback, void *__extra) const
 {
-    {
+   {
         const signal_id &__shadow_id = __id;
         signal_id __id(__shadow_id, "frs_info");
         {
@@ -753,7 +759,14 @@ void EXT_FRS::zero_suppress_info_ptrs(used_zero_suppress_info& used_info)
 }
 
 void frs_item::dump(const signal_id &id, pretty_dump_info &pdi) const
-{   
+{
+    /*for (int i  = 0; i < 21; i++)
+    {
+        for (int j = 0; j < 32; j++)
+        {
+            ::dump_uint32(vme_frs[i][j], signal_id(id, get_name2("vme_frs_", i, j)), pdi);
+        }
+    }  */ 
 }
 
 void frs_item::show_members(const signal_id &id, const char* unit) const
@@ -761,20 +774,63 @@ void frs_item::show_members(const signal_id &id, const char* unit) const
 }
 
 void frs_item::zero_suppress_info_ptrs(used_zero_suppress_info &used_info)
-{
-    
+{   
+
+    /*for (int k : scaler_frs_elements)
+    {
+        ::zero_suppress_info_ptrs(&scaler_frs[k], used_info);
+    }*/
+
+    for (int j = 0; j < 32; j++)
+    {
+        ::zero_suppress_info_ptrs(&scaler_frs[j], used_info);
+
+        /*for (int i = 0; i < 21; i++)
+        {
+            ::zero_suppress_info_ptrs(&vme_frs[i][j], used_info);
+            ::zero_suppress_info_ptrs(&vme_main[i][j], used_info);
+        }*/
+    }
 }
 
 void frs_item::enumerate_members(const signal_id &id, const enumerate_info &info, enumerate_fcn callback, void *extra) const
 {   
 
-    
+    /*std::cout << "do we get here?" << std::endl;
+    for (int k : scaler_frs_elements)
+    {   
+
+        std::cout << "hey we're getting here at least" << std::endl;
+        callback(signal_id(id, get_name("scaler_frs_", k)), enumerate_info(info, &scaler_frs[k], ENUM_TYPE_UINT), extra);
+    }*/
+
+    for (int j = 0; j < 32; j++)
+    {
+        callback(signal_id(id, get_name("scaler_frs_", j)), enumerate_info(info, &scaler_frs[j], ENUM_TYPE_UINT), extra);
+        //callback(signal_id(id, get_name("tpat_main_", j)), enumerate_info(info, &tpat_main[j], ENUM_TYPE_UINT), extra);
+
+        /*for (int i = 0; i < 21; i++)
+        {
+            callback(signal_id(id, get_name2("vme_frs_", i, j)), enumerate_info(info, &vme_frs[i][j], ENUM_TYPE_UINT), extra);
+            callback(signal_id(id, get_name2("vme_main_", i, j)), enumerate_info(info, &vme_main[i][j], ENUM_TYPE_UINT), extra);
+        }*/
+    }
+
 }
 
 const char* frs_item::get_name(const std::string &name, int index) const
 {
     std::ostringstream oss;
     oss << name << index;
+    std::string str_name = oss.str();
+    const char* cstr_name = str_name.c_str();
+    return cstr_name;
+} 
+
+const char* frs_item::get_name2(const std::string &name, int index, int index2) const
+{
+    std::ostringstream oss;
+    oss << name << index << "_" << index2;
     std::string str_name = oss.str();
     const char* cstr_name = str_name.c_str();
     return cstr_name;

@@ -12,11 +12,19 @@
 #include <sstream>
 #include <map>
 #include <limits>
+#include <vector>
 
 DUMMY_EXTERNAL_MAP_STRUCT_FORW(EXT_FRS);
 
 struct frs_item
 {
+
+    // 32 is number of scalers or something?
+    // 21 is something else
+    // 128 x 64 is something else
+    // 32 x 2 is something
+    // 32 x 10 is something
+
     // tpat stuff
     bool skip;
     uint32 tpat_main[32];
@@ -28,6 +36,8 @@ struct frs_item
     // frs crate
     uint32 vme_frs[21][32];
     uint32 scaler_frs[32];
+    // lets start here
+    std::vector<int> scaler_frs_elements;
     uint32 vme_main[21][32];
 
     // tpc crate
@@ -56,6 +66,7 @@ struct frs_item
     void enumerate_members(const signal_id &__id, const enumerate_info &__info, enumerate_fcn __callback, void *__extra) const;
     void zero_suppress_info_ptrs(used_zero_suppress_info& used_info);
     const char* get_name(const std::string &name, int index) const;
+    const char* get_name2(const std::string &name, int index, int index2) const;
 
 };
 

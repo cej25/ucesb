@@ -253,7 +253,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_TRACES::__unpack)
                     uint32 header = 0;
                     __buffer.get_uint32(&header);
 
-                    if ((header & 0xFF) == 0x00000034)
+                    if ((header & 0xFF) == 0x00000034) // idk about this matching
                     {
                         uint32 tracesize = 0, tracehead = 0;
                         __buffer.get_uint32(&tracesize);
@@ -277,7 +277,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_TRACES::__unpack)
                             uint32 data = 0;
                             __buffer.get_uint32(&data);
                             int part1 = (data & 0x3FFF);
-                            int part2 = ((data >> 16) & 0x3FFFF);
+                            int part2 = ((data >> 16) & 0x3FFF);
 
                             //traces.at(i).SetTrace(t, part1);
                             //traces.at(i).SetTrace(t+1, part2);

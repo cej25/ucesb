@@ -95,7 +95,7 @@ void EXT_PLASTIC::Process_TAMEX(__data_src_t &__buffer, plastic_tamex_item &item
     uint32 tamex_header = 0;
     __buffer.peek_uint32(&tamex_header);
 
-    bool ongoing = ((tamex_header & 0xFF) == item.tamex_identifier) && (((tamex_header >> 24) & 0xFF) == 0) && ((((tamex_header >> 12) & 0xF) == 1) || (((tamex_header >> 12) & 0xF) == 0));
+    bool ongoing = ((tamex_header & 0xFF) == (uint32) item.tamex_identifier) && (((tamex_header >> 24) & 0xFF) == 0) && ((((tamex_header >> 12) & 0xF) == 1) || (((tamex_header >> 12) & 0xF) == 0));
     
     if (!ongoing)
     {
@@ -133,7 +133,7 @@ void EXT_PLASTIC::Process_TAMEX(__data_src_t &__buffer, plastic_tamex_item &item
 
     uint32 tamex_begin = 0;
     __buffer.peek_uint32(&tamex_begin);
-    if (((tamex_begin >> 24) & 0xFF) != item.aa)
+    if (((tamex_begin >> 24) & 0xFF) != (uint32) item.aa)
     {
         std::cerr << "error in TAMEX format! 0xAA... word not found after fired amount!" << std::endl;
         std::cerr << "TAMEX word: " << std::hex << tamex_begin << std::endl;
@@ -236,12 +236,12 @@ void EXT_PLASTIC::get_edges(__data_src_t &__buffer, plastic_tamex_item &item)
         uint32 place_holder = 0;
         __buffer.peek_uint32(&place_holder);
 
-        if (((place_holder >> 28) & 0xF) != item.six_f && item.written)
+        if (((place_holder >> 28) & 0xF) != (uint32) item.six_f && item.written)
         {
             __buffer.advance(4);
             continue;
         }
-        else if (((place_holder >> 28) & 0xF) == item.six_f)
+        else if (((place_holder >> 28) & 0xF) == (uint32) item.six_f)
         {
             item.written = false;
         }

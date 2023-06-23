@@ -760,17 +760,20 @@ void EXT_FRS::zero_suppress_info_ptrs(used_zero_suppress_info& used_info)
 
 void frs_item::dump(const signal_id &id, pretty_dump_info &pdi) const
 {
-    /*for (int i  = 0; i < 21; i++)
+    for (int j  = 0; j < 32; j++)
     {
-        for (int j = 0; j < 32; j++)
-        {
+        ::dump_uint32(scaler_frs[j], signal_id(id, get_name("scaler_frs_", j)), pdi);
+        /*for (int i = 0; i < 21; j++)
+        {   
+            
             ::dump_uint32(vme_frs[i][j], signal_id(id, get_name2("vme_frs_", i, j)), pdi);
-        }
-    }  */ 
+        }*/
+    } 
 }
 
 void frs_item::show_members(const signal_id &id, const char* unit) const
 {
+    //?
 }
 
 void frs_item::zero_suppress_info_ptrs(used_zero_suppress_info &used_info)

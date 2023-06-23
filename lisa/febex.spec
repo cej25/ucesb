@@ -1,4 +1,5 @@
-#define TRACE_SIZE 4000 // is it 10000?
+#define TRACE_SIZE 8000 // is it 10000?
+#define TRACE_CHANNELS 16
 
 FEBEX_PADDING()
 {
@@ -153,7 +154,7 @@ FEBEX_TRACES()
 
 		// now the traces part?
 
-		list (0 <= i < 16)
+		list (0 <= i < TRACE_CHANNELS)
 		{
 			UINT32 header NOENCODE
 			{

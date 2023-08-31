@@ -42,9 +42,19 @@
 #define FRS_TPAT_MAX_HITS 30 // idek if this is needed seriously. append item? cmon.
 #define FRS_CRATE_MAX_HITS 30
 #define FRS_MAIN_CRATE_MAX_HITS 30
-#define FRS_MAX_HITS 30
+#define FRS_MAX_HITS 1
 #define VFTX_N 1
 #define VFTX_MAX_CHN 32
 #define VFTX_MAX_HITS 20
+
+#define SCI_MOD 0
+#define SCI21L_CH 5
+#define SCI21R_CH 6
+#define SCI22L_CH 12
+#define SCI22R_CH 13
+#define SCI41L_CH 7
+#define SCI41R_CH 8
+#define SCI42L_CH 3 
+#define SCI42R_CH 4
 
 #endif /* _DESPEC_SETUP_ */

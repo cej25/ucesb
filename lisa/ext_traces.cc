@@ -114,7 +114,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_TRACES::__unpack)
 
         int board_id = -1; // board_id
         int nchan = 0;// num_channels
-        int nmod = FEBEX_MODULES; // GE_FEBEX_MODULES
+        int nmod = FEBEX_MODULES;
         bool febex_data = true;
 
         // test if this works in ext_germanium
@@ -239,8 +239,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_TRACES::__unpack)
                        traces.SetEnergy(tmp_chan_energy); 
                     }
 
-                    __buffer.advance(4);
-
+                    __buffer.advance(4); // is this future use?
                 } // nchan 
 
 

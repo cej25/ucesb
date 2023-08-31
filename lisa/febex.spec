@@ -1,5 +1,5 @@
-#define TRACE_SIZE 8000 // is it 10000?
-#define TRACE_CHANNELS 16
+//#define TRACE_SIZE 10000 // some maximum size?
+//#define TRACE_CHANNELS 16
 
 FEBEX_PADDING()
 {
@@ -10,23 +10,25 @@ FEBEX_PADDING()
 	}
 }
 
-FEBEX_TRACES()
-{
+//FEBEX_TRACES()
+//{
 
-	MEMBER(DATA8 ftrigger);
-	MEMBER(DATA8 fboard);
-	MEMBER(DATA32 ftrig_time_hi); // trigger time
-	MEMBER(DATA32 ftrig_time_lo); // "..."
-	MEMBER(DATA32 fts_hi[16] ZERO_SUPPRESS_MULTI(32)); // not sure why these are ZSM(32) for length-16 array
-	MEMBER(DATA32 fts_lo[16] ZERO_SUPPRESS_MULTI(32)); // "..."
-	MEMBER(DATA32 fen[16] ZERO_SUPPRESS_MULTI(32)); // "..."
-	MEMBER(DATA32 flength[16] ZERO_SUPPRESS); // length of trace, can get from data but also need to understand before hand because vectors are not appreciated..
-	MEMBER(DATA16 ftrace[16][TRACE_SIZE] ZERO_SUPPRESS);
-	// MEMBER(DATA32 ffilter[16][TRACE_SIZE] ZERO_SUPPRESS); not sure, ask Kathrin
-	// MEMBER(DATA8 n_hit[16]); // need to understand from kathrin
+	//MEMBER(DATA8 fboard);
+	//MEMBER(DATA32 ftrig_time_hi); // trigger time
+	//MEMBER(DATA32 ftrig_time_lo); // "..."
+	//MEMBER(DATA8 channel_id);
+	//MEMBER(DATA8 pileup);
+	//MEMBER(DATA32 fts_hi[16]); // ZERO_SUPPRESS?
+	//MEMBER(DATA32 fts_lo[16]); // no idea what ZSM(32) is/does
+	//MEMBER(DATA32 fen[16] ZERO_SUPPRESS); // "..."
+	//MEMBER(DATA32 flength[16] ZERO_SUPPRESS); // length of trace, can get from data but also need to understand before hand because vectors are not appreciated..
+	//MEMBER(DATA16 ftrace[16][TRACE_SIZE] ZERO_SUPPRESS);
+	//MEMBER(DATA16 ftrace_amp[TRACE_SIZE] ZERO_SUPPRESS);
+	//MEMBER(DATA32 ffilter[16][TRACE_SIZE] ZERO_SUPPRESS); not sure, ask Kathrin
+	//MEMBER(DATA8 n_hit[16]); // need to understand from kathrin
 	
 
-	UINT32 FF_header NOENCODE // "sum channel header"
+	/*UINT32 FF_header NOENCODE // "sum channel header"
 	{
 		0_7:   three_four;
 		8_11:  trigger_type;
@@ -34,7 +36,6 @@ FEBEX_TRACES()
 		16_23: board_id;
 		24_31: 0xFF;
 
-		ENCODE(ftrigger, (value = trigger_type));
 		ENCODE(fboard, (value = board_id));
 	}
 
@@ -65,16 +66,18 @@ FEBEX_TRACES()
 		0_15: hit_pattern; // sort out later
 		16_31: pile_flags;
 
-		//ENCODE();
+		ENCODE(pileup, (value=pile_flags));
+
 	}
 
 	UINT32 deadbeef NOENCODE
 	{
 		0_31: 0xdeadbeef;
-	}
+	}*/
 
-	if (FF_header.trigger_type == 3)
+	/*if (FF_header.trigger_type == 3)
 	{
+
 		// if trigger = 3 ("pulser trigger") only header information
 		list (0 <= i < 16)
 		{
@@ -100,10 +103,11 @@ FEBEX_TRACES()
 			}
 		}
 
-	}
-	else
-	{
-		list (0 <= i < ((febex_chan_size.size / 4) - 1)) 
+	}*/
+	//else
+	//if (FF_header.trigger_type != 3)
+	//{
+		/*list (0 <= i < ((febex_chan_size.size / 4) - 1)) 
 		{
 
 			UINT32 F0_header NOENCODE
@@ -113,7 +117,7 @@ FEBEX_TRACES()
 				24_31: 0xF0;
 
 				ENCODE(fts_hi[i], (value = ext_chan_ts)); // i should == ch_id
-				//ENCODE(); // channel id?
+				ENCODE(channel_id, (value = ch_id)); // channel id?
 			}
 
 			UINT32 febex_chan_ts NOENCODE
@@ -121,7 +125,7 @@ FEBEX_TRACES()
 				0_31: chan_ts;
 
 				ENCODE(fts_lo[i], (value = chan_ts));
-			}
+			}*/
 
 			/*UINT32 time NOENCODE 
 			{
@@ -136,7 +140,7 @@ FEBEX_TRACES()
 				ENCODE(n_hit[channel_id], (value = n_hit));
 			}*/
 
-			UINT32 febex_chan_en NOENCODE
+			/*UINT32 febex_chan_en NOENCODE
 			{
 				0_23: chan_en;
 				24_29: cf;
@@ -150,17 +154,17 @@ FEBEX_TRACES()
 			{
 				0_31: future;
 			}
-		}
+		}*/
 
 		// now the traces part?
-
-		list (0 <= i < TRACE_CHANNELS)
+		/*list (0 <= i < TRACE_CHANNELS)
 		{
 			UINT32 header NOENCODE
 			{
 				0_7: 0x34;
 				8_23: other;
 				24_31: ch_id;
+				//ENCODE(channel_id, (value = ch_id)); // channel id?
 			}
 
 			UINT32 tracesize NOENCODE
@@ -172,9 +176,9 @@ FEBEX_TRACES()
 			{
 				0_23: other;
 				24_31: head;
-			}
+			}*/
 			
-			ENCODE(flength[header.ch_id], (value = tracesize.size / 2 - 4)); // i think this is correct
+			//ENCODE(flength[header.ch_id], (value = tracesize.size / 2 - 4)); // i think this is correct
 
 			/*
 			for example, when trace_length = 4000:
@@ -182,7 +186,7 @@ FEBEX_TRACES()
 			tracesize / 2 - 4 gives total tracelength
 			tracesize / 4 - 2 gives loop length requirement (2000)
 			*/
-			list (0 <= j < (tracesize.size / 4 - 2))
+			/*list (0 <= j < (tracesize.size / 4 - 2))
 			{
 				
 				UINT32 channel_trace NOENCODE
@@ -202,9 +206,9 @@ FEBEX_TRACES()
 			{
 				0_23: notused;
 				24_31: id = RANGE(0xb0,0xbf);
-			}
-		}
-	}
+			}*/
+		//}
+	//}
 
 	/*UINT32 trace_trailer NOENCODE 
 	{
@@ -212,4 +216,4 @@ FEBEX_TRACES()
 		24_31: 0xb0;
 	}*/
 
-}
+//}

@@ -81,7 +81,8 @@ SUBEVENT (frs_tpc_crate_subev)
 }
 
 SUBEVENT(frs_tof_crate_subev)
-{
+{   
+
     external data = EXT_FRS(procid = 35, type = 12, subtype = 1);
 }
 
@@ -98,10 +99,16 @@ EVENT
     //frs_main_crate = frs_main_crate_subev(type = 12, subtype = 1, procid = 10, control = 20); 
     //frs_tpat = frs_tpat_subev(type = 36, subtype = 3600, procid = 10, control = 20); // tpat
     //frs_tof_crate = frs_tof_crate_subev(type = 12, subtype = 1, procid = 35, control = 20); // traw vftx // sci tof
+    frs_tpc_crate = frs_tpc_crate_subev(type = 12, subtype = 1, procid = 20, control = 21); // frs_main_scaler // music?
     frs_crate = frs_crate_subev(type = 12, subtype = 1, procid = 30, control = 20); // sci_tx? // "frs crate"? // scaler_frs is here
-    //frs_tpc_crate = frs_tpc_crate_subev(type = 12, subtype = 1, procid = 20, control = 21); // frs_main_scaler // music?
+
+    // REVISIT command will be helpful if I ever figure out how to access the procid in an external unpacker.
+
+    // tpc crate gives beta value
+    // frs crate gives de value
+    // need them to work together somehow o_0
 
     ignore_unknown_subevent;
 };
 
-#include "mapping.hh"
+//#include "mapping.hh"

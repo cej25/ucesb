@@ -3,6 +3,9 @@
 #include "config.spec"
 #include "whiterabbit.spec"
 #include "febex.spec"
+#include "traces.spec" // febex_traces.spec
+
+external EXT_LISA(); 
 
 DUMMY()
 {
@@ -25,13 +28,15 @@ SUBEVENT(febex_subev) // febex_subev_data()
   }
 
   // febex data
-  data = FEBEX_TRACES();
+  external data = EXT_LISA();
+  trace = FEBEX_TRACES();
 
 }
 
 EVENT
 {
-  trace = febex_subev(procid = 60); // stored as GEID somewhere
+  // is trigger really a thing here..trig3 events are coming through. 
+  trace = febex_subev(procid = 60, trigger = 1); // stored as GEID somewhere
 
   ignore_unknown_subevent;
 }
@@ -41,3 +46,5 @@ EVENT
 CXXFLAGS+=-DCONTROL_INCLUDE -Wfatal-errors -std=c++11
 OBJS += ext_traces.o
 */
+
+#include "mapping.hh"

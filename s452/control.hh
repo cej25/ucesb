@@ -29,4 +29,8 @@
 #define USER_EXTERNAL_UNPACK_STRUCT_FILE "ext_unpacking.hh"
 //#define USER_STRUCT s505_user_struct
 
+
+//#define RAW_EVENT_USER_FUNCTION raw_user_function
+
+
 #endif

@@ -163,6 +163,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_LISA::__unpack)
 
                 int tmp_ch_id = ((sum_chan_data_head >> 16) & 0xFF);
                 std::cout << "tmp_ch_id: " << tmp_ch_id << std::endl;
+                item.fchn = tmp_ch_id;
 
                 __buffer.advance(4);
 
@@ -255,6 +256,7 @@ void FebexEvent::dump(const signal_id &id, pretty_dump_info &pdi) const
     }
 
     ::dump_uint32(fboard, signal_id(id, "fboard"), pdi);
+    ::dump_uint32(fchn, signal_id(id, "fchn"), pdi);
 }
 
 void FebexEvent::show_members(const signal_id &id, const char* unit) const
@@ -276,6 +278,7 @@ void FebexEvent::zero_suppress_info_ptrs(used_zero_suppress_info &used_info)
     }
 
     ::zero_suppress_info_ptrs(&fboard, used_info);
+    ::zero_suppress_info_ptrs(&fchn, used_info);
 }
 
 void FebexEvent::enumerate_members(const signal_id &id, const enumerate_info &info, enumerate_fcn callback, void *extra) const
@@ -289,6 +292,7 @@ void FebexEvent::enumerate_members(const signal_id &id, const enumerate_info &in
     }
 
     callback(signal_id(id, "fboard"), enumerate_info(info, &fboard, ENUM_TYPE_UINT), extra); 
+    callback(signal_id(id, "fchn"), enumerate_info(info, &fchn, ENUM_TYPE_UINT), extra);
 }
 
 const char* FebexEvent::get_name(const std::string &name, int index) const

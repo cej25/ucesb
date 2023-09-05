@@ -16,13 +16,16 @@ DUMMY_EXTERNAL_MAP_STRUCT_FORW(EXT_LISA);
 struct FebexEvent
 {
     public:
-        // all need 16 items, add after seeing if works
         uint32 fts_lo[16];
         uint32 fts_hi[16];
         uint32 flength;
         uint32 fboard;
         uint32 fchn;
         uint32 fen[16];
+        uint32 pileup_flags[16];
+        uint32 fhitpat[16]; // Ge_channels in Go4. Take a look later.
+        uint32 fpileup[16]; // max_hits in Go4. Just 16 here for now not dets x crystals?
+        uint32 foverflow[16]; // same as above.
     
     public:
         void __clean() {};

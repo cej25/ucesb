@@ -1,12 +1,5 @@
-/*extern "C"
-{
-    #include "/u/cjones/R3BRoot/r3bsource/foot/ext_h101_foot.h"
-} // CEJ: shouldn't be necessary but is for now.*/
-
 typedef struct EXT_STR_h101_t
 {   
-    // onionnnn
-    EXT_STR_h101_unpack_t unpack;
     EXT_STR_h101_FRS_onion_t frs;
 } EXT_STR_h101;
 
@@ -41,7 +34,7 @@ void run_frs_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fE
 
     // Create online run
     FairRunOnline* run = new FairRunOnline();
-    R3BEventHeader* EvntHeader = new R3BEventHeader();
+    c4EventHeader* EvntHeader = new c4EventHeader();
     run->SetEventHeader(EvntHeader);
     run->SetRunId(1); // no idea, does it even matter for this
     run->SetSink(new FairRootFileSink(outputFileName));
@@ -51,13 +44,13 @@ void run_frs_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fE
     EXT_STR_h101 ucesb_struct;
 
     // Create source using ucesb for input
-    R3BUcesbSource* source = new R3BUcesbSource(filename, ntuple_options, ucesb_path, &ucesb_struct, sizeof(ucesb_struct));
+    c4UcesbSource* source = new c4UcesbSource(filename, ntuple_options, ucesb_path, &ucesb_struct, sizeof(ucesb_struct));
     source->SetMaxEvents(nev);
 
     // .unpack?
     //R3BUnpackReader* unpackreader = new R3BUnpackReader((EXT_STR_h101_unpack*)&ucesb_struct.unpack, offsetof(EXT_STR_h101, unpack));
 
-    R3BFrsReader* unpackfrs = new R3BFrsReader((EXT_STR_h101_FRS_onion*)&ucesb_struct.frs, offsetof(EXT_STR_h101, frs));
+    c4FrsReader* unpackfrs = new c4FrsReader((EXT_STR_h101_FRS_onion*)&ucesb_struct.frs, offsetof(EXT_STR_h101, frs));
 
     // Add readers
     //source->AddReader(unpackreader);
@@ -71,7 +64,7 @@ void run_frs_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fE
 
 
     // Add analysis task
-    R3BIDOnlineSpectra* online = new R3BIDOnlineSpectra();
+    c4FrsOnlineSpectra* online = new c4FrsOnlineSpectra();
     run->AddTask(online);
 
     // Initialise

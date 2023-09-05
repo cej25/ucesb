@@ -11,6 +11,14 @@
 #include <fstream>
 #include <sstream>
 
+/*
+Dear future self:
+I am using .peek_uint32() and then .advance(4), opposed to .get_uint32().
+This causes me many less headaches debugging self-inflicted issues.
+This does change the 0xF0 loop from Go4, take care. 
+*/
+
+
 struct used_zero_suppress_info
 {
     public:
@@ -95,6 +103,9 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_LISA::__unpack)
     //{
         auto & item = event.append_item();
 
+        int fired_FEBEX_amount = 0;
+        int num_channels_fired = 0;
+
         uint32 padding = 0;
         __buffer.peek_uint32(&padding);
         while ((padding & 0xFFF00000) == 0xadd00000)
@@ -113,7 +124,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_LISA::__unpack)
         
         if (((sum_chan_head >> 24) & 0xFF) == 0xFF)
         {
-            std::cout << "sum channel header: " << std::hex << sum_chan_head << std::dec << std::endl;
+            //std::cout << "sum channel header: " << std::hex << sum_chan_head << std::dec << std::endl;
 
             board_id = ((sum_chan_head >> 16) & 0xFF);
 
@@ -122,9 +133,9 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_LISA::__unpack)
             uint32 chan_size = 0;
             __buffer.peek_uint32(&chan_size);
 
-            std::cout << "chan size: " << std::hex << chan_size << std::dec << std::endl;
+            //std::cout << "chan size: " << std::hex << chan_size << std::dec << std::endl;
             nchan = (((chan_size >> 2) & 0x3FFFFFFF) / 4) - 1;
-            std::cout << "nchan: " << nchan << std::endl;
+            //std::cout << "nchan: " << nchan << std::endl;
 
             if (nchan == 0) nmod--;
 
@@ -132,22 +143,43 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_LISA::__unpack)
 
             // skip sum_time and ext_time
             __buffer.advance(8);
-
+            
             // skip febex_flags
+            uint32 flags = 0;
+            __buffer.peek_uint32(&flags);
+            // these might be the wrong way around? check
+            uint32 tmp_hitpat = (flags & 0xFFFF);
+            uint32 tmp_pileup = ((flags >> 16) & 0xFFFF);
+
+            for (int i = 15; i >= 0; i--)
+            {
+                if (tmp_hitpat & (1 << i))
+                {
+                    // i think fhitpat gets filled elsewhere somehow? need to check despec go4 code.
+                    // num_channels_fired++
+                    // item.fhitpat[i] = 1; // hmm..
+                }
+                if (tmp_pileup & (1 << i))
+                {
+                    item.pileup_flags[i] = 1;
+                    // is this being output somewhere
+                }
+            }
+            
             __buffer.advance(4);
 
             // check deadbeef for sanity
             uint32 deadbeef = 0;
             __buffer.peek_uint32(&deadbeef);
 
-            std::cout << "deadbeef check: " << std::hex << deadbeef << std::dec << std::endl;
+            //std::cout << "deadbeef check: " << std::hex << deadbeef << std::dec << std::endl;
 
             __buffer.advance(4);
 
         }
         else
         {
-            std::cout << "Expected sum channel header with 0xFF?" << std::endl;
+            //std::cout << "Expected sum channel header with 0xFF?" << std::endl;
         }
 
         uint32 sum_chan_data_head = 0;
@@ -159,17 +191,17 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_LISA::__unpack)
             
             for (int i = 0; i < nchan; i++)
             {
-                std::cout << "sum channel data header: " << std::hex << sum_chan_data_head << std::dec << std::endl;
+                //std::cout << "sum channel data header: " << std::hex << sum_chan_data_head << std::dec << std::endl;
 
                 int tmp_ch_id = ((sum_chan_data_head >> 16) & 0xFF);
-                std::cout << "tmp_ch_id: " << tmp_ch_id << std::endl;
+                //std::cout << "tmp_ch_id: " << tmp_ch_id << std::endl;
                 item.fchn = tmp_ch_id;
 
                 __buffer.advance(4);
 
                 if (board_id < 0)
                 {
-                    std::cout << "Something went wrong, we don't have the board ID" << std::endl;
+                    //std::cout << "Something went wrong, we don't have the board ID" << std::endl;
                     
                     // skip 3 words
                     __buffer.advance(12);
@@ -182,8 +214,8 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_LISA::__unpack)
                 __buffer.peek_uint32(&tmp_chan_ts_lo);
                 uint32 tmp_chan_ts_hi = (sum_chan_data_head & 0xFFFF);
 
-                std::cout << "tmp_chan_ts_lo: " << std::hex << tmp_chan_ts_lo << std::dec << std::endl;
-                std::cout << "tmp_chan_ts_hi: " << std::hex << tmp_chan_ts_hi << std::dec << std::endl;
+                //std::cout << "tmp_chan_ts_lo: " << std::hex << tmp_chan_ts_lo << std::dec << std::endl;
+                //std::cout << "tmp_chan_ts_hi: " << std::hex << tmp_chan_ts_hi << std::dec << std::endl;
 
                 item.fts_lo[tmp_ch_id] = tmp_chan_ts_lo;
                 item.fts_hi[tmp_ch_id] = tmp_chan_ts_hi;
@@ -194,7 +226,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_LISA::__unpack)
                 __buffer.peek_uint32(&chan_energy);
                 uint32 tmp_chan_energy = (chan_energy & 0xFFFFFF);
 
-                std::cout << "chan energy: " << std::hex << chan_energy << std::endl;
+                //std::cout << "chan energy: " << std::hex << chan_energy << std::endl;
 
                 if (tmp_chan_energy & 0x00800000)
                 {
@@ -203,12 +235,22 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_LISA::__unpack)
 
                 item.fen[tmp_ch_id] = tmp_chan_energy;
 
+                item.fpileup[fired_FEBEX_amount] = ((chan_energy >> 30) & 0x01);
+                item.foverflow[fired_FEBEX_amount] = ((chan_energy >> 31) & 0x01);
+
                 __buffer.advance(4);
 
                 // skip future use
                 __buffer.advance(4);
 
+                fired_FEBEX_amount++;
+
             } // nchan loop
+            /*else
+            {
+                // move forward 3 words
+                __buffer.advance(12);
+            }*/
 
             nmod--;
 
@@ -253,6 +295,8 @@ void FebexEvent::dump(const signal_id &id, pretty_dump_info &pdi) const
         ::dump_uint32(fts_lo[i], signal_id(id, get_name("fts_lo_", i)), pdi);
         ::dump_uint32(fts_hi[i], signal_id(id, get_name("fts_hi_", i)), pdi);
         ::dump_uint32(fen[i], signal_id(id, get_name("fen_", i)), pdi);
+        ::dump_uint32(fpileup[i], signal_id(id, get_name("fpileup_", i)), pdi);
+        ::dump_uint32(foverflow[i], signal_id(id, get_name("foverflow_", i)), pdi);
     }
 
     ::dump_uint32(fboard, signal_id(id, "fboard"), pdi);
@@ -275,6 +319,8 @@ void FebexEvent::zero_suppress_info_ptrs(used_zero_suppress_info &used_info)
         ::zero_suppress_info_ptrs(&fts_lo[i], used_info);
         ::zero_suppress_info_ptrs(&fts_hi[i], used_info);
         ::zero_suppress_info_ptrs(&fen[i], used_info);
+        ::zero_suppress_info_ptrs(&fpileup[i], used_info);
+        ::zero_suppress_info_ptrs(&foverflow[i], used_info);
     }
 
     ::zero_suppress_info_ptrs(&fboard, used_info);
@@ -289,6 +335,8 @@ void FebexEvent::enumerate_members(const signal_id &id, const enumerate_info &in
         callback(signal_id(id, get_name("fts_lo_", i)), enumerate_info(info, &fts_lo[i], ENUM_TYPE_UINT), extra);
         callback(signal_id(id, get_name("fts_hi_", i)), enumerate_info(info, &fts_hi[i], ENUM_TYPE_UINT), extra);
         callback(signal_id(id, get_name("fen_", i)), enumerate_info(info, &fen[i], ENUM_TYPE_UINT), extra);
+        callback(signal_id(id, get_name("fpileup_", i)), enumerate_info(info, &fpileup[i], ENUM_TYPE_UINT), extra);
+        callback(signal_id(id, get_name("foverflow_", i)), enumerate_info(info, &foverflow[i], ENUM_TYPE_UINT), extra);
     }
 
     callback(signal_id(id, "fboard"), enumerate_info(info, &fboard, ENUM_TYPE_UINT), extra); 

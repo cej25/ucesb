@@ -106,7 +106,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_GERMANIUM::__unpack)
         // once most significant 12 bits are not "add", "febex_add" becomes "febex_header"
         uint32 febex_header = febex_add;
     
-        //std::cout << "febex header: " << std::hex << febex_header << std::dec << std::endl;
+        std::cout << "febex header: " << std::hex << febex_header << std::dec << std::endl;
 
         uint32 num_channels = 0;
         uint32 board_id = 0;
@@ -185,7 +185,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_GERMANIUM::__unpack)
                 }
 
                 __buffer.get_uint32(&deadbeef);
-                //std::cout << "deadbeef: " << std::hex << deadbeef << std::dec << std::endl;
+                std::cout << "deadbeef: " << std::hex << deadbeef << std::dec << std::endl;
 
             }
 
@@ -205,7 +205,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_GERMANIUM::__unpack)
                     febex_chan_header = 0;
                     __buffer.get_uint32(&febex_chan_header);
 
-                    //std::cout << "febex_chan_header: " << std::hex << febex_chan_header << std::dec << std::endl;
+                    std::cout << "febex_chan_header: " << std::hex << febex_chan_header << std::dec << std::endl;
 
                     int tmp_ch_id = ((febex_chan_header >> 16) & 0xFF);
 

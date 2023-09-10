@@ -1,0 +1,191 @@
+# 1 "s452.spec"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
+# 1 "s452.spec"
+
+
+# 1 "whiterabbit.spec" 1
+TIMESTAMP_WHITERABBIT(id)
+{
+ MEMBER(DATA12 subsystem_id);
+ MEMBER(DATA16 t1);
+ MEMBER(DATA16 t2);
+ MEMBER(DATA16 t3);
+ MEMBER(DATA16 t4);
+
+ UINT32 header NOENCODE {
+  0_11: id = MATCH(id);
+  12_15: 0;
+     16: error_bit;
+  17_31: 0;
+  ENCODE(subsystem_id, (value=id));
+ };
+ UINT32 d1 NOENCODE {
+  0_15: t1;
+  16_31: 0x03e1;
+  ENCODE(t1, (value=t1));
+ };
+ UINT32 d2 NOENCODE {
+  0_15: t2;
+  16_31: 0x04e1;
+  ENCODE(t2, (value=t2));
+ };
+ UINT32 d3 NOENCODE {
+  0_15: t3;
+  16_31: 0x05e1;
+  ENCODE(t3, (value=t3));
+ };
+ UINT32 d4 NOENCODE {
+  0_15: t4;
+  16_31: 0x06e1;
+  ENCODE(t4, (value=t4));
+ };
+}
+
+TIMESTAMP_WHITERABBIT_EXTENDED(id)
+{
+ MEMBER(DATA16 subsystem_id);
+ MEMBER(DATA16 t1);
+ MEMBER(DATA16 t2);
+ MEMBER(DATA16 t3);
+ MEMBER(DATA16 t4);
+
+ UINT32 header NOENCODE {
+  0_12: id = MATCH(id);
+  13_15: 0;
+     16: error_bit;
+  17_31: 0;
+  ENCODE(subsystem_id, (value=id));
+ };
+ UINT32 d1 NOENCODE {
+  0_15: t1;
+  16_31: 0x03e1;
+  ENCODE(t1, (value=t1));
+ };
+ UINT32 d2 NOENCODE {
+  0_15: t2;
+  16_31: 0x04e1;
+  ENCODE(t2, (value=t2));
+ };
+ UINT32 d3 NOENCODE {
+  0_15: t3;
+  16_31: 0x05e1;
+  ENCODE(t3, (value=t3));
+ };
+ UINT32 d4 NOENCODE {
+  0_15: t4;
+  16_31: 0x06e1;
+  ENCODE(t4, (value=t4));
+ };
+}
+
+WR_MULTI()
+{
+ MEMBER(DATA32 time_hi);
+ MEMBER(DATA32 time_lo);
+
+ UINT32 hi NOENCODE {
+  0_31: time;
+  ENCODE(time_hi, (value = time));
+ }
+ UINT32 lo NOENCODE {
+  0_31: time;
+  ENCODE(time_lo, (value = time));
+ }
+}
+# 4 "s452.spec" 2
+# 1 "config/setup.hh" 1
+# 5 "s452.spec" 2
+
+external EXT_AIDA();
+external EXT_GERMANIUM();
+external EXT_FATIMA_VME();
+external EXT_FATIMA_TAMEX();
+external EXT_PLASTIC();
+external EXT_PLASTIC_TP();
+external EXT_FRS(procid, type, subtype);
+
+
+DUMMY()
+{
+    UINT32 no NOENCODE;
+}
+
+SUBEVENT(aida_subev)
+{
+    ts = TIMESTAMP_WHITERABBIT(id=0x700);
+    external data = EXT_AIDA();
+}
+
+SUBEVENT(germanium_subev)
+{
+    ts = TIMESTAMP_WHITERABBIT(id=0x400);
+    external data = EXT_GERMANIUM();
+}
+
+SUBEVENT(fatima_vme_subev)
+{
+    ts = TIMESTAMP_WHITERABBIT_EXTENDED(id=0x1500);
+    external data = EXT_FATIMA_VME();
+}
+
+SUBEVENT(fatima_tamex_subev)
+{
+    ts = TIMESTAMP_WHITERABBIT_EXTENDED(id=0x1600);
+    external data = EXT_FATIMA_TAMEX();
+}
+
+SUBEVENT(plastic_subev)
+{
+    ts = TIMESTAMP_WHITERABBIT(id=0x500);
+    if (0)
+    {
+        external data_tp = EXT_PLASTIC_TP();
+    }
+    else
+    {
+        external data = EXT_PLASTIC();
+    }
+
+}
+
+SUBEVENT(frs_whiterabbit_subev)
+{
+    ts = TIMESTAMP_WHITERABBIT(id=0x100);
+}
+
+SUBEVENT(frs_main_crate_subev)
+{
+    external data = EXT_FRS(procid = 10, type = 12, subtype = 1);
+}
+
+SUBEVENT(frs_tpat_subev)
+{
+    external data = EXT_FRS(procid = 10, type = 36, subtype = 3600);
+}
+
+SUBEVENT(frs_crate_subev)
+{
+    external data = EXT_FRS(procid = 30, type = 12, subtype = 1);
+}
+
+SUBEVENT (frs_tpc_crate_subev)
+{
+    external data = EXT_FRS(procid = 20, type = 12, subtype = 1);
+}
+
+SUBEVENT(frs_tof_crate_subev)
+{
+
+    external data = EXT_FRS(procid = 35, type = 12, subtype = 1);
+}
+
+EVENT
+{
+
+    germanium = germanium_subev(type = 10, subtype = 1, procid = 60, control = 20, subcrate = 0);
+# 111 "s452.spec"
+    ignore_unknown_subevent;
+};

@@ -43,7 +43,7 @@
 #define FRS_CRATE_MAX_HITS 30
 #define FRS_MAIN_CRATE_MAX_HITS 30
 #define FRS_MAX_HITS 1
-#define VFTX_N 1
+#define VFTX_N 1 // will this ever be more than 1 cus seems pointless rn.
 #define VFTX_MAX_CHN 32
 #define VFTX_MAX_HITS 20
 

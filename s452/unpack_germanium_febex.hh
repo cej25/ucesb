@@ -31,6 +31,7 @@ struct febex_item
     bool Overflow[GE_MAX_HITS]; // bool
     uint32 det_ids[GE_MAX_HITS]; // int
     uint32 crystal_ids[GE_MAX_HITS]; // int
+    uint32 Ge_Fired; 
 
     void __clean() {};
 
@@ -61,7 +62,8 @@ class EXT_GERMANIUM
         void zero_suppress_info_ptrs(used_zero_suppress_info &used_info);
 
     public:
-        raw_list_ii_zero_suppress<febex_item, febex_item, GE_MAX_HITS> febex_info;
+        //raw_list_ii_zero_suppress<febex_item, febex_item, 1> febex_info;
+        febex_item febex_info;
 
         std::map<std::pair<int, int>, std::pair<int, int>> Germanium_map;
     

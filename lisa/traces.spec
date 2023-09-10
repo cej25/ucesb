@@ -1,10 +1,12 @@
 #define TRACE_SIZE 10000 // some maximum size?
-#define TRACE_CHANNELS 16
+#define TRACE_CHANNELS 2
 
 FEBEX_TRACES()
 {
 	MEMBER(DATA16 ftrace[16][TRACE_SIZE] ZERO_SUPPRESS);
-	
+	MEMBER(DATA8 channel_id[16] ZERO_SUPPRESS);	
+
+
 	list (0 <= i < TRACE_CHANNELS)
 	{
 		UINT32 header NOENCODE
@@ -12,7 +14,7 @@ FEBEX_TRACES()
 			0_7: 0x34;
 			8_23: other;
 			24_31: ch_id;
-			//ENCODE(channel_id, (value = ch_id)); // channel id?
+			ENCODE(channel_id[ch_id], (value = ch_id)); // channel id?
 		}
 
 		UINT32 tracesize NOENCODE

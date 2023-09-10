@@ -27,9 +27,33 @@ SUBEVENT(febex_subev) // febex_subev_data()
     padding = FEBEX_PADDING();
   }
 
+  // check trigger first?
+
+  UINT32 FF_header NOENCODE // "sum channel header"
+	{
+		0_7:   three_four;
+		8_11:  trigger_type;
+		12_15: sfp;
+		16_23: board_id;
+		24_31: 0xFF;
+
+	}
+
+  if (FF_header.trigger_type == 1)
+  {
+    external data = EXT_LISA();
+    trace = FEBEX_TRACES();
+  }
+  else if (FF_header.trigger_type == 3)
+  {
+    select several
+    {
+      dummy = DUMMY();
+    }
+  }
   // febex data
-  external data = EXT_LISA();
-  trace = FEBEX_TRACES();
+  //external data = EXT_LISA();
+  //trace = FEBEX_TRACES();
 
 }
 

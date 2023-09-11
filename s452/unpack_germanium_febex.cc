@@ -21,8 +21,8 @@
 
 
 void EXT_GERMANIUM::load_board_channel_file()
-{
-    std::ifstream file("/u/cjones/ucesb/s452/config/Germanium_Detector_Map.txt");
+{   
+    std::ifstream file(getenv("HOME") +  "/u/cjones/ucesb/s452/config/Germanium_Detector_Map.txt");
 
     if (file.fail())
     {
@@ -80,7 +80,8 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_GERMANIUM::__unpack)
         //std::cout << "Now inside __buffer.empty() loop:" << std::endl;
         //std::cout << "-----------------------------------" << std::endl;
 
-        auto & item = febex_info.append_item();
+        //auto & item = febex_info.append_item();
+        auto & item = febex_info;
 
         int fired_FEBEX_amount = 0;
         int num_channels_fired = 0;
@@ -98,15 +99,19 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_GERMANIUM::__unpack)
         // can change this to "febex padding"  i think, in line with "tamex padding"
         while ((febex_add & 0xFFF00000) == 0xadd00000)
         {
+            
             __buffer.get_uint32(&febex_add);
             //std::cout << "Inside febex_add loop" << std::endl;
+
+           
+
 
         }
 
         // once most significant 12 bits are not "add", "febex_add" becomes "febex_header"
         uint32 febex_header = febex_add;
     
-        std::cout << "febex header: " << std::hex << febex_header << std::dec << std::endl;
+        //std::cout << "febex header: " << std::hex << febex_header << std::dec << std::endl;
 
         uint32 num_channels = 0;
         uint32 board_id = 0;
@@ -154,7 +159,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_GERMANIUM::__unpack)
                 //std::cout <<  "tmp_sum_time_lo: " << std::hex << tmp_sum_time_lo << std::dec << std::endl;
                 //std::cout <<  "tmp_sum_time_lo (decimal): " << tmp_sum_time_lo << std::endl;
 
-                tmp_sum_time_hi = ((febex_half_time >> 16) & 0xFFFF);
+                tmp_sum_time_hi = (febex_half_time & 0xFFFF); // remove 16 bitshift
                 //std::cout << "tmp_sum_time_hi: " << std::hex << tmp_sum_time_hi << std::dec << std::endl;
 
                 // tmp_sum_time = febex_event_time + (tmp_ext_time << 32);
@@ -185,7 +190,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_GERMANIUM::__unpack)
                 }
 
                 __buffer.get_uint32(&deadbeef);
-                std::cout << "deadbeef: " << std::hex << deadbeef << std::dec << std::endl;
+                //std::cout << "deadbeef: " << std::hex << deadbeef << std::dec << std::endl;
 
             }
 
@@ -205,7 +210,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_GERMANIUM::__unpack)
                     febex_chan_header = 0;
                     __buffer.get_uint32(&febex_chan_header);
 
-                    std::cout << "febex_chan_header: " << std::hex << febex_chan_header << std::dec << std::endl;
+                    //std::cout << "febex_chan_header: " << std::hex << febex_chan_header << std::dec << std::endl;
 
                     int tmp_ch_id = ((febex_chan_header >> 16) & 0xFF);
 
@@ -235,6 +240,9 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_GERMANIUM::__unpack)
                         //std::cout << "tmp_chan_ts_lo: " << std::hex << tmp_chan_ts_lo << std::dec << std::endl;
 
                         uint32 tmp_chan_ts_hi = (febex_chan_header  & 0xFFFF); // least significant 16 bits = hi part of channel ts
+
+
+
 
                         //Chan_Time[fired_FEBEX_amount] = (febex_chan_ts  + (tmp_ext_chan_ts << 32)) * 10; // nanoseconds
                         item.Chan_Time_lo[fired_FEBEX_amount] = tmp_chan_ts_lo;
@@ -281,6 +289,8 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_GERMANIUM::__unpack)
                     }
 
                 }
+
+                item.Ge_Fired = fired_FEBEX_amount;
 
                 num_modules--;
             

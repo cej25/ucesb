@@ -28,3 +28,4 @@ OBJS += unpack_fatima_tamex.o
 OBJS += unpack_plastic_tamex.o
 OBJS += unpack_bplast_twinpeaks.o
 OBJS += unpack_frs.o
+OBJS += raw_user.o

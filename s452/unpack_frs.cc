@@ -1079,7 +1079,8 @@ EXT_DECL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, int sub
 
     while (!__buffer.empty()) // not sure if this is needed.. may need to investigate
     {
-        auto & item = frs_info.append_item();
+        //auto & item = frs_info.append_item();
+        auto & item = frs_info;
 
         if (type == 36 && subtype == 3600) // tpat
         {
@@ -1485,7 +1486,7 @@ EXT_DECL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, int sub
                             {   
                                 __buffer.peek_uint32(&data);
                                 item.scaler_frs[i_ch] = data;
-                                item.scaler_frs_elements.push_back(i_ch);
+                                item.scaler_frs_elements.push_back(i_ch); // CEJ: is this something i added? check
                                 
                                 
                                 __buffer.advance(4);
@@ -1737,9 +1738,12 @@ EXT_DECL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, int sub
             }
         }
 
+        
+        // seems like this must be dealt with separately. sadge.
         FRS_Sort(item, procid, type, subtype); // args: frs_info?
         FRS_Calib(item, procid, type, subtype);
         FRS_Anal(item, procid, type, subtype);
+  
     
     }
 
@@ -1752,7 +1756,7 @@ EXT_FORCE_IMPL_DATA_SRC_FCN_ARG(void, EXT_FRS::__unpack, int procid, int type, i
 
 void EXT_FRS::FRS_Sort(frs_item &item, int procid, int type, int subtype)
 {
-   
+    // no i do not understand this lol
     item.ts_word[0] = item.timestamp_main[0];
     item.ts_word[1] = item.timestamp_main[1];
     item.ts_word[2] = item.timestamp_main[2];
@@ -2451,23 +2455,23 @@ void EXT_FRS::FRS_Calib(frs_item &item, int procid, int type, int subtype)
             }
 
 
-            // if (item.tpc_csum[i][0] > tpc.lim_csum1[i][0] && item.tpc_csum[i][0] < tpc.lim_csum1[i][1]) 
-            if (item.tpc_csum[i][0] > lim_csum[0][i][0] && item.tpc_csum[i][0] < lim_csum[0][i][1]) 
+            // if (item.tpc_csum[i][0] > lim_csum[0][i][0] && item.tpc_csum[i][0] < lim_csum[0][i][1]) 
+            if (item.tpc_csum[i][0] > tpc.lim_csum1[i][0] && item.tpc_csum[i][0] < tpc.lim_csum1[i][1]) 
             {   
                 
                 item.b_tpc_csum[i][0] = true;
             }
-            if (item.tpc_csum[i][1] > lim_csum[1][i][0] && item.tpc_csum[i][1] < lim_csum[1][i][1])
+            if (item.tpc_csum[i][1] > tpc.lim_csum2[i][0] && item.tpc_csum[i][1] < tpc.lim_csum2[i][1])
             {
                 
                 item.b_tpc_csum[i][1] = true;
             }
-            if (item.tpc_csum[i][2] > lim_csum[2][i][0] && item.tpc_csum[i][2] < lim_csum[2][i][1])
+            if (item.tpc_csum[i][2] > tpc.lim_csum3[i][0] && item.tpc_csum[i][2] < tpc.lim_csum3[i][1])
             {
                 
                 item.b_tpc_csum[i][2] = true;
             }
-            if (item.tpc_csum[i][3] > lim_csum[3][i][0] && item.tpc_csum[i][3] < lim_csum[3][i][1])
+            if (item.tpc_csum[i][3] > tpc.lim_csum4[i][0] && item.tpc_csum[i][3] < tpc.lim_csum4[i][1])
             {
                 
                 item.b_tpc_csum[i][3] = true;
@@ -3299,7 +3303,7 @@ void EXT_FRS::FRS_Anal(frs_item &item, int procid, int type, int subtype)
     if(id.x_s2_select == 1)
     {
         if(item.b_tpc_xy[2] && item.b_tpc_xy[3])
-        {   //tpc2324
+        {   //tpc2324 -- for our expts only this is relevant
             item.id_x2 = item.tpc_x_s2_foc_23_24;
             item.id_y2 = item.tpc_y_s2_foc_23_24;
             item.id_a2 = item.tpc_angle_x_s2_foc_23_24;
@@ -3342,7 +3346,7 @@ void EXT_FRS::FRS_Anal(frs_item &item, int procid, int type, int subtype)
     }
     // S4 only 1 possibility =  TPC4142
     if (item.b_tpc_xy[4] && item.b_tpc_xy[5])
-    {
+    {   
         item.id_x4 = item.tpc_x_s4;
         item.id_a4 = item.tpc_angle_x_s4;
         item.id_y4 = item.tpc_y_s4;
@@ -3425,9 +3429,9 @@ void EXT_FRS::FRS_Anal(frs_item &item, int procid, int type, int subtype)
     /* for S2-S4 */
   
     if (item.sci_b_tofll2 && item.sci_b_tofrr2 && item.id_b_x2 && item.id_b_x4)
-    { 
+    {   
         if ((item.id_beta > 0.0) && (item.id_beta < 1.0))
-        {
+        {   
             item.id_gamma = 1. / sqrt(1. - item.id_beta * item.id_beta);
             item.id_AoQ = item.id_brho[1] / item.id_beta / item.id_gamma / f;
             item.id_AoQ_corr = item.id_AoQ - id.a2AoQCorr * item.id_a2;  //correction for id_a2, JK 16.9.11
@@ -3622,12 +3626,12 @@ bool EXT_FRS::Check_PolyCond_X_Y(float X, float Y, double V[][2], int n)
 void EXT_FRS::dump(const signal_id &id, pretty_dump_info &pdi) const
 {
     // do something
-    frs_info.dump(signal_id(id, "frs_info"), pdi);
+    //frs_info.dump(signal_id(id, "frs_info"), pdi);
 }
 
 void EXT_FRS::show_members(const signal_id& id, const char* unit) const
 {
-    frs_info.show_members(signal_id(id, "frs_info"), unit);
+    //frs_info.show_members(signal_id(id, "frs_info"), unit);
 }
 
 void EXT_FRS::enumerate_members(const signal_id &__id, const enumerate_info &__info, enumerate_fcn __callback, void *__extra) const
@@ -3636,14 +3640,14 @@ void EXT_FRS::enumerate_members(const signal_id &__id, const enumerate_info &__i
         const signal_id &__shadow_id = __id;
         signal_id __id(__shadow_id, "frs_info");
         {
-            frs_info.enumerate_members(__id, __info, __callback, __extra);
+            //frs_info.enumerate_members(__id, __info, __callback, __extra);
         }
     }
 }
 
 void EXT_FRS::zero_suppress_info_ptrs(used_zero_suppress_info& used_info)
 {
-    frs_info.zero_suppress_info_ptrs(used_info);
+   // frs_info.zero_suppress_info_ptrs(used_info);
 }
 
 void frs_item::dump(const signal_id &id, pretty_dump_info &pdi) const
@@ -3675,7 +3679,8 @@ void frs_item::dump(const signal_id &id, pretty_dump_info &pdi) const
 
 void frs_item::show_members(const signal_id &id, const char* unit) const
 {
-    //?
+    ::show_members<float>(signal_id(id, "id_z"), unit);
+    ::show_members<float>(signal_id(id, "id_AoQ_corr"), unit);
 }
 
 void frs_item::zero_suppress_info_ptrs(used_zero_suppress_info &used_info)

@@ -60,7 +60,7 @@ void run_lisa_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t f
     // Information about portnumber and main data stream
     cout << "\n\n" << endl;
     cout << "Data stream is: " << filename << endl;
-    cout << "FRS online port server: " << port << endl;
+    cout << "LISA online port server: " << port << endl;
     cout << "\n\n" << endl;
 
     // Run

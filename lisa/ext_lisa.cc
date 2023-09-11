@@ -106,8 +106,14 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_LISA::__unpack)
         int fired_FEBEX_amount = 0;
         int num_channels_fired = 0;
 
+        // CEJ editing on sep 8th for bug solving
+        __buffer.reverse(4);
+
         uint32 padding = 0;
         __buffer.peek_uint32(&padding);
+
+        //std::cout << std::hex << padding << std::dec << std::endl;
+
         while ((padding & 0xFFF00000) == 0xadd00000)
         {
             __buffer.advance(4);

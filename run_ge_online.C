@@ -1,9 +1,9 @@
 typedef struct EXT_STR_h101_t
 {   
-    EXT_STR_h101_FRS_onion_t frs;
+    EXT_STR_h101_GE_FEBEX_onion_t germanium; // why can't it find this :()
 } EXT_STR_h101;
 
-void run_frs_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fExpId = 1)
+void run_ge_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fExpId = 1)
 {   
 
     TString cRunId = Form("%04d", fRunId);
@@ -21,7 +21,7 @@ void run_frs_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fE
     FairLogger::GetLogger()->SetColoredLog(true);
 
     TString filename = "~/lmd_files/S452f103_0037.lmd";
-    TString outputpath = "~/run_online_frs_test";
+    TString outputpath = "~/run_online_ge_test";
     TString outputFileName = outputpath + ".root";
 
     Int_t refresh = 10; // Refresh rate for online histograms
@@ -44,14 +44,14 @@ void run_frs_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fE
     EXT_STR_h101 ucesb_struct;
 
     // Create source using ucesb for input
-    c4UcesbSource* source = new c4UcesbSource(filename, ntuple_options, ucesb_path, &ucesb_struct, sizeof(ucesb_struct));
+    UcesbSource* source = new UcesbSource(filename, ntuple_options, ucesb_path, &ucesb_struct, sizeof(ucesb_struct));
     source->SetMaxEvents(nev);
    
-    c4FrsReader* unpackfrs = new c4FrsReader((EXT_STR_h101_FRS_onion*)&ucesb_struct.frs, offsetof(EXT_STR_h101, frs));
+    GermaniumReader* unpackgermanium = new GermaniumReader((EXT_STR_h101_GE_FEBEX_onion*)&ucesb_struct.germanium, offsetof(EXT_STR_h101, germanium));
 
     // Add readers
-    unpackfrs->SetOnline(false);
-    source->AddReader(unpackfrs);
+    unpackgermanium->SetOnline(false);
+    source->AddReader(unpackgermanium);
 
     run->SetSource(source);
 
@@ -60,7 +60,7 @@ void run_frs_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fE
 
 
     // Add analysis task
-    c4FrsOnlineSpectra* online = new c4FrsOnlineSpectra();
+    GermaniumOnlineSpectra* online = new GermaniumOnlineSpectra();
     run->AddTask(online);
 
     // Initialise
@@ -70,7 +70,7 @@ void run_frs_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fE
     // Information about portnumber and main data stream
     cout << "\n\n" << endl;
     cout << "Data stream is: " << filename << endl;
-    cout << "FRS online port server: " << port << endl;
+    cout << "Germanium online port server: " << port << endl;
     cout << "\n\n" << endl;
 
     // Run
@@ -86,5 +86,5 @@ void run_frs_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fE
     std::cout << "Macro finished successfully." << std::endl;
     std::cout << "Output file is " << outputFileName << std::endl;
     std::cout << "Real time " << rtime << " s, CPU time " << ctime << " s" << std::endl << std::endl;
-    gApplication->Terminate(0);
+   // gApplication->Terminate(0);
 }

@@ -24,10 +24,10 @@ struct frs_item
     // tpat stuff
     bool skip;
     uint32 tpat_main[32];
-    int utpat;
-    int uphystrig;
-    int unbtrig;
-    int umaxtrig;
+    uint8 utpat; // ints before vv?
+    uint8 uphystrig;
+    uint8 unbtrig;
+    uint8 umaxtrig; // ^^
 
     // frs crate
     uint32 vme_frs[21][32];
@@ -94,7 +94,7 @@ struct frs_item
     uint32 timestamp_lo;
     uint32 timestamp_hi;
     uint64 timestamp;
-    uint32 timestamp_main[32]; // 64?
+    uint32 timestamp_main[32]; // 64? wat
     uint32 ts_word[4]; // 64?
     int tsys_word[3];
     double timespill;
@@ -527,10 +527,12 @@ class EXT_FRS
         const char* get_name(const std::string &name, int index) const;
 
     public:
-        raw_list_ii_zero_suppress<frs_item, frs_item, FRS_MAX_HITS> frs_info;
-        //frs_item frs_info; // works but is not zero suppressed -> issue
+        //raw_list_ii_zero_suppress<frs_item, frs_item, FRS_MAX_HITS> frs_info;
+        frs_item frs_info; // works but is not zero suppressed -> issue
 
         store_item store;
+
+        float test;
 
         // well these were all floats but whatever
 

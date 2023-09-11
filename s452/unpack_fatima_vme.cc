@@ -38,7 +38,7 @@ void EXT_FATIMA_VME::load_board_channel_file()
 {
     const char* format = "%d %d %d %d %d %d";
 
-    std::ifstream file("/u/cjones/ucesb/s452/config/FATIMA_VME_allocation.txt");
+    std::ifstream file("${HOME}/ucesb/s452/config/FATIMA_VME_allocation.txt");
 
     if (file.fail())
     {

@@ -21,8 +21,8 @@
 
 
 void EXT_GERMANIUM::load_board_channel_file()
-{
-    std::ifstream file("/u/cjones/ucesb/s452/config/Germanium_Detector_Map.txt");
+{   
+    std::ifstream file(getenv("HOME") +  "/u/cjones/ucesb/s452/config/Germanium_Detector_Map.txt");
 
     if (file.fail())
     {

@@ -44,10 +44,10 @@ void run_frs_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fE
     EXT_STR_h101 ucesb_struct;
 
     // Create source using ucesb for input
-    c4UcesbSource* source = new c4UcesbSource(filename, ntuple_options, ucesb_path, &ucesb_struct, sizeof(ucesb_struct));
+    UcesbSource* source = new UcesbSource(filename, ntuple_options, ucesb_path, &ucesb_struct, sizeof(ucesb_struct));
     source->SetMaxEvents(nev);
    
-    c4FrsReader* unpackfrs = new c4FrsReader((EXT_STR_h101_FRS_onion*)&ucesb_struct.frs, offsetof(EXT_STR_h101, frs));
+    FrsReader* unpackfrs = new FrsReader((EXT_STR_h101_FRS_onion*)&ucesb_struct.frs, offsetof(EXT_STR_h101, frs));
 
     // Add readers
     unpackfrs->SetOnline(false);
@@ -60,7 +60,7 @@ void run_frs_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fE
 
 
     // Add analysis task
-    c4FrsOnlineSpectra* online = new c4FrsOnlineSpectra();
+    FrsOnlineSpectra* online = new FrsOnlineSpectra();
     run->AddTask(online);
 
     // Initialise

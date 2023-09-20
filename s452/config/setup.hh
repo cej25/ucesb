@@ -1,8 +1,15 @@
-#ifndef _DESPEC_SETUP_
-#define _DESPEC_SETUP_
+#ifndef DespecSetup_H
+#define DespecSetup_H
 
 // general
 #define NO_UINT64 1 // define until uint64 unpacking is supported 
+// used systems
+#define FRS_USED 1
+#define GERMANIUM_USED 0
+#define BPLAST_USED 0
+#define FATIMA_USED 0
+#define AIDA_USED 0
+
 
 // aida
 #define AIDA_MAX_FEES 12
@@ -31,7 +38,7 @@
 // this is something made up for append_item
 // depending on data readout, maybe 1 works? not for all detectors but..
 #define PLASTIC_MAX_HITS 1 // something made up for item_append purposes // CEJ fix... 1000? 100? 10?
-// this never goes over 3 for test file. Was initially 100.
+// this never goes over 3 for test file. 
 #define PLASTIC_MAX_ITER 100
 // 0 for regular tamex, 1 for twinpeaks
 #define IS_PLASTIC_TWINPEAKS 0
@@ -57,4 +64,4 @@
 #define SCI42L_CH 3 
 #define SCI42R_CH 4
 
-#endif /* _DESPEC_SETUP_ */
+#endif /* DespecSetup_H */

@@ -15,7 +15,7 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
 
     raw_event->GeFired = event->germanium.data.febex_info.Ge_Fired;
     // for (int i = 0; i < raw_event->GeFired; i++)
-    for (int i = 0; i < 28; i++)
+    for (int i = 0; i < GE_MAX_HITS; i++)
     {
         raw_event->Sum.Time.lo[i] = event->germanium.data.febex_info.Sum_Time_lo[i];
         raw_event->Sum.Time.hi[i] = event->germanium.data.febex_info.Sum_Time_hi[i];

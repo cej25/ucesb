@@ -20,8 +20,8 @@ void run_frs_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fE
     FairLogger::GetLogger()->SetLogScreenLevel("INFO");
     FairLogger::GetLogger()->SetColoredLog(true);
 
-    TString filename = "~/lmd_files/S452f103_0037.lmd";
-    TString outputpath = "~/run_online_frs_test";
+    TString filename = "/u/jlarsson/Documents/OnlineAnalysisCode/ucesb/S452f103_0037.lmd";
+    TString outputpath = "/u/jlarsson/Documents/OnlineAnalysisCode/ucesb/output";
     TString outputFileName = outputpath + ".root";
 
     Int_t refresh = 10; // Refresh rate for online histograms
@@ -44,10 +44,10 @@ void run_frs_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fE
     EXT_STR_h101 ucesb_struct;
 
     // Create source using ucesb for input
-    c4UcesbSource* source = new c4UcesbSource(filename, ntuple_options, ucesb_path, &ucesb_struct, sizeof(ucesb_struct));
+    UcesbSource* source = new UcesbSource(filename, ntuple_options, ucesb_path, &ucesb_struct, sizeof(ucesb_struct));
     source->SetMaxEvents(nev);
    
-    c4FrsReader* unpackfrs = new c4FrsReader((EXT_STR_h101_FRS_onion*)&ucesb_struct.frs, offsetof(EXT_STR_h101, frs));
+    FrsReader* unpackfrs = new FrsReader((EXT_STR_h101_FRS_onion*)&ucesb_struct.frs, offsetof(EXT_STR_h101, frs));
 
     // Add readers
     unpackfrs->SetOnline(false);
@@ -60,7 +60,7 @@ void run_frs_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fE
 
 
     // Add analysis task
-    c4FrsOnlineSpectra* online = new c4FrsOnlineSpectra();
+    FrsOnlineSpectra* online = new FrsOnlineSpectra();
     run->AddTask(online);
 
     // Initialise
@@ -76,7 +76,7 @@ void run_frs_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fE
     // Run
     run->Run((nev < 0) ? nev : 0, (nev < 0) ? 0 : nev); // no idea
 
-    // Finish
+    // Finish   
     timer.Stop();
     Double_t rtime = timer.RealTime();
     Double_t ctime = timer.CpuTime();

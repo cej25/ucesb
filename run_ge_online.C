@@ -1,3 +1,11 @@
+/*#include "ext_h101_ge_febex.h"
+#include <FairEventHeader.h>
+#include "../c4Root/c4base/EventHeader.h"
+#include "../c4Root/c4source/germanium/GermaniumReader.h"
+#include "../c4Root/c4source/germanium/GermaniumReader.h"
+#include "../c4Root/analysis/online/GermaniumOnlineSpectra.h"
+*/
+
 typedef struct EXT_STR_h101_t
 {   
     EXT_STR_h101_GE_FEBEX_onion_t germanium; // why can't it find this :()
@@ -20,8 +28,8 @@ void run_ge_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fEx
     FairLogger::GetLogger()->SetLogScreenLevel("INFO");
     FairLogger::GetLogger()->SetColoredLog(true);
 
-    TString filename = "~/lmd_files/S452f103_0037.lmd";
-    TString outputpath = "~/run_online_ge_test";
+    TString filename = "/u/jlarsson/Documents/OnlineAnalysisCode/ucesb/S452f103_0037.lmd";
+    TString outputpath = "/u/jlarsson/Documents/OnlineAnalysisCode/ucesb/output";
     TString outputFileName = outputpath + ".root";
 
     Int_t refresh = 10; // Refresh rate for online histograms

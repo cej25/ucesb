@@ -17,7 +17,6 @@ DUMMY_EXTERNAL_MAP_STRUCT_FORW(EXT_PLASTIC);
 
 struct plastic_tamex_item
 {
-    
     // PLASTIC_TAMEX MBS words
     int add = 2781;
     int aa = 170;
@@ -40,14 +39,15 @@ struct plastic_tamex_item
     double fine_T[PLASTIC_MAX_ITER]; 
     uint32 ch_ID[PLASTIC_MAX_ITER];
 
-    uint32 lead_arr[4][PLASTIC_MAX_ITER]; // was 100 100 // int
+    uint32 lead_arr[PLASTIC_MAX_ITER][PLASTIC_MAX_ITER]; // was 100 100 // int
     //int leading_hits[4][PLASTIC_MAX_ITER]; // unused
     //int trailing_hits[4][PLASTIC_MAX_ITER]; // unused
 
-    double edge_coarse[4][PLASTIC_MAX_ITER];
-    double edge_fine[4][PLASTIC_MAX_ITER];
-    uint32 ch_ID_edge[4][PLASTIC_MAX_ITER];
-    uint32 ch_num[4][PLASTIC_MAX_ITER];
+    // i changed these to 4 at some point
+    double edge_coarse[PLASTIC_MAX_ITER][PLASTIC_MAX_ITER];
+    double edge_fine[PLASTIC_MAX_ITER][PLASTIC_MAX_ITER];
+    uint32 ch_ID_edge[PLASTIC_MAX_ITER][PLASTIC_MAX_ITER];
+    uint32 ch_num[PLASTIC_MAX_ITER][PLASTIC_MAX_ITER];
      
     bool tamex_end;
     bool written;
@@ -99,13 +99,19 @@ class EXT_PLASTIC
         void calibrate_ONLINE();
         void calibrate_OFFLINE();
     
-        void dump(const signal_id &id,pretty_dump_info &pdi) const;
+       /* void dump(const signal_id &id,pretty_dump_info &pdi) const;
         void show_members(const signal_id &id,const char *unit) const;
         void enumerate_members(const signal_id &__id, const enumerate_info &__info, enumerate_fcn __callback, void *__extra) const;
-        void zero_suppress_info_ptrs(used_zero_suppress_info &used_info);
+        void zero_suppress_info_ptrs(used_zero_suppress_info &used_info);*/
+
+        DUMMY_EXTERNAL_DUMP(EXT_PLASTIC);
+        DUMMY_EXTERNAL_SHOW_MEMBERS(EXT_PLASTIC);
+        DUMMY_EXTERNAL_ENUMERATE_MEMBERS(EXT_PLASTIC);
+        DUMMY_EXTERNAL_ZERO_SUPPRESS_INFO_PTRS(EXT_PLASTIC);
 
     public:
-        raw_list_ii_zero_suppress<plastic_tamex_item, plastic_tamex_item, PLASTIC_MAX_HITS> plastic_info;
+        //raw_list_ii_zero_suppress<plastic_tamex_item, plastic_tamex_item, PLASTIC_MAX_HITS> plastic_info;
+        plastic_tamex_item plastic_info;
         int tamex_err_count;
 
 };

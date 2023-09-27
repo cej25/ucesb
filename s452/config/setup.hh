@@ -8,7 +8,7 @@
 #define GERMANIUM_USED 0
 #define BPLAST_USED 1
 #define FATIMA_USED 0
-#define AIDA_USED 0
+#define AIDA_USED 1
 
 
 // aida

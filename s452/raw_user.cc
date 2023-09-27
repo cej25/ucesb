@@ -215,11 +215,11 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
                             }
                             if (N1 > -1 && N1 < 100)
                             {   
-                                /*if ((event->plastic.data.plastic_info.edge_coarse[i][j]-event->plastic.data.plastic_info.edge_fine[i][j]) > 0)
-                                {   
-                                    std::cout << "not zero raw_user: det - " << i << " - chan - " << j << std::endl;
-                                    std::cout << "hello " << (event->plastic.data.plastic_info.edge_coarse[i][j]-event->plastic.data.plastic_info.edge_fine[i][j]) << std::endl;
-                                }*/
+                                //if ((event->plastic.data.plastic_info.edge_coarse[i][j]-event->plastic.data.plastic_info.edge_fine[i][j]) > 0)
+                                //{   
+                                //    std::cout << "not zero raw_user: det - " << i << " - chan - " << j << std::endl;
+                                //    std::cout << "hello " << (event->plastic.data.plastic_info.edge_coarse[i][j]-event->plastic.data.plastic_info.edge_fine[i][j]) << std::endl;
+                                //}
                                 raw_event->bPlastPMTLead[detNum][chan][N1] = (event->plastic.data.plastic_info.edge_coarse[i][j]-event->plastic.data.plastic_info.edge_fine[i][j]);
                             }
 
@@ -228,20 +228,6 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
                     }
                 }
             }
-
-
-
-            
-            //for (int j = 0; j < PLASTIC_MAX_ITER; j++)
-            //{
-                // ch_ID_edge conversion
-            //    raw_event->chIDedge[i][j] = event->plastic.data.plastic_info.ch_ID_edge[i][j];
-                // edge_coarse
-            //    raw_event->edge.coarse[i][j] = event->plastic.data.plastic_info.edge_coarse[i][j];
-                // edge_fine
-            //    raw_event->edge.fine[i][j] = event->plastic.data.plastic_info.edge_fine[i][j];
-            //}
-            
         }
 
     }

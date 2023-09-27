@@ -20,7 +20,7 @@ void run_ge_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fEx
     FairLogger::GetLogger()->SetLogScreenLevel("INFO");
     FairLogger::GetLogger()->SetColoredLog(true);
 
-    TString filename = "~/lmd_files/S452f103_0037.lmd";
+    TString filename = "~/lustre/gamma/DESPEC_S452_FILES/newts/S452f103_0037.lmd"; // change to ts filep
     TString outputpath = "~/run_online_ge_test";
     TString outputFileName = outputpath + ".root";
 

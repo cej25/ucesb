@@ -224,19 +224,19 @@ SUBEVENT(frs_tof_crate_subev)
 
 EVENT
 {
-    //aida = aida_subev(type = 10, subtype = 1, procid = 90, control = 37, subcrate = 0);
+    //revisit aida = aida_subev(type = 10, subtype = 1, procid = 90, control = 37, subcrate = 0);
     //germanium = germanium_subev(type = 10, subtype = 1, procid = 60, control = 20, subcrate = 0);
     //fatima_vme = fatima_vme_subev(type = 10, subtype = 1, procid = 70, control = 20, subcrate = 0);
     //fatima_tamex = fatima_tamex_subev(type = 10, subtype = 1, procid = 75, control = 20, subcrate = 0);
-    //plastic = plastic_subev(type = 10, subtype = 1, procid = 80, control = 20, subcrate = 0);
+    plastic = plastic_subev(type = 10, subtype = 1, procid = 80, control = 20, subcrate = 0);
 
     // frs stuff
     //frs_whiterabbit = frs_whiterabbit_subev(type = 10, subtype = 1, procid = 10, control = 20);
-    frs_main_crate = frs_main_crate_subev(type = 12, subtype = 1, procid = 10, control = 20); 
-    frs_tpat = frs_tpat_subev(type = 36, subtype = 3600, procid = 10, control = 20); // tpat
+    //frs_main_crate = frs_main_crate_subev(type = 12, subtype = 1, procid = 10, control = 20); 
+    //frs_tpat = frs_tpat_subev(type = 36, subtype = 3600, procid = 10, control = 20); // tpat
     //frs_tof_crate = frs_tof_crate_subev(type = 12, subtype = 1, procid = 35, control = 20); // traw vftx // sci tof
     //frs_tpc_crate = frs_tpc_crate_subev(type = 12, subtype = 1, procid = 20, control = 21); // frs_main_scaler // music?
-    frs_crate = frs_crate_subev(type = 12, subtype = 1, procid = 30, control = 20); // sci_tx? // "frs crate"? // scaler_frs is here
+    //frs_crate = frs_crate_subev(type = 12, subtype = 1, procid = 30, control = 20); // sci_tx? // "frs crate"? // scaler_frs is here
 
     ignore_unknown_subevent;
 };

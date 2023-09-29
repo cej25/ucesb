@@ -39,15 +39,13 @@ GENDIR=gen
 
 #########################################################
 
-UNPACKERS=land xtst rpc2006 is446 is430_05 is445_08 labbet1 mwpclab \
-	gamma_k8 hacky empty sid_genf madrid ebye i123 s107 tacquila \
-	fa192mar09 is507 sampler ridf s452 traces lisa #tagtest
+UNPACKERS=s452 traces  s452a lisa
 
 UNPACKERS_is446=is446_toggle is446_tglarray
 
 UNPACKERS_xtst=xtst_toggle
 
-all: $(UNPACKERS) $(UNPACKERS_is446) $(UNPACKERS_xtst)
+all: $(UNPACKERS)
 
 #########################################################
 # Submakefiles that the programs depend on
@@ -399,6 +397,12 @@ s452: $(DEPENDENCIES)
 
 #########################################################
 
+.PHONY: s452a
+s452a: $(DEPENDENCIES)
+	@$(MAKE) -C $@ -f ../makefile_unpacker.inc UNPACKER=$@
+
+#########################################################
+
 .PHONY: traces
 traces: $(DEPENDENCIES)
 	@$(MAKE) -C $@ -f ../makefile_unpacker.inc UNPACKER=$@
@@ -552,10 +556,10 @@ ridf: $(DEPENDENCIES)
 #########################################################
 
 clean: clean-dir-ucesbgen clean-dir-psdc clean-dir-file_input clean-unp-lisa \
-	clean-dir-rfiocmd clean-dir-hbook clean-dir-tdcpm clean-unp-s452 \
+	clean-dir-hbook clean-dir-tdcpm clean-unp-s452  clean-unp-s452a \
 	clean-unp-traces \
 	$(UNPACKERS:%=clean-unp-%) $(UNPACKERS_EXT:%=clean-unp-%) \
-	$(UNPACKERS_is446:%=clean-unp-is446-%) \
+#	$(UNPACKERS_is446:%=clean-unp-is446-%) \
 	$(UNPACKERS_xtst:%=clean-unp-xtst-%)
 	rm -rf gen/acc_auto_def gen/
 	rm -f xtst/xtst.spec.d xtst/*.o xtst/*.d xtst/*.dep
@@ -572,11 +576,11 @@ clean-dir-%:
 clean-unp-%:
 	$(MAKE) -C $* -f ../makefile_unpacker.inc UNPACKER=$* clean
 
-clean-unp-is446-%:
-	$(MAKE) -C is446 -f ../makefile_unpacker.inc UNPACKER=$* clean
+#clean-unp-is446-%:
+#	$(MAKE) -C is446 -f ../makefile_unpacker.inc UNPACKER=$* clean
 
-clean-unp-xtst-%:
-	$(MAKE) -C xtst -f ../makefile_unpacker.inc UNPACKER=$* clean
+#clean-unp-xtst-%:
+#	$(MAKE) -C xtst -f ../makefile_unpacker.inc UNPACKER=$* clean
 
 all-clean: clean
 	rm -rf land/gen

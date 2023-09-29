@@ -37,7 +37,7 @@ void run_ge_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fEx
      
     TString ntuple_options = "RAW"; // "RAW"? "time=stitch=1000"? can we time-stitch files here pls?
     TString ucesb_dir = getenv("UCESB_DIR"); // .bashrc
-    TString ucesb_path = ucesb_dir + "/s452/s452 --allow-errors --input-buffer=200Mi"; // CEJ: R3B used input-buffer, can't see in ucesb doc however...
+    TString ucesb_path = ucesb_dir + "/s452a/s452a --allow-errors --input-buffer=200Mi"; // CEJ: R3B used input-buffer, can't see in ucesb doc however...
     ucesb_path.ReplaceAll("//","/");
 
     // Create online run

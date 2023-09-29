@@ -1,0 +1,341 @@
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+FEBEX_EVENT()
+{
+  MEMBER(DATA8 board_id);
+  MEMBER(DATA32 event_trigger_time_hi);
+  MEMBER(DATA32 event_trigger_time_lo);
+  MEMBER(DATA16 hit_pattern);
+  MEMBER(DATA32 num_channels_fired);
+  MEMBER(DATA8 channel_id[16] ZERO_SUPPRESS);
+  MEMBER(DATA16 channel_trigger_time_hi[16] ZERO_SUPPRESS);
+  MEMBER(DATA32 channel_trigger_time_lo[16] ZERO_SUPPRESS);
+  MEMBER(DATA8 pileup[16]);
+  MEMBER(DATA8 overflow[16]);
+  MEMBER(DATA32 channel_energy[16] ZERO_SUPPRESS);
+  UINT32 sumchannel NOENCODE
+  {
+     0_07: 52;
+     8_11: trigger_type;
+    12_15: sfpnr;
+    16_23: board_id;
+    24_31: 255;
+    ENCODE(board_id,(value=board_id));
+  }
+  UINT32 channel_size NOENCODE
+  {
+     0_01: ignore;
+     2_31: size;
+    ENCODE(num_channels_fired,(value=((size / 4) - 1)));
+  }
+  UINT32 event_timestamp_hi NOENCODE
+  {
+     0_15: timestamp_hi;
+    16_31: ignore;
+    ENCODE(event_trigger_time_hi,(value=timestamp_hi));
+  }
+  UINT32 event_timestamp_lo NOENCODE
+  {
+     0_31: timestamp_lo;
+    ENCODE(event_trigger_time_lo,(value=timestamp_lo));
+  }
+  UINT32 hp NOENCODE
+  {
+     0_15: hp;
+    16_31: ignore;
+    ENCODE(hit_pattern,(value=hp));
+  }
+  UINT32 deadbeef NOENCODE
+  {
+     0_31: 0xdeadbeef;
+  }
+  list(0<=index<((channel_size.size / 4) - 1))
+  {
+    UINT32 channelids NOENCODE
+    {
+       0_15: chan_ts_hi;
+      16_23: channel_id_bits;
+      24_31: 240;
+      ENCODE(channel_id[index],(value=channel_id_bits));
+      ENCODE(channel_trigger_time_hi[index],(value=chan_ts_hi));
+    }
+    UINT32 channel_ts NOENCODE
+    {
+       0_31: chan_ts_lo;
+      ENCODE(channel_trigger_time_lo[index],(value=chan_ts_lo));
+    }
+    UINT32 chan_enrgy NOENCODE
+    {
+       0_23: chan_energy;
+      24_29: TSF;
+         30: pileup_flag;
+         31: overflow_flag;
+      ENCODE(channel_energy[index],(value=chan_energy));
+      ENCODE(pileup[index],(value=pileup_flag));
+      ENCODE(overflow[index],(value=overflow_flag));
+    }
+    UINT32 future_use NOENCODE
+    {
+       0_31: 0;
+    }
+  }
+}
+
+FEBEX_PADDING()
+{
+  UINT32 pads_data NOENCODE
+  {
+     0_11: counter;
+    12_19: index;
+    20_31: 0xadd;
+  }
+}
+
+TIMESTAMP_WHITERABBIT(id)
+{
+  MEMBER(DATA12 subsystem_id);
+  MEMBER(DATA16 t1);
+  MEMBER(DATA16 t2);
+  MEMBER(DATA16 t3);
+  MEMBER(DATA16 t4);
+  UINT32 header NOENCODE
+  {
+     0_11: id = MATCH(id);
+    12_15: 0;
+       16: error_bit;
+    17_31: 0;
+    ENCODE(subsystem_id,(value=id));
+  }
+  UINT32 d1 NOENCODE
+  {
+     0_15: t1;
+    16_31: 0x3e1;
+    ENCODE(t1,(value=t1));
+  }
+  UINT32 d2 NOENCODE
+  {
+     0_15: t2;
+    16_31: 0x4e1;
+    ENCODE(t2,(value=t2));
+  }
+  UINT32 d3 NOENCODE
+  {
+     0_15: t3;
+    16_31: 0x5e1;
+    ENCODE(t3,(value=t3));
+  }
+  UINT32 d4 NOENCODE
+  {
+     0_15: t4;
+    16_31: 0x6e1;
+    ENCODE(t4,(value=t4));
+  }
+}
+
+TIMESTAMP_WHITERABBIT_EXTENDED(id)
+{
+  MEMBER(DATA16 subsystem_id);
+  MEMBER(DATA16 t1);
+  MEMBER(DATA16 t2);
+  MEMBER(DATA16 t3);
+  MEMBER(DATA16 t4);
+  UINT32 header NOENCODE
+  {
+     0_12: id = MATCH(id);
+    13_15: 0;
+       16: error_bit;
+    17_31: 0;
+    ENCODE(subsystem_id,(value=id));
+  }
+  UINT32 d1 NOENCODE
+  {
+     0_15: t1;
+    16_31: 0x3e1;
+    ENCODE(t1,(value=t1));
+  }
+  UINT32 d2 NOENCODE
+  {
+     0_15: t2;
+    16_31: 0x4e1;
+    ENCODE(t2,(value=t2));
+  }
+  UINT32 d3 NOENCODE
+  {
+     0_15: t3;
+    16_31: 0x5e1;
+    ENCODE(t3,(value=t3));
+  }
+  UINT32 d4 NOENCODE
+  {
+     0_15: t4;
+    16_31: 0x6e1;
+    ENCODE(t4,(value=t4));
+  }
+}
+
+WR_MULTI()
+{
+  MEMBER(DATA32 time_hi);
+  MEMBER(DATA32 time_lo);
+  UINT32 hi NOENCODE
+  {
+     0_31: time;
+    ENCODE(time_hi,(value=time));
+  }
+  UINT32 lo NOENCODE
+  {
+     0_31: time;
+    ENCODE(time_lo,(value=time));
+  }
+}
+
+SUBEVENT(germanium_subev)
+{
+  ts = TIMESTAMP_WHITERABBIT(id=0x400);
+  select several
+  {
+    padding = FEBEX_PADDING();
+  }
+  select several
+  {
+    data = FEBEX_EVENT();
+  }
+}
+
+/**********************************************************
+ * The event definition:
+ */
+
+EVENT
+{
+  germanium = germanium_subev(type=10,subtype=1,procid=60,control=20,
+                              subcrate=0);
+  ignore_unknown_subevent;
+}
+
+/**********************************************************
+ * The sticky_event definition:
+ */
+
+/**********************************************************
+ * Signal name mappings:
+ */
+
+SIGNAL(board_id,germanium.data.board_id,DATA8);
+SIGNAL(channel_energy1,germanium.data.channel_energy[0],DATA32);
+SIGNAL(channel_energy10,germanium.data.channel_energy[9],DATA32);
+SIGNAL(channel_energy11,germanium.data.channel_energy[10],DATA32);
+SIGNAL(channel_energy12,germanium.data.channel_energy[11],DATA32);
+SIGNAL(channel_energy13,germanium.data.channel_energy[12],DATA32);
+SIGNAL(channel_energy14,germanium.data.channel_energy[13],DATA32);
+SIGNAL(channel_energy15,germanium.data.channel_energy[14],DATA32);
+SIGNAL(channel_energy16,germanium.data.channel_energy[15],DATA32);
+SIGNAL(channel_energy2,germanium.data.channel_energy[1],DATA32);
+SIGNAL(channel_energy3,germanium.data.channel_energy[2],DATA32);
+SIGNAL(channel_energy4,germanium.data.channel_energy[3],DATA32);
+SIGNAL(channel_energy5,germanium.data.channel_energy[4],DATA32);
+SIGNAL(channel_energy6,germanium.data.channel_energy[5],DATA32);
+SIGNAL(channel_energy7,germanium.data.channel_energy[6],DATA32);
+SIGNAL(channel_energy8,germanium.data.channel_energy[7],DATA32);
+SIGNAL(channel_energy9,germanium.data.channel_energy[8],DATA32);
+SIGNAL(channel_id1,germanium.data.channel_id[0],DATA8);
+SIGNAL(channel_id10,germanium.data.channel_id[9],DATA8);
+SIGNAL(channel_id11,germanium.data.channel_id[10],DATA8);
+SIGNAL(channel_id12,germanium.data.channel_id[11],DATA8);
+SIGNAL(channel_id13,germanium.data.channel_id[12],DATA8);
+SIGNAL(channel_id14,germanium.data.channel_id[13],DATA8);
+SIGNAL(channel_id15,germanium.data.channel_id[14],DATA8);
+SIGNAL(channel_id16,germanium.data.channel_id[15],DATA8);
+SIGNAL(channel_id2,germanium.data.channel_id[1],DATA8);
+SIGNAL(channel_id3,germanium.data.channel_id[2],DATA8);
+SIGNAL(channel_id4,germanium.data.channel_id[3],DATA8);
+SIGNAL(channel_id5,germanium.data.channel_id[4],DATA8);
+SIGNAL(channel_id6,germanium.data.channel_id[5],DATA8);
+SIGNAL(channel_id7,germanium.data.channel_id[6],DATA8);
+SIGNAL(channel_id8,germanium.data.channel_id[7],DATA8);
+SIGNAL(channel_id9,germanium.data.channel_id[8],DATA8);
+SIGNAL(channel_trigger_time_hi1,germanium.data.channel_trigger_time_hi[0],DATA16);
+SIGNAL(channel_trigger_time_hi10,germanium.data.channel_trigger_time_hi[9],DATA16);
+SIGNAL(channel_trigger_time_hi11,germanium.data.channel_trigger_time_hi[10],DATA16);
+SIGNAL(channel_trigger_time_hi12,germanium.data.channel_trigger_time_hi[11],DATA16);
+SIGNAL(channel_trigger_time_hi13,germanium.data.channel_trigger_time_hi[12],DATA16);
+SIGNAL(channel_trigger_time_hi14,germanium.data.channel_trigger_time_hi[13],DATA16);
+SIGNAL(channel_trigger_time_hi15,germanium.data.channel_trigger_time_hi[14],DATA16);
+SIGNAL(channel_trigger_time_hi16,germanium.data.channel_trigger_time_hi[15],DATA16);
+SIGNAL(channel_trigger_time_hi2,germanium.data.channel_trigger_time_hi[1],DATA16);
+SIGNAL(channel_trigger_time_hi3,germanium.data.channel_trigger_time_hi[2],DATA16);
+SIGNAL(channel_trigger_time_hi4,germanium.data.channel_trigger_time_hi[3],DATA16);
+SIGNAL(channel_trigger_time_hi5,germanium.data.channel_trigger_time_hi[4],DATA16);
+SIGNAL(channel_trigger_time_hi6,germanium.data.channel_trigger_time_hi[5],DATA16);
+SIGNAL(channel_trigger_time_hi7,germanium.data.channel_trigger_time_hi[6],DATA16);
+SIGNAL(channel_trigger_time_hi8,germanium.data.channel_trigger_time_hi[7],DATA16);
+SIGNAL(channel_trigger_time_hi9,germanium.data.channel_trigger_time_hi[8],DATA16);
+SIGNAL(channel_trigger_time_lo1,germanium.data.channel_trigger_time_lo[0],DATA32);
+SIGNAL(channel_trigger_time_lo10,germanium.data.channel_trigger_time_lo[9],DATA32);
+SIGNAL(channel_trigger_time_lo11,germanium.data.channel_trigger_time_lo[10],DATA32);
+SIGNAL(channel_trigger_time_lo12,germanium.data.channel_trigger_time_lo[11],DATA32);
+SIGNAL(channel_trigger_time_lo13,germanium.data.channel_trigger_time_lo[12],DATA32);
+SIGNAL(channel_trigger_time_lo14,germanium.data.channel_trigger_time_lo[13],DATA32);
+SIGNAL(channel_trigger_time_lo15,germanium.data.channel_trigger_time_lo[14],DATA32);
+SIGNAL(channel_trigger_time_lo16,germanium.data.channel_trigger_time_lo[15],DATA32);
+SIGNAL(channel_trigger_time_lo2,germanium.data.channel_trigger_time_lo[1],DATA32);
+SIGNAL(channel_trigger_time_lo3,germanium.data.channel_trigger_time_lo[2],DATA32);
+SIGNAL(channel_trigger_time_lo4,germanium.data.channel_trigger_time_lo[3],DATA32);
+SIGNAL(channel_trigger_time_lo5,germanium.data.channel_trigger_time_lo[4],DATA32);
+SIGNAL(channel_trigger_time_lo6,germanium.data.channel_trigger_time_lo[5],DATA32);
+SIGNAL(channel_trigger_time_lo7,germanium.data.channel_trigger_time_lo[6],DATA32);
+SIGNAL(channel_trigger_time_lo8,germanium.data.channel_trigger_time_lo[7],DATA32);
+SIGNAL(channel_trigger_time_lo9,germanium.data.channel_trigger_time_lo[8],DATA32);
+SIGNAL(event_trigger_time_hi,germanium.data.event_trigger_time_hi,DATA32);
+SIGNAL(event_trigger_time_lo,germanium.data.event_trigger_time_lo,DATA32);
+SIGNAL(hit_pattern,germanium.data.hit_pattern,DATA16);
+SIGNAL(num_channels_fired,germanium.data.num_channels_fired,DATA32);
+SIGNAL(overflow1,germanium.data.overflow[0],DATA8);
+SIGNAL(overflow10,germanium.data.overflow[9],DATA8);
+SIGNAL(overflow11,germanium.data.overflow[10],DATA8);
+SIGNAL(overflow12,germanium.data.overflow[11],DATA8);
+SIGNAL(overflow13,germanium.data.overflow[12],DATA8);
+SIGNAL(overflow14,germanium.data.overflow[13],DATA8);
+SIGNAL(overflow15,germanium.data.overflow[14],DATA8);
+SIGNAL(overflow16,germanium.data.overflow[15],DATA8);
+SIGNAL(overflow2,germanium.data.overflow[1],DATA8);
+SIGNAL(overflow3,germanium.data.overflow[2],DATA8);
+SIGNAL(overflow4,germanium.data.overflow[3],DATA8);
+SIGNAL(overflow5,germanium.data.overflow[4],DATA8);
+SIGNAL(overflow6,germanium.data.overflow[5],DATA8);
+SIGNAL(overflow7,germanium.data.overflow[6],DATA8);
+SIGNAL(overflow8,germanium.data.overflow[7],DATA8);
+SIGNAL(overflow9,germanium.data.overflow[8],DATA8);
+SIGNAL(pileup1,germanium.data.pileup[0],DATA8);
+SIGNAL(pileup10,germanium.data.pileup[9],DATA8);
+SIGNAL(pileup11,germanium.data.pileup[10],DATA8);
+SIGNAL(pileup12,germanium.data.pileup[11],DATA8);
+SIGNAL(pileup13,germanium.data.pileup[12],DATA8);
+SIGNAL(pileup14,germanium.data.pileup[13],DATA8);
+SIGNAL(pileup15,germanium.data.pileup[14],DATA8);
+SIGNAL(pileup16,germanium.data.pileup[15],DATA8);
+SIGNAL(pileup2,germanium.data.pileup[1],DATA8);
+SIGNAL(pileup3,germanium.data.pileup[2],DATA8);
+SIGNAL(pileup4,germanium.data.pileup[3],DATA8);
+SIGNAL(pileup5,germanium.data.pileup[4],DATA8);
+SIGNAL(pileup6,germanium.data.pileup[5],DATA8);
+SIGNAL(pileup7,germanium.data.pileup[6],DATA8);
+SIGNAL(pileup8,germanium.data.pileup[7],DATA8);
+SIGNAL(pileup9,germanium.data.pileup[8],DATA8);
+SIGNAL(wr_subsystem_id,germanium.ts.subsystem_id,DATA12);
+SIGNAL(wr_t1,germanium.ts.t1,DATA16);
+SIGNAL(wr_t2,germanium.ts.t2,DATA16);
+SIGNAL(wr_t3,germanium.ts.t3,DATA16);
+SIGNAL(wr_t4,germanium.ts.t4,DATA16);
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/

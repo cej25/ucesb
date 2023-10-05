@@ -32,7 +32,7 @@ void run_lisa_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t f
     ucesb_path.ReplaceAll("//","/");
 
     FairRunOnline* run = new FairRunOnline();
-    c4EventHeader* EvntHeader = new c4EventHeader();
+    EventHeader* EvntHeader = new EventHeader();
     run->SetEventHeader(EvntHeader);
     run->SetRunId(1);
     run->SetSink(new FairRootFileSink(outputFilename));
@@ -40,10 +40,10 @@ void run_lisa_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t f
 
     EXT_STR_h101 ucesb_struct;
 
-    c4UcesbSource* source = new c4UcesbSource(filename, ntuple_options, ucesb_path, &ucesb_struct, sizeof(ucesb_struct));
+    UcesbSource* source = new UcesbSource(filename, ntuple_options, ucesb_path, &ucesb_struct, sizeof(ucesb_struct));
     source->SetMaxEvents(nev);
 
-    c4LisaReader* unpacklisa = new c4LisaReader((EXT_STR_h101_LISA_onion*)&ucesb_struct.lisa, offsetof(EXT_STR_h101, lisa));
+    LisaReader* unpacklisa = new LisaReader((EXT_STR_h101_LISA_onion*)&ucesb_struct.lisa, offsetof(EXT_STR_h101, lisa));
 
     unpacklisa->SetOnline(false);
     source->AddReader(unpacklisa);

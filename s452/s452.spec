@@ -1,7 +1,8 @@
 // -*- C++ -*-
 
 #include "whiterabbit.spec"
-#include "frs.spec"
+#include "frs.spec" // caen modules etc.
+#include "tamex.spec"
 #include "config/setup.hh"
 
 external EXT_FRS(procid, type, subtype);
@@ -11,6 +12,14 @@ external EXT_FATIMA_TAMEX(); // twinpeaks?
 external EXT_PLASTIC_TP();
 external EXT_PLASTIC();
 external EXT_AIDA();
+
+TEST()
+{
+    UINT32 t NOENCODE
+    {
+        0_31: id = MATCH(0xaddddd);
+    }
+}
 
 DUMMY()
 {
@@ -84,6 +93,16 @@ SUBEVENT(fatima_tamex_subev)
     {
         ts = TIMESTAMP_WHITERABBIT_EXTENDED(id=0x1600);
         external data = EXT_FATIMA_TAMEX();
+
+        /*trigger_window = TAMEX_WINDOW();
+        select several 
+        {
+            padding = TAMEX_PADDING();
+        }
+        list (0 <= index < 4)
+        {
+            tamex = TAMEX_DATA();
+        }*/
     }
     else
     {
@@ -96,6 +115,7 @@ SUBEVENT(fatima_tamex_subev)
 
 SUBEVENT(plastic_subev)
 {   
+    //MEMBER(DATA12 am_fired[32] ZERO_SUPPRESS_MULTI(200));
 
     if (BPLAST_USED)
     {
@@ -106,8 +126,25 @@ SUBEVENT(plastic_subev)
         }
         else
         {
-            external data = EXT_PLASTIC();
+            
+            // can probably be written even MORE nicely!!
+            trigger_window = TAMEX_WINDOW();
+            select several 
+            {
+                padding = TAMEX_PADDING();
+            }
+            select several
+            {
+                tamex[0] = TAMEX_DATA(card = 0);
+                tamex[1] = TAMEX_DATA(card = 1);
+                tamex[2] = TAMEX_DATA(card = 2);
+            }
+
+        
+            //external data = EXT_PLASTIC();
+              
         }
+
     }
     else
     {
@@ -121,7 +158,7 @@ SUBEVENT(plastic_subev)
 
 SUBEVENT(frs_whiterabbit_subev)
 {
-    if (FRS_USED)
+    if (FRS_USED && WR_USED)
     {   
         ts = TIMESTAMP_WHITERABBIT(id=0x100);
     }
@@ -139,7 +176,7 @@ SUBEVENT(frs_main_crate_subev)
     if (FRS_USED)
     {   
 
-        /*skip = SKIP(n=2);
+        skip = SKIP(n=2);
         b1 = BARRIER();
         select optional
         {   
@@ -158,8 +195,8 @@ SUBEVENT(frs_main_crate_subev)
         list (0 <= i < 4)
         {
             optional UINT32 eoe NOENCODE;
-        }*/
-        external data = EXT_FRS(procid = 10, type = 12, subtype = 1);
+        }
+        //external data = EXT_FRS(procid = 10, type = 12, subtype = 1);
     }
     else
     {
@@ -228,15 +265,15 @@ EVENT
     //germanium = germanium_subev(type = 10, subtype = 1, procid = 60, control = 20, subcrate = 0);
     //fatima_vme = fatima_vme_subev(type = 10, subtype = 1, procid = 70, control = 20, subcrate = 0);
     //fatima_tamex = fatima_tamex_subev(type = 10, subtype = 1, procid = 75, control = 20, subcrate = 0);
-    //plastic = plastic_subev(type = 10, subtype = 1, procid = 80, control = 20, subcrate = 0);
+    plastic = plastic_subev(type = 10, subtype = 1, procid = 80, control = 20, subcrate = 0);
 
     // frs stuff
-    //frs_whiterabbit = frs_whiterabbit_subev(type = 10, subtype = 1, procid = 10, control = 20);
+    /*frs_whiterabbit = frs_whiterabbit_subev(type = 10, subtype = 1, procid = 10, control = 20);
     frs_main_crate = frs_main_crate_subev(type = 12, subtype = 1, procid = 10, control = 20); 
     frs_tpat = frs_tpat_subev(type = 36, subtype = 3600, procid = 10, control = 20); // tpat
-    //frs_tof_crate = frs_tof_crate_subev(type = 12, subtype = 1, procid = 35, control = 20); // traw vftx // sci tof
-    //frs_tpc_crate = frs_tpc_crate_subev(type = 12, subtype = 1, procid = 20, control = 21); // frs_main_scaler // music?
-    frs_crate = frs_crate_subev(type = 12, subtype = 1, procid = 30, control = 20); // sci_tx? // "frs crate"? // scaler_frs is here
+    frs_tof_crate = frs_tof_crate_subev(type = 12, subtype = 1, procid = 35, control = 20); // traw vftx // sci tof
+    frs_tpc_crate = frs_tpc_crate_subev(type = 12, subtype = 1, procid = 20, control = 21); // frs_main_scaler // music?
+    frs_crate = frs_crate_subev(type = 12, subtype = 1, procid = 30, control = 20); // sci_tx? // "frs crate"? // scaler_frs is here*/
 
     ignore_unknown_subevent;
 };

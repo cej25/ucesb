@@ -19,6 +19,8 @@
 #include <sstream>
 #include <cmath>
 
+#define DEBUG_MODE 0
+
 EXT_PLASTIC::EXT_PLASTIC()
 {
     __clean();
@@ -37,6 +39,8 @@ void EXT_PLASTIC::__clean()
 EXT_DECL_DATA_SRC_FCN(void, EXT_PLASTIC::__unpack)
 {   
 
+    if (DEBUG_MODE) std::cout << "======= START EVENT SEPARATOR ======" << std::endl;
+
     while (!__buffer.empty())
     {   
         auto & item = plastic_info.append_item();
@@ -53,10 +57,10 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_PLASTIC::__unpack)
             {
                 item.tamex_iter++;
                 __buffer.advance(4);
-                if (item.tamex_iter > 3)
+                /*if (item.tamex_iter > 3)
                 {
                     std::cout << "iter over 3" << std::endl;
-                }
+                }*/
             }   
             //__buffer.advance(4);
 
@@ -64,8 +68,6 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_PLASTIC::__unpack)
 
         // calibration??
     }
-
-    //std::cout << "err count: " << tamex_err_count << std::endl;
 
 }
 
@@ -120,6 +122,8 @@ void EXT_PLASTIC::Process_TAMEX(__data_src_t &__buffer, plastic_tamex_item &item
     uint32 tamex_fired = 0;
     __buffer.peek_uint32(&tamex_fired);
     item.am_fired[item.tamex_iter] = (tamex_fired & 0xFFF) / 4 - 2;
+
+    if (DEBUG_MODE) std::cout << "am_fired = " << item.am_fired[item.tamex_iter] << std::endl;
 
     if (item.am_fired[item.tamex_iter] < 0)
     {
@@ -188,18 +192,34 @@ void EXT_PLASTIC::get_trigger(__data_src_t &__buffer, plastic_tamex_item &item)
         tamex_err_count++;
         return;
     }
+    else
+    {
+        if (DEBUG_MODE) std::cout << "we have an epoch? Word: " << std::hex << place_holder << std::dec << std::endl;
+    }
 
     __buffer.advance(4);
 
     uint32 tamex_data = 0;
     __buffer.peek_uint32(&tamex_data);
 
+    if (DEBUG_MODE)
+    {
+        if (((tamex_data >> 11) & 0x1) == 1)
+        {
+            std::cout << "this is a lead... " << std::endl;
+            std::cout << "channel.... " << ((tamex_data >> 22) & 0x7F) << std::endl;
+        }
+        else
+        {
+            std::cout << "this is a trail... " << std::endl;
+            std::cout << "channel.... " << ((tamex_data >> 22) & 0x7F) << std::endl;
+        }
+    }
+
     if (item.error == false)
     {
         item.coarse_T[item.tamex_iter] = (double)(tamex_data & 0x7FF);// (double)
-        //std::cout << "coarse: " << item.coarse_T[item.tamex_iter] << std::endl;
         item.fine_T[item.tamex_iter] = (double)((tamex_data >> 12) & 0x3FF);
-        //std::cout << "fine: " << item.fine_T[item.tamex_iter] << std::endl;
         item.ch_ID[item.tamex_iter] = ((tamex_data >> 22) & 0x7F);
     }
 
@@ -237,12 +257,20 @@ void EXT_PLASTIC::get_edges(__data_src_t &__buffer, plastic_tamex_item &item)
         __buffer.peek_uint32(&place_holder);
 
         if (((place_holder >> 28) & 0xF) != (uint32) item.six_f && item.written)
-        {
+        {   
+            if (DEBUG_MODE)
+            {
+                std::cout << "Data word: " << std::hex << place_holder << std::dec << std::endl;
+                std::cout << "lead or trail!! " << ((place_holder >> 11) & 0x1) << std::endl;
+                std::cout << "channel!! " << ((place_holder >> 22) & 0x7F) << std::endl;
+            } 
+            
             __buffer.advance(4);
             continue;
         }
         else if (((place_holder >> 28) & 0xF) == (uint32) item.six_f)
-        {
+        {   
+            if (DEBUG_MODE) std::cout << "we have an epoch? Word: " << std::hex << place_holder << std::dec << std::endl;
             item.written = false;
         }
 
@@ -260,14 +288,37 @@ void EXT_PLASTIC::get_edges(__data_src_t &__buffer, plastic_tamex_item &item)
         uint32 tamex_data = 0;
         __buffer.peek_uint32(&tamex_data);
 
+        if (DEBUG_MODE)
+        {
+            if (((tamex_data >> 11) & 0x1) == 1)
+            {
+                std::cout << "this is a lead... " << std::endl;
+                std::cout << "channel.... " << ((tamex_data >> 22) & 0x7F) << std::endl;
+            }
+            else
+            {
+                std::cout << "this is a trail... " << std::endl;
+                std::cout << "channel.... " << ((tamex_data >> 22) & 0x7F) << std::endl;
+            }
+        }
+
+        if (((tamex_data >> 11) & 0x1) == 0)
+        {
+            std::cout << "this is a trail... " << std::endl;
+            std::cout << "channel.... " << ((tamex_data >> 22) & 0x7F) << std::endl;
+            std::cout << "fine time... " << ((tamex_data >> 12) & 0x3FF) << std::endl;
+            std::cout << "data word: " << std::hex << tamex_data << std::dec << std::endl;
+            std::cout << "trigger must be 3? " << item.trigger_type[item.tamex_iter] << std::endl;
+        }
+
         if (item.iterator[item.tamex_iter] > 100) break;
         if (item.error == true) break;
 
         item.edge_coarse[item.tamex_iter][item.iterator[item.tamex_iter]] = (double) (tamex_data & 0x7FF);
         item.edge_fine[item.tamex_iter][item.iterator[item.tamex_iter]] = (double) ((tamex_data >> 12) & 0x3FF);
         item.ch_ID_edge[item.tamex_iter][item.iterator[item.tamex_iter]] = ((tamex_data >> 22) & 0x7F);
-
-        item.lead_arr[item.tamex_iter][item.iterator[item.tamex_iter]] = (((tamex_data >> 22) & 0x7F) % 2);
+        
+        item.lead_arr[item.tamex_iter][item.iterator[item.tamex_iter]] = (((tamex_data >> 22) & 0x7F) % 2); // this bit is wrong?
 
         if (item.ch_ID_edge[item.tamex_iter][item.iterator[item.tamex_iter]] % 2 == 0) 
         {
@@ -298,7 +349,7 @@ bool EXT_PLASTIC::no_error_reached(__data_src_t &__buffer, plastic_tamex_item &i
 template<typename __data_src_t>
 void EXT_PLASTIC::check_trailer(__data_src_t &__buffer, plastic_tamex_item &item)
 {
-    __buffer.advance(4);
+    __buffer.advance(4); // skips past error
 
     uint32 tamex_trailer = 0;
     __buffer.peek_uint32(&tamex_trailer);

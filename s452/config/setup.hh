@@ -4,11 +4,12 @@
 // general
 #define NO_UINT64 1 // define until uint64 unpacking is supported 
 // used systems
-#define FRS_USED 1
+#define FRS_USED 0
 #define GERMANIUM_USED 0
-#define BPLAST_USED 0
+#define BPLAST_USED 1
 #define FATIMA_USED 0
 #define AIDA_USED 0
+#define WR_USED 1
 
 
 // aida

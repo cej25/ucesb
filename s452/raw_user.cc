@@ -66,7 +66,7 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
 
 
         // can probably skip a step here (unpack -> sort seems to just set these as equal anyway)
-        raw_event->TRIGGER = event->frs_tpat.data.frs_info.trigger;
+        /*raw_event->TRIGGER = event->frs_tpat.data.frs_info.trigger;
         raw_event->PATTERN = event->frs_tpat.data.frs_info.pattern;
         raw_event->SPTRIGGER = event->frs_tpat.data.frs_info.sptrigger;
         raw_event->SNBTRIG = event->frs_tpat.data.frs_info.snbtrig; 
@@ -77,7 +77,7 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
         {
             raw_event->SCLONG[i] = event->frs_crate.data.frs_info.scaler_frs[i];
             raw_event->SCLONG[i+32] = event->frs_main_crate.data.frs_info.scaler_main[i]; 
-        }
+        }*/
 
     }
 

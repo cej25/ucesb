@@ -96,6 +96,7 @@ void EXT_PLASTIC_TP::Process_TAMEX(__data_src_t &__buffer, plastic_twinpeaks_ite
     uint32 tamex_header = 0;
     __buffer.peek_uint32(&tamex_header);
 
+    // matches 0x......34 && 
     bool ongoing = ((tamex_header & 0xFF) == (uint32) item.tamex_identifier) && (((tamex_header >> 24) & 0xFF) == 0) && ((((tamex_header >> 12) & 0xF) == 1) || (((tamex_header >> 12) & 0xF) == 0));
     
     if (!ongoing)
@@ -145,6 +146,8 @@ void EXT_PLASTIC_TP::Process_TAMEX(__data_src_t &__buffer, plastic_twinpeaks_ite
     __buffer.advance(4);
 
     get_trigger(__buffer, item);
+
+    std::cout << item.am_fired[item.tamex_iter] << std::endl;
 
     if (item.am_fired[item.tamex_iter] > 3)
     {

@@ -62,6 +62,9 @@
         "cinttypes": "cpp",
         "typeindex": "cpp",
         "typeinfo": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "run_frs_online.C": "cpp",
+        "run_ge_online.C": "cpp",
+        "*.ipp": "c"
     }
 }

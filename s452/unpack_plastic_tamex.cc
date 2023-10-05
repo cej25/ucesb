@@ -41,9 +41,10 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_PLASTIC::__unpack)
 
     if (DEBUG_MODE) std::cout << "======= START EVENT SEPARATOR ======" << std::endl;
 
-    while (!__buffer.empty())
-    {   
-        auto & item = plastic_info.append_item();
+    //while (!__buffer.empty())
+    //{   
+        //auto & item = plastic_info.append_item();
+        auto & item = plastic_info;
 
         item.tamex_end = false;
         item.tamex_iter = 0;
@@ -67,7 +68,7 @@ EXT_DECL_DATA_SRC_FCN(void, EXT_PLASTIC::__unpack)
         }
 
         // calibration??
-    }
+//    }
 
 }
 
@@ -228,7 +229,7 @@ void EXT_PLASTIC::get_trigger(__data_src_t &__buffer, plastic_tamex_item &item)
 
 void EXT_PLASTIC::reset_edges(plastic_tamex_item &item)
 {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++) ///??????
     {
         for (int j = 0; j < PLASTIC_MAX_ITER; ++j)
         {
@@ -362,7 +363,7 @@ void EXT_PLASTIC::check_trailer(__data_src_t &__buffer, plastic_tamex_item &item
 }
 
 
-
+/*
 void EXT_PLASTIC::dump(const signal_id &id, pretty_dump_info &pdi) const
 {
     if (!IS_PLASTIC_TWINPEAKS)
@@ -403,7 +404,7 @@ void EXT_PLASTIC::zero_suppress_info_ptrs(used_zero_suppress_info& used_info)
 
 void plastic_tamex_item::dump(const signal_id &id, pretty_dump_info &pdi) const
 {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++) // could be PLASTIC_MAX_ITER but only needs to be 3,4
     {   
         ::dump_uint32(am_fired[i], signal_id(id, get_name("am_fired_", i)), pdi);
         ::dump_uint32(sfp_id[i], signal_id(id, get_name("sfp_id_", i)), pdi);
@@ -507,7 +508,7 @@ void plastic_tamex_item::zero_suppress_info_ptrs(used_zero_suppress_info& used_i
         }
     }
 }
-
+*/
 const char* plastic_tamex_item::get_name(const std::string &name, int index) const
 {
     std::ostringstream oss;

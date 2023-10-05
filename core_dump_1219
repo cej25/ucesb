@@ -1,0 +1,161 @@
+
+Thread 12 (Thread 0x7f7dfffff700 (LWP 2014)):
+#0  __libc_read (nbytes=8, buf=0x7f7dffffab08, fd=14) at ../sysdeps/unix/sysv/linux/read.c:26
+#1  __libc_read (fd=14, buf=buf
+entry=0x7f7dffffab08, nbytes=nbytes
+entry=8) at ../sysdeps/unix/sysv/linux/read.c:24
+#2  0x00007f7e275ebf39 in event_wait (eventhdl=<optimized out>) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:2844
+#3  consume_socket (thread_index=<optimized out>, sp=0x55bdf6971cd0, ctx=0x55bdf8311300) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17651
+#4  worker_thread_run (thread_args=0x55bdf167c480, thread_args=0x55bdf167c480) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17805
+#5  worker_thread (thread_func_param=0x55bdf167c480) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17929
+#6  0x00007f7e41bd1fa3 in start_thread (arg=<optimized out>) at pthread_create.c:486
+#7  0x00007f7e41b0306f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 11 (Thread 0x7f7e1ca6d700 (LWP 2013)):
+#0  __libc_read (nbytes=8, buf=0x7f7e1ca68b08, fd=13) at ../sysdeps/unix/sysv/linux/read.c:26
+#1  __libc_read (fd=13, buf=buf
+entry=0x7f7e1ca68b08, nbytes=nbytes
+entry=8) at ../sysdeps/unix/sysv/linux/read.c:24
+#2  0x00007f7e275ebf39 in event_wait (eventhdl=<optimized out>) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:2844
+#3  consume_socket (thread_index=<optimized out>, sp=0x55bdf6971300, ctx=0x55bdf8311300) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17651
+#4  worker_thread_run (thread_args=0x55bdf167c290, thread_args=0x55bdf167c290) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17805
+#5  worker_thread (thread_func_param=0x55bdf167c290) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17929
+#6  0x00007f7e41bd1fa3 in start_thread (arg=<optimized out>) at pthread_create.c:486
+#7  0x00007f7e41b0306f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 10 (Thread 0x7f7e1d26e700 (LWP 2012)):
+#0  __libc_read (nbytes=8, buf=0x7f7e1d269b08, fd=12) at ../sysdeps/unix/sysv/linux/read.c:26
+#1  __libc_read (fd=12, buf=buf
+entry=0x7f7e1d269b08, nbytes=nbytes
+entry=8) at ../sysdeps/unix/sysv/linux/read.c:24
+#2  0x00007f7e275ebf39 in event_wait (eventhdl=<optimized out>) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:2844
+#3  consume_socket (thread_index=<optimized out>, sp=0x55bdf6970930, ctx=0x55bdf8311300) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17651
+#4  worker_thread_run (thread_args=0x55bdf167c0a0, thread_args=0x55bdf167c0a0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17805
+#5  worker_thread (thread_func_param=0x55bdf167c0a0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17929
+#6  0x00007f7e41bd1fa3 in start_thread (arg=<optimized out>) at pthread_create.c:486
+#7  0x00007f7e41b0306f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 9 (Thread 0x7f7e1da6f700 (LWP 2011)):
+#0  __libc_read (nbytes=8, buf=0x7f7e1da6ab08, fd=11) at ../sysdeps/unix/sysv/linux/read.c:26
+#1  __libc_read (fd=11, buf=buf
+entry=0x7f7e1da6ab08, nbytes=nbytes
+entry=8) at ../sysdeps/unix/sysv/linux/read.c:24
+#2  0x00007f7e275ebf39 in event_wait (eventhdl=<optimized out>) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:2844
+#3  consume_socket (thread_index=<optimized out>, sp=0x55bdf696ff60, ctx=0x55bdf8311300) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17651
+#4  worker_thread_run (thread_args=0x55bdf167beb0, thread_args=0x55bdf167beb0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17805
+#5  worker_thread (thread_func_param=0x55bdf167beb0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17929
+#6  0x00007f7e41bd1fa3 in start_thread (arg=<optimized out>) at pthread_create.c:486
+#7  0x00007f7e41b0306f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 8 (Thread 0x7f7e1e270700 (LWP 2010)):
+#0  __libc_read (nbytes=8, buf=0x7f7e1e26bb08, fd=10) at ../sysdeps/unix/sysv/linux/read.c:26
+#1  __libc_read (fd=10, buf=buf
+entry=0x7f7e1e26bb08, nbytes=nbytes
+entry=8) at ../sysdeps/unix/sysv/linux/read.c:24
+#2  0x00007f7e275ebf39 in event_wait (eventhdl=<optimized out>) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:2844
+#3  consume_socket (thread_index=<optimized out>, sp=0x55bdf696f590, ctx=0x55bdf8311300) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17651
+#4  worker_thread_run (thread_args=0x55bdf167bcc0, thread_args=0x55bdf167bcc0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17805
+#5  worker_thread (thread_func_param=0x55bdf167bcc0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17929
+#6  0x00007f7e41bd1fa3 in start_thread (arg=<optimized out>) at pthread_create.c:486
+#7  0x00007f7e41b0306f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 7 (Thread 0x7f7e1ea71700 (LWP 2009)):
+#0  __libc_read (nbytes=8, buf=0x7f7e1ea6cb08, fd=9) at ../sysdeps/unix/sysv/linux/read.c:26
+#1  __libc_read (fd=9, buf=buf
+entry=0x7f7e1ea6cb08, nbytes=nbytes
+entry=8) at ../sysdeps/unix/sysv/linux/read.c:24
+#2  0x00007f7e275ebf39 in event_wait (eventhdl=<optimized out>) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:2844
+#3  consume_socket (thread_index=<optimized out>, sp=0x55bdf696ebc0, ctx=0x55bdf8311300) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17651
+#4  worker_thread_run (thread_args=0x55bdf64367c0, thread_args=0x55bdf64367c0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17805
+#5  worker_thread (thread_func_param=0x55bdf64367c0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17929
+#6  0x00007f7e41bd1fa3 in start_thread (arg=<optimized out>) at pthread_create.c:486
+#7  0x00007f7e41b0306f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 6 (Thread 0x7f7e228ed700 (LWP 2007)):
+#0  __libc_read (nbytes=8, buf=0x7f7e228e8b08, fd=8) at ../sysdeps/unix/sysv/linux/read.c:26
+#1  __libc_read (fd=8, buf=buf
+entry=0x7f7e228e8b08, nbytes=nbytes
+entry=8) at ../sysdeps/unix/sysv/linux/read.c:24
+#2  0x00007f7e275ebf39 in event_wait (eventhdl=<optimized out>) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:2844
+#3  consume_socket (thread_index=<optimized out>, sp=0x55bdf696e1f0, ctx=0x55bdf8311300) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17651
+#4  worker_thread_run (thread_args=0x55bdf64365d0, thread_args=0x55bdf64365d0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17805
+#5  worker_thread (thread_func_param=0x55bdf64365d0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17929
+#6  0x00007f7e41bd1fa3 in start_thread (arg=<optimized out>) at pthread_create.c:486
+#7  0x00007f7e41b0306f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 5 (Thread 0x7f7e230ee700 (LWP 2006)):
+#0  __libc_read (nbytes=8, buf=0x7f7e230e9b08, fd=7) at ../sysdeps/unix/sysv/linux/read.c:26
+#1  __libc_read (fd=7, buf=buf
+entry=0x7f7e230e9b08, nbytes=nbytes
+entry=8) at ../sysdeps/unix/sysv/linux/read.c:24
+#2  0x00007f7e275ebf39 in event_wait (eventhdl=<optimized out>) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:2844
+#3  consume_socket (thread_index=<optimized out>, sp=0x55bdf696d820, ctx=0x55bdf8311300) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17651
+#4  worker_thread_run (thread_args=0x55bdf64363e0, thread_args=0x55bdf64363e0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17805
+#5  worker_thread (thread_func_param=0x55bdf64363e0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17929
+#6  0x00007f7e41bd1fa3 in start_thread (arg=<optimized out>) at pthread_create.c:486
+#7  0x00007f7e41b0306f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 4 (Thread 0x7f7e238ef700 (LWP 2005)):
+#0  __libc_read (nbytes=8, buf=0x7f7e238eab08, fd=6) at ../sysdeps/unix/sysv/linux/read.c:26
+#1  __libc_read (fd=6, buf=buf
+entry=0x7f7e238eab08, nbytes=nbytes
+entry=8) at ../sysdeps/unix/sysv/linux/read.c:24
+#2  0x00007f7e275ebf39 in event_wait (eventhdl=<optimized out>) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:2844
+#3  consume_socket (thread_index=<optimized out>, sp=0x55bdf696ce50, ctx=0x55bdf8311300) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17651
+#4  worker_thread_run (thread_args=0x55bdf64361f0, thread_args=0x55bdf64361f0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17805
+#5  worker_thread (thread_func_param=0x55bdf64361f0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17929
+#6  0x00007f7e41bd1fa3 in start_thread (arg=<optimized out>) at pthread_create.c:486
+#7  0x00007f7e41b0306f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 3 (Thread 0x7f7e240f0700 (LWP 2004)):
+#0  __libc_read (nbytes=8, buf=0x7f7e240ebb08, fd=5) at ../sysdeps/unix/sysv/linux/read.c:26
+#1  __libc_read (fd=5, buf=buf
+entry=0x7f7e240ebb08, nbytes=nbytes
+entry=8) at ../sysdeps/unix/sysv/linux/read.c:24
+#2  0x00007f7e275ebf39 in event_wait (eventhdl=<optimized out>) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:2844
+#3  consume_socket (thread_index=<optimized out>, sp=0x55bdf696c480, ctx=0x55bdf8311300) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17651
+#4  worker_thread_run (thread_args=0x55bdf6436000, thread_args=0x55bdf6436000) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17805
+#5  worker_thread (thread_func_param=0x55bdf6436000) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:17929
+#6  0x00007f7e41bd1fa3 in start_thread (arg=<optimized out>) at pthread_create.c:486
+#7  0x00007f7e41b0306f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 2 (Thread 0x7f7e248f1700 (LWP 2003)):
+#0  0x00007f7e41af86f9 in __GI___poll (fds=fds
+entry=0x55bdf7b326f0, nfds=1, timeout=timeout
+entry=200) at ../sysdeps/unix/sysv/linux/poll.c:29
+#1  0x00007f7e275ddea8 in master_thread_run (thread_func_param=0x55bdf8311300) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:18074
+#2  master_thread (thread_func_param=0x55bdf8311300) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/net/http/civetweb/civetweb.c:18165
+#3  0x00007f7e41bd1fa3 in start_thread (arg=<optimized out>) at pthread_create.c:486
+#4  0x00007f7e41b0306f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 1 (Thread 0x7f7e4196ea40 (LWP 1219)):
+#0  0x00007f7e41ad030a in __GI___waitpid (pid=2031, stat_loc=stat_loc
+entry=0x7ffce3133c28, options=options
+entry=0) at ../sysdeps/unix/sysv/linux/waitpid.c:30
+#1  0x00007f7e41a4e70f in do_system (line=<optimized out>) at ../sysdeps/posix/system.c:149
+#2  0x00007f7e4224c913 in TUnixSystem::Exec (shellcmd=<optimized out>, this=0x55bdf0bc37c0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/core/unix/src/TUnixSystem.cxx:2104
+#3  TUnixSystem::StackTrace (this=0x55bdf0bc37c0) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/core/unix/src/TUnixSystem.cxx:2395
+#4  0x00007f7e3410477f in FairLogger::LogFatalMessage () at /home/uhlig/containers/home/debian10/software/fairroot/fairtools/FairLogger.cxx:196
+#5  0x00007f7e27ef46b8 in std::function<void ()>::operator()() const (this=0x7f7e27f19980 <fair::Logger::fFatalCallback>) at /usr/include/c++/8/bits/std_function.h:682
+#6  fair::Logger::~Logger (this=0x7ffce3136110, __in_chrg=<optimized out>) at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/fairlogger/logger/Logger.cxx:274
+#7  0x00007f7e2858b48e in UcesbSource::InitUnpackers (this=0x55bdf27f4540) at /usr/include/c++/8/ext/new_allocator.h:86
+#8  0x00007f7e272a5bce in FairRunOnline::Init (this=0x55bdf580b7c0) at /usr/include/c++/8/bits/unique_ptr.h:342
+#9  0x00007f7e41f0f91b in ?? ()
+#10 0x000055bdf0ceedb0 in ?? ()
+#11 0x000055bdf669ecc0 in ?? ()
+#12 0x00007f7e3c906810 in ?? () from /cvmfs/fairsoft.gsi.de/debian10/fairsoft/nov22p1//lib/libCling.so
+#13 0x00007ffce3136fe0 in ?? ()
+#14 0x00007f7e41e96c20 in ?? () from /lib/x86_64-linux-gnu/libstdc++.so.6
+#15 0x000055bdf0cef200 in ?? ()
+#16 0x00007f7e41e97e20 in ?? () from /lib/x86_64-linux-gnu/libstdc++.so.6
+#17 0x000055bdf580b7c0 in ?? ()
+#18 0x00007ffce3136f80 in ?? ()
+#19 0x00007f7e42168c00 in ?? () at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/core/base/src/TString.cxx:2431 from /cvmfs/fairsoft.gsi.de/debian10/fairsoft/nov22p1//lib/libCore.so.6.26
+#20 0xffffffff00000000 in ?? ()
+#21 0x00007f7e42168ed0 in ?? () at /home/uhlig/containers/home/debian10/software/fairsoft/nov22p1/build/Source/root/core/base/src/TString.cxx:98 from /cvmfs/fairsoft.gsi.de/debian10/fairsoft/nov22p1//lib/libCore.so.6.26
+#22 0x000055bdf27f4540 in ?? ()
+#23 0x00007f7e41f10380 in ?? ()
+#24 0x000055bdf6436880 in ?? ()
+#25 0x000055bdf4fb2d70 in ?? ()
+#26 0x0000000100000000 in ?? ()
+#27 0x0000000000000000 in ?? ()

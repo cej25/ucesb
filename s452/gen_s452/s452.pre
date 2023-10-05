@@ -1,0 +1,157 @@
+# 1 "s452.spec"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
+# 1 "s452.spec"
+
+
+# 1 "whiterabbit.spec" 1
+TIMESTAMP_WHITERABBIT(id)
+{
+ MEMBER(DATA12 subsystem_id);
+ MEMBER(DATA16 t1);
+ MEMBER(DATA16 t2);
+ MEMBER(DATA16 t3);
+ MEMBER(DATA16 t4);
+
+ UINT32 header NOENCODE {
+  0_11: id = MATCH(id);
+  12_15: 0;
+     16: error_bit;
+  17_31: 0;
+  ENCODE(subsystem_id, (value=id));
+ };
+ UINT32 d1 NOENCODE {
+  0_15: t1;
+  16_31: 0x03e1;
+  ENCODE(t1, (value=t1));
+ };
+ UINT32 d2 NOENCODE {
+  0_15: t2;
+  16_31: 0x04e1;
+  ENCODE(t2, (value=t2));
+ };
+ UINT32 d3 NOENCODE {
+  0_15: t3;
+  16_31: 0x05e1;
+  ENCODE(t3, (value=t3));
+ };
+ UINT32 d4 NOENCODE {
+  0_15: t4;
+  16_31: 0x06e1;
+  ENCODE(t4, (value=t4));
+ };
+}
+
+TIMESTAMP_WHITERABBIT_EXTENDED(id)
+{
+ MEMBER(DATA16 subsystem_id);
+ MEMBER(DATA16 t1);
+ MEMBER(DATA16 t2);
+ MEMBER(DATA16 t3);
+ MEMBER(DATA16 t4);
+
+ UINT32 header NOENCODE {
+  0_12: id = MATCH(id);
+  13_15: 0;
+     16: error_bit;
+  17_31: 0;
+  ENCODE(subsystem_id, (value=id));
+ };
+ UINT32 d1 NOENCODE {
+  0_15: t1;
+  16_31: 0x03e1;
+  ENCODE(t1, (value=t1));
+ };
+ UINT32 d2 NOENCODE {
+  0_15: t2;
+  16_31: 0x04e1;
+  ENCODE(t2, (value=t2));
+ };
+ UINT32 d3 NOENCODE {
+  0_15: t3;
+  16_31: 0x05e1;
+  ENCODE(t3, (value=t3));
+ };
+ UINT32 d4 NOENCODE {
+  0_15: t4;
+  16_31: 0x06e1;
+  ENCODE(t4, (value=t4));
+ };
+}
+
+WR_MULTI()
+{
+ MEMBER(DATA32 time_hi);
+ MEMBER(DATA32 time_lo);
+
+ UINT32 hi NOENCODE {
+  0_31: time;
+  ENCODE(time_hi, (value = time));
+ }
+ UINT32 lo NOENCODE {
+  0_31: time;
+  ENCODE(time_lo, (value = time));
+ }
+}
+# 4 "s452.spec" 2
+# 1 "config/setup.hh" 1
+# 5 "s452.spec" 2
+
+external EXT_AIDA();
+
+
+external EXT_FATIMA_TAMEX();
+external EXT_PLASTIC();
+external EXT_PLASTIC_TP();
+external EXT_FRS(procid, type, subtype);
+# 44 "s452.spec"
+SUBEVENT(plastic_subev)
+{
+    ts = TIMESTAMP_WHITERABBIT(id=0x500);
+    if (0)
+    {
+        external data_tp = EXT_PLASTIC_TP();
+    }
+    else
+    {
+        external data = EXT_PLASTIC();
+    }
+
+}
+
+SUBEVENT(frs_whiterabbit_subev)
+{
+    ts = TIMESTAMP_WHITERABBIT(id=0x100);
+}
+# 89 "s452.spec"
+EVENT
+{
+
+
+
+
+    plastic = plastic_subev(type = 10, subtype = 1, procid = 80, control = 20, subcrate = 0);
+# 111 "s452.spec"
+    ignore_unknown_subevent;
+};
+
+# 1 "mapping.hh" 1
+# 1 "mapping_ge_febex.hh" 1
+
+SIGNAL(GeFired, , uint32);
+SIGNAL(Sum_Time_lo_28, , uint32);
+SIGNAL(Sum_Time_hi_28, , uint32);
+SIGNAL(Hit_Pattern_28, , uint32);
+SIGNAL(Chan_Time_lo_28, , uint32);
+SIGNAL(Chan_Time_hi_28, , uint32);
+SIGNAL(Chan_Energy_28, , uint32);
+SIGNAL(Chan_CF_lo_28, , uint32);
+SIGNAL(Chan_CF_hi_28, , uint32);
+SIGNAL(Pileup_28, , uint32);
+SIGNAL(Overflow_28, , uint32);
+SIGNAL(det_ids_28, , uint32);
+SIGNAL(crystal_ids_28, , uint32);
+# 2 "mapping.hh" 2
+# 114 "s452.spec" 2

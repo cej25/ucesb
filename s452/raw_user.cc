@@ -164,70 +164,70 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
     if (BPLAST_USED)
     {   
         
-        std::ifstream bfile("s452/config/bPlast_TAMEX_allocation.txt");
-        bPlast_Map map = load_bPlast_allocation(bfile); 
+        // std::ifstream bfile("s452/config/bPlast_TAMEX_allocation.txt");
+        // bPlast_Map map = load_bPlast_allocation(bfile); 
 
         
-        // only 3 (or number of tamex modules?) in go4, but keeping 4 for consistency for now....
-        int Phys_Channel_Lead_bPlas[4][BPLAST_CHAN_PER_DET];
-        // 3+1 for modules....the go4 code is insane.
-        int bPlast_PMT_Lead_N[BPLAST_TAMEX_MODULES+1][BPLAST_CHAN_PER_DET];
-        for (int i = 0; i < BPLAST_TAMEX_MODULES+1; i++)
-        {
-            for (int j = 0; j < BPLAST_CHAN_PER_DET; j++)
-            {
-                bPlast_PMT_Lead_N[i][j] = 0;
-            }
-        }
+        // // only 3 (or number of tamex modules?) in go4, but keeping 4 for consistency for now....
+        // int Phys_Channel_Lead_bPlas[4][BPLAST_CHAN_PER_DET];
+        // // 3+1 for modules....the go4 code is insane.
+        // int bPlast_PMT_Lead_N[BPLAST_TAMEX_MODULES+1][BPLAST_CHAN_PER_DET];
+        // for (int i = 0; i < BPLAST_TAMEX_MODULES+1; i++)
+        // {
+        //     for (int j = 0; j < BPLAST_CHAN_PER_DET; j++)
+        //     {
+        //         bPlast_PMT_Lead_N[i][j] = 0;
+        //     }
+        // }
         
 
-        // loop through tamex_iter (set to for now but maybe can be variable)
-        for (int i = 0; i < 4; i++) 
-        {   
+        // // loop through tamex_iter (set to for now but maybe can be variable)
+        // for (int i = 0; i < 4; i++) 
+        // {   
 
-            //raw_event->amFired[i] = event->plastic.data.plastic_info.am_fired[i];
-            int chan = -1;
-            int detNum = -1;
-            // loop through however many fired at amFired[i]
-            for (int j = 0; j < event->plastic.data.plastic_info.am_fired[i]; j++)
-            {   
-                // is this the correct variable?
-                if (j < PLASTIC_MAX_ITER)
-                {   
-                    // lead odd, trail even
-                    if (event->plastic.data.plastic_info.ch_ID_edge[i][j] % 2 == 1)
-                    {   
+        //     //raw_event->amFired[i] = event->plastic.data.plastic_info.am_fired[i];
+        //     int chan = -1;
+        //     int detNum = -1;
+        //     // loop through however many fired at amFired[i]
+        //     for (int j = 0; j < event->plastic.data.plastic_info.am_fired[i]; j++)
+        //     {   
+        //         // is this the correct variable?
+        //         if (j < PLASTIC_MAX_ITER)
+        //         {   
+        //             // lead odd, trail even
+        //             if (event->plastic.data.plastic_info.ch_ID_edge[i][j] % 2 == 1)
+        //             {   
                     
-                        Phys_Channel_Lead_bPlas[i][j] = map.TAMEX_bPlast_Chan[i][((event->plastic.data.plastic_info.ch_ID_edge[i][j]+1)/2-1)];
-                        chan = Phys_Channel_Lead_bPlas[i][j];
+        //                 Phys_Channel_Lead_bPlas[i][j] = map.TAMEX_bPlast_Chan[i][((event->plastic.data.plastic_info.ch_ID_edge[i][j]+1)/2-1)];
+        //                 chan = Phys_Channel_Lead_bPlas[i][j];
 
-                        if (chan > -1)
-                        {   
-                            detNum = map.TAMEX_bPlast_Det[i][((event->plastic.data.plastic_info.ch_ID_edge[i][j]+1)/2-1)];
-                            //raw_event->bPlastDetNum = detNum; // should this be passed along? 
-                            //raw_event->bPlastChan[detNum] = chan; // "..." 
-                            bPlast_PMT_Lead_N[detNum][chan]++;
-                            //raw_event->bPlastPMTLeadN[detNum][chan] = bPlast_PMT_Lead_N[detNum][chan];
-                            int N1 = bPlast_PMT_Lead_N[detNum][chan];
-                            if (N1 > 100) // BPLAST_TAMEX_HITS
-                            {
-                                N1 = -1;
-                            }
-                            if (N1 > -1 && N1 < 100)
-                            {   
-                                /*if ((event->plastic.data.plastic_info.edge_coarse[i][j]-event->plastic.data.plastic_info.edge_fine[i][j]) > 0)
-                                {   
-                                    std::cout << "not zero raw_user: det - " << i << " - chan - " << j << std::endl;
-                                    std::cout << "hello " << (event->plastic.data.plastic_info.edge_coarse[i][j]-event->plastic.data.plastic_info.edge_fine[i][j]) << std::endl;
-                                }*/
-                                raw_event->bPlastPMTLead[detNum][chan][N1] = (event->plastic.data.plastic_info.edge_coarse[i][j]-event->plastic.data.plastic_info.edge_fine[i][j]);
-                            }
+        //                 if (chan > -1)
+        //                 {   
+        //                     detNum = map.TAMEX_bPlast_Det[i][((event->plastic.data.plastic_info.ch_ID_edge[i][j]+1)/2-1)];
+        //                     //raw_event->bPlastDetNum = detNum; // should this be passed along? 
+        //                     //raw_event->bPlastChan[detNum] = chan; // "..." 
+        //                     bPlast_PMT_Lead_N[detNum][chan]++;
+        //                     //raw_event->bPlastPMTLeadN[detNum][chan] = bPlast_PMT_Lead_N[detNum][chan];
+        //                     int N1 = bPlast_PMT_Lead_N[detNum][chan];
+        //                     if (N1 > 100) // BPLAST_TAMEX_HITS
+        //                     {
+        //                         N1 = -1;
+        //                     }
+        //                     if (N1 > -1 && N1 < 100)
+        //                     {   
+        //                         /*if ((event->plastic.data.plastic_info.edge_coarse[i][j]-event->plastic.data.plastic_info.edge_fine[i][j]) > 0)
+        //                         {   
+        //                             std::cout << "not zero raw_user: det - " << i << " - chan - " << j << std::endl;
+        //                             std::cout << "hello " << (event->plastic.data.plastic_info.edge_coarse[i][j]-event->plastic.data.plastic_info.edge_fine[i][j]) << std::endl;
+        //                         }*/
+        //                         raw_event->bPlastPMTLead[detNum][chan][N1] = (event->plastic.data.plastic_info.edge_coarse[i][j]-event->plastic.data.plastic_info.edge_fine[i][j]);
+        //                     }
 
-                        }   
+        //                 }   
 
-                    }
-                }
-            }
+        //             }
+        //         }
+        //     }
 
 
 

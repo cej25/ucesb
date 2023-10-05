@@ -1,3 +1,5 @@
+// -*- C++ -*-
+
 // ZSM(128) is a somewhat arbitrary i think? 
 // Especially as we discard anything beyond 10. 
 // Maybe can choose 64 or 32? 32 is max?

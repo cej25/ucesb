@@ -1,0 +1,35 @@
+external_writer.o obj_s452/external_writer.d : /u/jbormans/ucesb/hbook/external_writer.cc \
+ /u/jbormans/ucesb/hbook/external_writer.hh \
+ /u/jbormans/ucesb/lu_common/forked_child.hh \
+ /u/jbormans/ucesb/hbook/ext_file_writer.hh \
+ /u/jbormans/ucesb/hbook/ext_data_proto.h \
+ /u/jbormans/ucesb/hbook/ext_data_client.h \
+ /u/jbormans/ucesb/hbook/staged_ntuple.hh \
+ /u/jbormans/ucesb/hbook/hbook.hh \
+ /u/jbormans/ucesb/hbook/writing_ntuple.hh \
+ /u/jbormans/ucesb/hbook/ntuple_item.hh \
+ /u/jbormans/ucesb/eventloop/util.hh \
+ /u/jbormans/ucesb/eventloop/typedef.hh \
+ /u/jbormans/ucesb/eventloop/error.hh \
+ /u/jbormans/ucesb/eventloop/location.hh \
+ /u/jbormans/ucesb/mapcalib/file_line.hh \
+ /u/jbormans/ucesb/mapcalib/../common/file_line.hh \
+ /u/jbormans/ucesb/eventloop/util.hh \
+ /u/jbormans/ucesb/lu_common/markconvbold.hh \
+ /u/jbormans/ucesb/lu_common/markconvbold.h \
+ /u/jbormans/ucesb/lu_common/colourtext.hh \
+ /u/jbormans/ucesb/lu_common/colourtext.h \
+ /u/jbormans/ucesb/eventloop/optimise.hh \
+ /u/jbormans/ucesb/mapcalib/mc_def.hh \
+ /u/jbormans/ucesb/mapcalib/../common/signal_id.hh \
+ /u/jbormans/ucesb/eventloop/signal_id_extra.hh \
+ /u/jbormans/ucesb/mapcalib/../common/file_line.hh \
+ /u/jbormans/ucesb/mapcalib/../common/node.hh \
+ /u/jbormans/ucesb/mapcalib/map_info.hh \
+ /u/jbormans/ucesb/eventloop/signal_id_map.hh \
+ /u/jbormans/ucesb/eventloop/../common/signal_id.hh \
+ /u/jbormans/ucesb/eventloop/enumerate.hh \
+ /u/jbormans/ucesb/eventloop/error.hh \
+ /u/jbormans/ucesb/mapcalib/file_line.hh \
+ /u/jbormans/ucesb/mapcalib/calib_info.hh \
+ /u/jbormans/ucesb/mapcalib/../common/prefix_unit.hh

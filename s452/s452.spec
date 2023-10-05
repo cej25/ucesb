@@ -2,7 +2,9 @@
 
 #include "whiterabbit.spec"
 #include "frs.spec"
+#include "gsi_tamex4.spec"
 #include "config/setup.hh"
+
 
 external EXT_FRS(procid, type, subtype);
 external EXT_GERMANIUM();
@@ -12,6 +14,17 @@ external EXT_PLASTIC_TP();
 external EXT_PLASTIC();
 external EXT_AIDA();
 
+
+TAMEX_SFP(sfp)
+{
+    select several {
+    card[0] = TAMEX4_SFP(sfp = sfp, card = 0);
+    card[1] = TAMEX4_SFP(sfp = sfp, card = 1);
+    card[2] = TAMEX4_SFP(sfp = sfp, card = 2);
+    card[3] = TAMEX4_SFP(sfp = sfp, card = 3);
+    card[4] = TAMEX4_SFP(sfp = sfp, card = 4);
+    }
+}
 DUMMY()
 {
     UINT32 no NOENCODE;
@@ -106,7 +119,16 @@ SUBEVENT(plastic_subev)
         }
         else
         {
-            external data = EXT_PLASTIC();
+            // external data = EXT_PLASTIC();
+            header = TAMEX4_HEADER();
+            select several
+            {
+                padding = TAMEX4_PADDING();
+            }
+            select several
+            {
+                crate[0] = TAMEX_SFP(sfp=0);
+            }
         }
     }
     else
@@ -118,6 +140,7 @@ SUBEVENT(plastic_subev)
     }
 
 }
+
 
 SUBEVENT(frs_whiterabbit_subev)
 {

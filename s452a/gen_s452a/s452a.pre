@@ -129,7 +129,7 @@ FEBEX_EVENT(){
 
     MEMBER(DATA8 pileup[16]);
  MEMBER(DATA8 overflow[16]);
-
+    MEMBER(DATA8 channel_cfd[16] ZERO_SUPPRESS);
  MEMBER(DATA32 channel_energy[16] ZERO_SUPPRESS);
 
     UINT32 sumchannel NOENCODE{
@@ -192,6 +192,7 @@ FEBEX_EVENT(){
             30: pileup_flag;
             31: overflow_flag;
 
+            ENCODE(channel_cfd[index], (value = TSF));
             ENCODE(channel_energy[index], (value = chan_energy));
             ENCODE(pileup[index], (value = pileup_flag));
             ENCODE(overflow[index], (value = overflow_flag));
@@ -230,10 +231,10 @@ EVENT
 
 
 SIGNAL(wr_subsystem_id, germanium.ts.subsystem_id,DATA12);
-SIGNAL(wr_t1, germanium.ts.t1, DATA12);
-SIGNAL(wr_t2, germanium.ts.t2, DATA12);
-SIGNAL(wr_t3, germanium.ts.t3, DATA12);
-SIGNAL(wr_t4, germanium.ts.t4, DATA12);
+SIGNAL(wr_t1, germanium.ts.t1, DATA16);
+SIGNAL(wr_t2, germanium.ts.t2, DATA16);
+SIGNAL(wr_t3, germanium.ts.t3, DATA16);
+SIGNAL(wr_t4, germanium.ts.t4, DATA16);
 
 SIGNAL(board_id, germanium.data.board_id, DATA8);
 SIGNAL(event_trigger_time_hi, germanium.data.event_trigger_time_hi, DATA32);
@@ -246,6 +247,7 @@ SIGNAL(overflow1, germanium.data.overflow[0], overflow16, germanium.data.overflo
 
 
 SIGNAL(channel_id1,germanium.data.channel_id[0],channel_id16,germanium.data.channel_id[15],DATA8);
+SIGNAL(channel_cfd1,germanium.data.channel_cfd[0],channel_cfd16,germanium.data.channel_cfd[15],DATA8);
 SIGNAL(channel_trigger_time_hi1,germanium.data.channel_trigger_time_hi[0],channel_trigger_time_hi16,germanium.data.channel_trigger_time_hi[15],DATA16);
 SIGNAL(channel_trigger_time_lo1,germanium.data.channel_trigger_time_lo[0],channel_trigger_time_lo16,germanium.data.channel_trigger_time_lo[15],DATA32);
 SIGNAL(channel_energy1,germanium.data.channel_energy[0],channel_energy16,germanium.data.channel_energy[15],DATA32);

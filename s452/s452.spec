@@ -2,10 +2,10 @@
 
 #include "whiterabbit.spec"
 #include "frs.spec"
+#include "ge_febex.spec"
 #include "config/setup.hh"
 
 external EXT_FRS(procid, type, subtype);
-external EXT_GERMANIUM();
 external EXT_FATIMA_VME();
 external EXT_FATIMA_TAMEX(); // twinpeaks?
 external EXT_PLASTIC_TP();

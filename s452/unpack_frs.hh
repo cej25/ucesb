@@ -7,7 +7,7 @@
 #include "data_src.hh"
 #include "dummy_external.hh"
 #include "external_data.hh"
-#include "zero_suppress.hh"
+//#include "zero_suppress.hh"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -24,10 +24,10 @@ struct frs_item
     // tpat stuff
     bool skip;
     uint32 tpat_main[32];
-    uint8 utpat; // ints before vv?
-    uint8 uphystrig;
-    uint8 unbtrig;
-    uint8 umaxtrig; // ^^
+    uint32 utpat; // ints before vv? // uint8?
+    uint32 uphystrig;
+    uint32 unbtrig;
+    uint32 umaxtrig; // ^^
 
     // frs crate
     uint32 vme_frs[21][32];
@@ -185,7 +185,7 @@ struct frs_item
     int smaxtrig;
 
     uint32 sc_long[64];
-    uint32 sc_long2[64]; // not sure how long
+    uint32 sc_long2[64]; // UNUSED or i made a mistake? check
 
     int v1190_channel_dt[7][4];
     int v1190_channel_lt[7][2];
@@ -476,12 +476,12 @@ struct frs_item
 
     void __clean() {};
 
-    void dump(const signal_id &id,pretty_dump_info &pdi) const;
-    void show_members(const signal_id &id,const char *unit) const;
-    void enumerate_members(const signal_id &__id, const enumerate_info &__info, enumerate_fcn __callback, void *__extra) const;
+   // void dump(const signal_id &id,pretty_dump_info &pdi) const;
+   void show_members(const signal_id &id,const char *unit) const;
+   // void enumerate_members(const signal_id &__id, const enumerate_info &__info, enumerate_fcn __callback, void *__extra) const;
     void zero_suppress_info_ptrs(used_zero_suppress_info &used_info);
-    const char* get_name(const std::string &name, int index) const;
-    const char* get_name2(const std::string &name, int index, int index2) const;
+   // const char* get_name(const std::string &name, int index) const;
+   // const char* get_name2(const std::string &name, int index, int index2) const;
 
 };
 
@@ -505,6 +505,8 @@ class EXT_FRS
         void Setup_Conditions();
         void Setup_FRS_Parameters();
 
+        template<typename __data_src_t>
+        void FRS_Unpack(__data_src_t &__buffer, frs_item &item, int procid, int type, int subtype);
         void FRS_Sort(frs_item &item, int procid, int type, int subtype);
         void FRS_Calib(frs_item &item, int procid, int type, int subtype);
         void FRS_Anal(frs_item &item, int procid, int type, int subtype);
@@ -520,11 +522,15 @@ class EXT_FRS
         // float float float int
         bool Check_PolyCond_X_Y(float X, float Y, double V[][2], int n);
 
-        void dump(const signal_id &id,pretty_dump_info &pdi) const;
-        void show_members(const signal_id &id,const char *unit) const;
-        void enumerate_members(const signal_id &__id, const enumerate_info &__info, enumerate_fcn __callback, void *__extra) const;
-        void zero_suppress_info_ptrs(used_zero_suppress_info& used_info);
-        const char* get_name(const std::string &name, int index) const;
+        // void dump(const signal_id &id,pretty_dump_info &pdi) const;
+        // void show_members(const signal_id &id,const char *unit) const;
+        // void enumerate_members(const signal_id &__id, const enumerate_info &__info, enumerate_fcn __callback, void *__extra) const;
+        //void zero_suppress_info_ptrs(used_zero_suppress_info& used_info);
+        // const char* get_name(const std::string &name, int index) const;
+        DUMMY_EXTERNAL_DUMP(EXT_FRS);
+        DUMMY_EXTERNAL_SHOW_MEMBERS(EXT_FRS);
+        DUMMY_EXTERNAL_ENUMERATE_MEMBERS(EXT_FRS);
+        DUMMY_EXTERNAL_ZERO_SUPPRESS_INFO_PTRS(EXT_FRS);
 
     public:
         //raw_list_ii_zero_suppress<frs_item, frs_item, FRS_MAX_HITS> frs_info;

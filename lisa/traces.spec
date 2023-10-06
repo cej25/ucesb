@@ -1,5 +1,5 @@
 #define TRACE_SIZE 10000 // some maximum size?
-#define TRACE_CHANNELS 2
+#define TRACE_CHANNELS 16
 
 FEBEX_TRACES()
 {

@@ -8,10 +8,8 @@
 void raw_user_function(unpack_event *event, raw_event *raw_event)
 {   
 
-<<<<<<< HEAD
 
     //raw_event->Sum.Time.lo = event->germanium.data.febex_info.Sum_Time_lo;
-=======
     /*if (FRS_USED)
     {   
        
@@ -24,7 +22,6 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
                 nhit_v1290[i][j] = 0;
             }
         }
->>>>>>> main
 
         // first loop = 32. this is multi hit.
         // we will discard anything above 9 (>=10)
@@ -84,28 +81,6 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
             raw_event->SCLONG[i+32] = event->frs_main_crate.data.frs_info.scaler_main[i]; 
         }
 
-    }
-
-    if (GERMANIUM_USED)
-    {
-        /*// germanium mapping
-        raw_event->GeFired = event->germanium.data.febex_info.Ge_Fired;
-        // for (int i = 0; i < raw_event->GeFired; i++)
-        for (int i = 0; i < 28; i++)
-        {
-            raw_event->Sum.Time.lo[i] = event->germanium.data.febex_info.Sum_Time_lo[i];
-            raw_event->Sum.Time.hi[i] = event->germanium.data.febex_info.Sum_Time_hi[i];
-            raw_event->Hit.Pattern[i] = event->germanium.data.febex_info.Hit_Pattern[i];
-            raw_event->Chan.Time.lo[i] = event->germanium.data.febex_info.Chan_Time_lo[i];
-            raw_event->Chan.Time.hi[i] = event->germanium.data.febex_info.Chan_Time_hi[i];
-            raw_event->Chan.Energy[i] = event->germanium.data.febex_info.Chan_Energy[i]; 
-            raw_event->Chan.CF.lo[i] = event->germanium.data.febex_info.Chan_CF_lo[i];
-            raw_event->Chan.CF.hi[i] = event->germanium.data.febex_info.Chan_CF_hi[i];
-            raw_event->Pileup[i] = event->germanium.data.febex_info.Pileup[i];
-            raw_event->Overflow[i] = event->germanium.data.febex_info.Overflow[i];
-            raw_event->det.ids[i] = event->germanium.data.febex_info.det_ids[i];
-            raw_event->crystal.ids[i] = event->germanium.data.febex_info.crystal_ids[i];       
-        }*/
     }
 
     if (FATIMA_USED)

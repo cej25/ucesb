@@ -46,20 +46,14 @@ SUBEVENT(aida_subev)
 
 SUBEVENT(germanium_subev)
 {
+    ts = TIMESTAMP_WHITERABBIT(id=0x400);
 
-    if (GERMANIUM_USED)
-    {
-        ts = TIMESTAMP_WHITERABBIT(id=0x400);
-        external data = EXT_GERMANIUM();
+    select several{
+    padding = FEBEX_PADDING();
     }
-    else
-    {
-        select several
-        {
-            dummy = DUMMY();
-        }
+    select several{  // do once per card
+    data = FEBEX_EVENT();
     }
-
 }
 
 SUBEVENT(fatima_vme_subev)
@@ -225,7 +219,7 @@ SUBEVENT(frs_tof_crate_subev)
 EVENT
 {
     //aida = aida_subev(type = 10, subtype = 1, procid = 90, control = 37, subcrate = 0);
-    //germanium = germanium_subev(type = 10, subtype = 1, procid = 60, control = 20, subcrate = 0);
+    germanium = germanium_subev(type = 10, subtype = 1, procid = 60, control = 20, subcrate = 0);
     //fatima_vme = fatima_vme_subev(type = 10, subtype = 1, procid = 70, control = 20, subcrate = 0);
     //fatima_tamex = fatima_tamex_subev(type = 10, subtype = 1, procid = 75, control = 20, subcrate = 0);
     //plastic = plastic_subev(type = 10, subtype = 1, procid = 80, control = 20, subcrate = 0);

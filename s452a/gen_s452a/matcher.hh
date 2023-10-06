@@ -19,6 +19,7 @@ bool FEBEX_EVENT::__match(__data_src_t &__buffer)
   // MEMBER(DATA32 channel_trigger_time_lo[16] ZERO_SUPPRESS);
   // MEMBER(DATA8 pileup[16]);
   // MEMBER(DATA8 overflow[16]);
+  // MEMBER(DATA8 channel_cfd[16] ZERO_SUPPRESS);
   // MEMBER(DATA32 channel_energy[16] ZERO_SUPPRESS);
   // UINT32 sumchannel NOENCODE
   // {

@@ -27,7 +27,7 @@ FEBEX_EVENT(){
 	
     MEMBER(DATA8 pileup[16]);
 	MEMBER(DATA8 overflow[16]);
-
+    MEMBER(DATA8 channel_cfd[16] ZERO_SUPPRESS);
 	MEMBER(DATA32 channel_energy[16] ZERO_SUPPRESS);
  
     UINT32 sumchannel NOENCODE{ //this is the header.
@@ -90,6 +90,7 @@ FEBEX_EVENT(){
             30: pileup_flag;
             31: overflow_flag;
             
+            ENCODE(channel_cfd[index], (value = TSF));
             ENCODE(channel_energy[index], (value = chan_energy));
             ENCODE(pileup[index], (value = pileup_flag));
             ENCODE(overflow[index], (value = overflow_flag));

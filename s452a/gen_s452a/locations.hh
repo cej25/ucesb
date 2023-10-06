@@ -21,9 +21,9 @@ location spec_locations[] =
   { 100, 1, "config/setup.hh" },
   { 101, 5, "s452a.spec" },
   { 103, 1, "febex.spec" },
-  { 205, 7, "s452a.spec" },
-  { 230, 1, "mapping.hh" },
-  { 253, 31, "s452a.spec" },
+  { 206, 7, "s452a.spec" },
+  { 231, 1, "mapping.hh" },
+  { 255, 31, "s452a.spec" },
 };
 
 /** END_LOCATIONS *****************************************************/

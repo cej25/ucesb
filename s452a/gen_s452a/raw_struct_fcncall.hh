@@ -221,6 +221,17 @@ FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_channel)::FCNCALL_NAME(raw_event_c
   }
   FCNCALL_SUBNAME_END;
   }
+  // DATA8 cfd[16];
+  {
+  FCNCALL_SUBNAME("cfd");
+  FCNCALL_FOR(__i0,16)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(cfd__i0,,__i0,cfd[__i0].FCNCALL_CALL(cfd[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
   // raw_event_channel_trigger trigger;
   {
   FCNCALL_SUBNAME("trigger");

@@ -10,6 +10,22 @@
 // it is used to initialize a structure.
 
 SIGNAL_MAPPING(DATA8,board_id,germanium.data.board_id,board.id);
+SIGNAL_MAPPING(DATA8,channel_cfd1,germanium.data.channel_cfd[0],channel.cfd[0]);
+SIGNAL_MAPPING(DATA8,channel_cfd10,germanium.data.channel_cfd[9],channel.cfd[9]);
+SIGNAL_MAPPING(DATA8,channel_cfd11,germanium.data.channel_cfd[10],channel.cfd[10]);
+SIGNAL_MAPPING(DATA8,channel_cfd12,germanium.data.channel_cfd[11],channel.cfd[11]);
+SIGNAL_MAPPING(DATA8,channel_cfd13,germanium.data.channel_cfd[12],channel.cfd[12]);
+SIGNAL_MAPPING(DATA8,channel_cfd14,germanium.data.channel_cfd[13],channel.cfd[13]);
+SIGNAL_MAPPING(DATA8,channel_cfd15,germanium.data.channel_cfd[14],channel.cfd[14]);
+SIGNAL_MAPPING(DATA8,channel_cfd16,germanium.data.channel_cfd[15],channel.cfd[15]);
+SIGNAL_MAPPING(DATA8,channel_cfd2,germanium.data.channel_cfd[1],channel.cfd[1]);
+SIGNAL_MAPPING(DATA8,channel_cfd3,germanium.data.channel_cfd[2],channel.cfd[2]);
+SIGNAL_MAPPING(DATA8,channel_cfd4,germanium.data.channel_cfd[3],channel.cfd[3]);
+SIGNAL_MAPPING(DATA8,channel_cfd5,germanium.data.channel_cfd[4],channel.cfd[4]);
+SIGNAL_MAPPING(DATA8,channel_cfd6,germanium.data.channel_cfd[5],channel.cfd[5]);
+SIGNAL_MAPPING(DATA8,channel_cfd7,germanium.data.channel_cfd[6],channel.cfd[6]);
+SIGNAL_MAPPING(DATA8,channel_cfd8,germanium.data.channel_cfd[7],channel.cfd[7]);
+SIGNAL_MAPPING(DATA8,channel_cfd9,germanium.data.channel_cfd[8],channel.cfd[8]);
 SIGNAL_MAPPING(DATA32,channel_energy1,germanium.data.channel_energy[0],channel.energy[0]);
 SIGNAL_MAPPING(DATA32,channel_energy10,germanium.data.channel_energy[9],channel.energy[9]);
 SIGNAL_MAPPING(DATA32,channel_energy11,germanium.data.channel_energy[10],channel.energy[10]);

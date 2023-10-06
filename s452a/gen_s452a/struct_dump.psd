@@ -22,6 +22,7 @@ class FEBEX_EVENT
   raw_array_zero_suppress<DATA32,DATA32,16> channel_trigger_time_lo;
   raw_array<DATA8,DATA8,16> pileup;
   raw_array<DATA8,DATA8,16> overflow;
+  raw_array_zero_suppress<DATA8,DATA8,16> channel_cfd;
   raw_array_zero_suppress<DATA32,DATA32,16> channel_energy;
 } ;
 class FEBEX_PADDING
@@ -102,6 +103,8 @@ public:
   STRUCT_MIRROR_TYPE(raw_array) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA8),STRUCT_MIRROR_TEMPLATE_ARG(DATA8),16> STRUCT_MIRROR_NAME(pileup);
   STRUCT_MIRROR_ITEM_CTRL(overflow);
   STRUCT_MIRROR_TYPE(raw_array) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA8),STRUCT_MIRROR_TEMPLATE_ARG(DATA8),16> STRUCT_MIRROR_NAME(overflow);
+  STRUCT_MIRROR_ITEM_CTRL(channel_cfd);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA8),STRUCT_MIRROR_TEMPLATE_ARG(DATA8),16> STRUCT_MIRROR_NAME(channel_cfd);
   STRUCT_MIRROR_ITEM_CTRL(channel_energy);
   STRUCT_MIRROR_TYPE(raw_array_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA32),STRUCT_MIRROR_TEMPLATE_ARG(DATA32),16> STRUCT_MIRROR_NAME(channel_energy);
   STRUCT_MIRROR_FCNS_DECL(FEBEX_EVENT);
@@ -325,6 +328,12 @@ FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(FEBEX_EVENT)::FCNCALL_NAME(FEBEX_EVENT)
   { FCNCALL_CALL_CTRL_WRAP(overflow,overflow.FCNCALL_CALL(overflow)); }
   FCNCALL_SUBNAME_END;
   }
+  // raw_array_zero_suppress<DATA8,DATA8,16> channel_cfd;
+  {
+  FCNCALL_SUBNAME("channel_cfd");
+  { FCNCALL_CALL_CTRL_WRAP(channel_cfd,channel_cfd.FCNCALL_CALL(channel_cfd)); }
+  FCNCALL_SUBNAME_END;
+  }
   // raw_array_zero_suppress<DATA32,DATA32,16> channel_energy;
   {
   FCNCALL_SUBNAME("channel_energy");
@@ -529,6 +538,8 @@ FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(unpack_sticky_event)::FCNCALL_NAME(unpack_st
   // ---
 // raw_array  .overflow(DATA8)[16]
   // ---
+// raw_array_zero_suppress  .channel_cfd(DATA8)[16]
+  // ---
 // raw_array_zero_suppress  .channel_energy(DATA32)[16]
   // ---
 // DATA16 .hit_pattern
@@ -674,6 +685,8 @@ FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(unpack_sticky_event)::FCNCALL_NAME(unpack_st
     // ---
   // raw_array  .overflow(DATA8)[16]
     // ---
+  // raw_array_zero_suppress  .channel_cfd(DATA8)[16]
+    // ---
   // raw_array_zero_suppress  .channel_energy(DATA32)[16]
     // ---
 // TIMESTAMP_WHITERABBIT  .ts
@@ -744,6 +757,8 @@ FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(unpack_sticky_event)::FCNCALL_NAME(unpack_st
     // raw_array  .pileup(DATA8)[16]
       // ---
     // raw_array  .overflow(DATA8)[16]
+      // ---
+    // raw_array_zero_suppress  .channel_cfd(DATA8)[16]
       // ---
     // raw_array_zero_suppress  .channel_energy(DATA32)[16]
       // ---

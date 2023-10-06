@@ -72,6 +72,12 @@ FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(FEBEX_EVENT)::FCNCALL_NAME(FEBEX_EVENT)
   { FCNCALL_CALL_CTRL_WRAP(overflow,overflow.FCNCALL_CALL(overflow)); }
   FCNCALL_SUBNAME_END;
   }
+  // raw_array_zero_suppress<DATA8,DATA8,16> channel_cfd;
+  {
+  FCNCALL_SUBNAME("channel_cfd");
+  { FCNCALL_CALL_CTRL_WRAP(channel_cfd,channel_cfd.FCNCALL_CALL(channel_cfd)); }
+  FCNCALL_SUBNAME_END;
+  }
   // raw_array_zero_suppress<DATA32,DATA32,16> channel_energy;
   {
   FCNCALL_SUBNAME("channel_energy");

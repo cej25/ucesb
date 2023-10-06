@@ -17,6 +17,7 @@ SIGNAL(overflow1, germanium.data.overflow[0], overflow16, germanium.data.overflo
 
 
 SIGNAL(channel_id1,germanium.data.channel_id[0],channel_id16,germanium.data.channel_id[15],DATA8);
+SIGNAL(channel_cfd1,germanium.data.channel_cfd[0],channel_cfd16,germanium.data.channel_cfd[15],DATA8);
 SIGNAL(channel_trigger_time_hi1,germanium.data.channel_trigger_time_hi[0],channel_trigger_time_hi16,germanium.data.channel_trigger_time_hi[15],DATA16);
 SIGNAL(channel_trigger_time_lo1,germanium.data.channel_trigger_time_lo[0],channel_trigger_time_lo16,germanium.data.channel_trigger_time_lo[15],DATA32);
 SIGNAL(channel_energy1,germanium.data.channel_energy[0],channel_energy16,germanium.data.channel_energy[15],DATA32);

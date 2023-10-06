@@ -10,6 +10,7 @@ class FEBEX_EVENT
   raw_array_zero_suppress<DATA32,DATA32,16> channel_trigger_time_lo;
   raw_array<DATA8,DATA8,16> pileup;
   raw_array<DATA8,DATA8,16> overflow;
+  raw_array_zero_suppress<DATA8,DATA8,16> channel_cfd;
   raw_array_zero_suppress<DATA32,DATA32,16> channel_energy;
 template<typename __data_src_t>
   void __unpack(__data_src_t &__buffer);

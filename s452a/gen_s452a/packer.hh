@@ -19,6 +19,7 @@ void PACKER_FEBEX_EVENT::__packer(__data_dest_t &__buffer)
   // MEMBER(DATA32 channel_trigger_time_lo[16] ZERO_SUPPRESS);
   // MEMBER(DATA8 pileup[16]);
   // MEMBER(DATA8 overflow[16]);
+  // MEMBER(DATA8 channel_cfd[16] ZERO_SUPPRESS);
   // MEMBER(DATA32 channel_energy[16] ZERO_SUPPRESS);
   // UINT32 sumchannel NOENCODE
   // {
@@ -78,6 +79,7 @@ void PACKER_FEBEX_EVENT::__packer(__data_dest_t &__buffer)
       // 24_29: TSF;
       //    30: pileup_flag;
       //    31: overflow_flag;
+      // ENCODE(channel_cfd[index],(value=TSF));
       // ENCODE(channel_energy[index],(value=chan_energy));
       // ENCODE(pileup[index],(value=pileup_flag));
       // ENCODE(overflow[index],(value=overflow_flag));
@@ -255,18 +257,18 @@ template<typename __data_dest_t>
 void PACKER_germanium_subev::__packer(__data_dest_t &__buffer)
 {
   // ts = TIMESTAMP_WHITERABBIT(id=0x400);
-  PACK_DECL(210,TIMESTAMP_WHITERABBIT,ts,/*id*/0x400);
+  PACK_DECL(211,TIMESTAMP_WHITERABBIT,ts,/*id*/0x400);
   // select several
 
     // padding = FEBEX_PADDING();
   {
-    PACK_DECL(213,FEBEX_PADDING,padding);
+    PACK_DECL(214,FEBEX_PADDING,padding);
   }
   // select several
 
     // data = FEBEX_EVENT();
   {
-    PACK_DECL(216,FEBEX_EVENT,data);
+    PACK_DECL(217,FEBEX_EVENT,data);
   }
 }
 FORCE_IMPL_DATA_SRC_FCN(void,germanium_subev::__packer);

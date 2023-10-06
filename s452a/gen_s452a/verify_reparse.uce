@@ -21,6 +21,7 @@ FEBEX_EVENT()
   MEMBER(DATA32 channel_trigger_time_lo[16] ZERO_SUPPRESS);
   MEMBER(DATA8 pileup[16]);
   MEMBER(DATA8 overflow[16]);
+  MEMBER(DATA8 channel_cfd[16] ZERO_SUPPRESS);
   MEMBER(DATA32 channel_energy[16] ZERO_SUPPRESS);
   UINT32 sumchannel NOENCODE
   {
@@ -79,6 +80,7 @@ FEBEX_EVENT()
       24_29: TSF;
          30: pileup_flag;
          31: overflow_flag;
+      ENCODE(channel_cfd[index],(value=TSF));
       ENCODE(channel_energy[index],(value=chan_energy));
       ENCODE(pileup[index],(value=pileup_flag));
       ENCODE(overflow[index],(value=overflow_flag));
@@ -231,6 +233,22 @@ EVENT
  */
 
 SIGNAL(board_id,germanium.data.board_id,DATA8);
+SIGNAL(channel_cfd1,germanium.data.channel_cfd[0],DATA8);
+SIGNAL(channel_cfd10,germanium.data.channel_cfd[9],DATA8);
+SIGNAL(channel_cfd11,germanium.data.channel_cfd[10],DATA8);
+SIGNAL(channel_cfd12,germanium.data.channel_cfd[11],DATA8);
+SIGNAL(channel_cfd13,germanium.data.channel_cfd[12],DATA8);
+SIGNAL(channel_cfd14,germanium.data.channel_cfd[13],DATA8);
+SIGNAL(channel_cfd15,germanium.data.channel_cfd[14],DATA8);
+SIGNAL(channel_cfd16,germanium.data.channel_cfd[15],DATA8);
+SIGNAL(channel_cfd2,germanium.data.channel_cfd[1],DATA8);
+SIGNAL(channel_cfd3,germanium.data.channel_cfd[2],DATA8);
+SIGNAL(channel_cfd4,germanium.data.channel_cfd[3],DATA8);
+SIGNAL(channel_cfd5,germanium.data.channel_cfd[4],DATA8);
+SIGNAL(channel_cfd6,germanium.data.channel_cfd[5],DATA8);
+SIGNAL(channel_cfd7,germanium.data.channel_cfd[6],DATA8);
+SIGNAL(channel_cfd8,germanium.data.channel_cfd[7],DATA8);
+SIGNAL(channel_cfd9,germanium.data.channel_cfd[8],DATA8);
 SIGNAL(channel_energy1,germanium.data.channel_energy[0],DATA32);
 SIGNAL(channel_energy10,germanium.data.channel_energy[9],DATA32);
 SIGNAL(channel_energy11,germanium.data.channel_energy[10],DATA32);

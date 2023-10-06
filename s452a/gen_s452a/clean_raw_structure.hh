@@ -64,6 +64,7 @@ class raw_event_channel_trigger
 class raw_event_channel
 {
   DATA8 id[16];
+  DATA8 cfd[16];
   raw_event_channel_trigger
        trigger;
   DATA32 energy[16];

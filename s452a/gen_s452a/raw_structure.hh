@@ -166,6 +166,8 @@ class raw_event_channel
 public:
 //DUMPY: 16 0
   DATA8 id[16];
+//DUMPY: 16 0
+  DATA8 cfd[16];
   raw_event_channel_trigger
   /* {
   public:
@@ -243,6 +245,8 @@ public:
   public:
 //DUMPY: 16 0
     DATA8 id[16];
+//DUMPY: 16 0
+    DATA8 cfd[16];
     raw_event_channel_trigger
     {
     public:

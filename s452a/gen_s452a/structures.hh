@@ -36,6 +36,8 @@ public:
   raw_array<DATA8,DATA8,16> pileup;
   // MEMBER(DATA8 overflow[16]);
   raw_array<DATA8,DATA8,16> overflow;
+  // MEMBER(DATA8 channel_cfd[16] ZERO_SUPPRESS);
+  raw_array_zero_suppress<DATA8,DATA8,16> channel_cfd;
   // MEMBER(DATA32 channel_energy[16] ZERO_SUPPRESS);
   raw_array_zero_suppress<DATA32,DATA32,16> channel_energy;
   // UINT32 sumchannel NOENCODE
@@ -95,6 +97,7 @@ public:
       // 24_29: TSF;
       //    30: pileup_flag;
       //    31: overflow_flag;
+      // ENCODE(channel_cfd[index],(value=TSF));
       // ENCODE(channel_energy[index],(value=chan_energy));
       // ENCODE(pileup[index],(value=pileup_flag));
       // ENCODE(overflow[index],(value=overflow_flag));

@@ -22,6 +22,7 @@ FEBEX_EVENT()
   MEMBER(DATA32 channel_trigger_time_lo[16] ZERO_SUPPRESS);
   MEMBER(DATA8 pileup[16]);
   MEMBER(DATA8 overflow[16]);
+  MEMBER(DATA8 channel_cfd[16] ZERO_SUPPRESS);
   MEMBER(DATA32 channel_energy[16] ZERO_SUPPRESS);
   UINT32 sumchannel NOENCODE
   {
@@ -80,6 +81,7 @@ FEBEX_EVENT()
       24_29: TSF;
          30: pileup_flag;
          31: overflow_flag;
+      ENCODE(channel_cfd[index],(value=TSF));
       ENCODE(channel_energy[index],(value=chan_energy));
       ENCODE(pileup[index],(value=pileup_flag));
       ENCODE(overflow[index],(value=overflow_flag));
@@ -232,6 +234,22 @@ EVENT
  */
 
 SIGNAL(board_id,germanium.data.board_id,DATA8);
+SIGNAL(channel_cfd1,germanium.data.channel_cfd[0],DATA8);
+SIGNAL(channel_cfd10,germanium.data.channel_cfd[9],DATA8);
+SIGNAL(channel_cfd11,germanium.data.channel_cfd[10],DATA8);
+SIGNAL(channel_cfd12,germanium.data.channel_cfd[11],DATA8);
+SIGNAL(channel_cfd13,germanium.data.channel_cfd[12],DATA8);
+SIGNAL(channel_cfd14,germanium.data.channel_cfd[13],DATA8);
+SIGNAL(channel_cfd15,germanium.data.channel_cfd[14],DATA8);
+SIGNAL(channel_cfd16,germanium.data.channel_cfd[15],DATA8);
+SIGNAL(channel_cfd2,germanium.data.channel_cfd[1],DATA8);
+SIGNAL(channel_cfd3,germanium.data.channel_cfd[2],DATA8);
+SIGNAL(channel_cfd4,germanium.data.channel_cfd[3],DATA8);
+SIGNAL(channel_cfd5,germanium.data.channel_cfd[4],DATA8);
+SIGNAL(channel_cfd6,germanium.data.channel_cfd[5],DATA8);
+SIGNAL(channel_cfd7,germanium.data.channel_cfd[6],DATA8);
+SIGNAL(channel_cfd8,germanium.data.channel_cfd[7],DATA8);
+SIGNAL(channel_cfd9,germanium.data.channel_cfd[8],DATA8);
 SIGNAL(channel_energy1,germanium.data.channel_energy[0],DATA32);
 SIGNAL(channel_energy10,germanium.data.channel_energy[9],DATA32);
 SIGNAL(channel_energy11,germanium.data.channel_energy[10],DATA32);
@@ -387,6 +405,8 @@ public:
   raw_array<DATA8,DATA8,16> pileup;
   // MEMBER(DATA8 overflow[16]);
   raw_array<DATA8,DATA8,16> overflow;
+  // MEMBER(DATA8 channel_cfd[16] ZERO_SUPPRESS);
+  raw_array_zero_suppress<DATA8,DATA8,16> channel_cfd;
   // MEMBER(DATA32 channel_energy[16] ZERO_SUPPRESS);
   raw_array_zero_suppress<DATA32,DATA32,16> channel_energy;
   // UINT32 sumchannel NOENCODE
@@ -446,6 +466,7 @@ public:
       // 24_29: TSF;
       //    30: pileup_flag;
       //    31: overflow_flag;
+      // ENCODE(channel_cfd[index],(value=TSF));
       // ENCODE(channel_energy[index],(value=chan_energy));
       // ENCODE(pileup[index],(value=pileup_flag));
       // ENCODE(overflow[index],(value=overflow_flag));
@@ -496,6 +517,7 @@ void FEBEX_EVENT::__unpack(__data_src_t &__buffer)
   // MEMBER(DATA32 channel_trigger_time_lo[16] ZERO_SUPPRESS);
   // MEMBER(DATA8 pileup[16]);
   // MEMBER(DATA8 overflow[16]);
+  // MEMBER(DATA8 channel_cfd[16] ZERO_SUPPRESS);
   // MEMBER(DATA32 channel_energy[16] ZERO_SUPPRESS);
   // UINT32 sumchannel NOENCODE
   // {
@@ -527,9 +549,9 @@ void FEBEX_EVENT::__unpack(__data_src_t &__buffer)
     };
     uint32  u32;
   } sumchannel;
-  READ_FROM_BUFFER_FULL(29,uint32 ,sumchannel,sumchannel.u32,0);
-  CHECK_BITS_EQUAL(23,sumchannel.unnamed_0_7,52);
-  CHECK_BITS_EQUAL(27,sumchannel.unnamed_24_31,255);
+  READ_FROM_BUFFER_FULL(30,uint32 ,sumchannel,sumchannel.u32,0);
+  CHECK_BITS_EQUAL(24,sumchannel.unnamed_0_7,52);
+  CHECK_BITS_EQUAL(28,sumchannel.unnamed_24_31,255);
   {
     board_id.value = sumchannel.board_id;
   }
@@ -554,7 +576,7 @@ void FEBEX_EVENT::__unpack(__data_src_t &__buffer)
     };
     uint32  u32;
   } channel_size;
-  READ_FROM_BUFFER_FULL(35,uint32 ,channel_size,channel_size.u32,1);
+  READ_FROM_BUFFER_FULL(36,uint32 ,channel_size,channel_size.u32,1);
   {
     num_channels_fired.value = ((channel_size.size / 4) - 1);
   }
@@ -579,7 +601,7 @@ void FEBEX_EVENT::__unpack(__data_src_t &__buffer)
     };
     uint32  u32;
   } event_timestamp_hi;
-  READ_FROM_BUFFER_FULL(41,uint32 ,event_timestamp_hi,event_timestamp_hi.u32,2);
+  READ_FROM_BUFFER_FULL(42,uint32 ,event_timestamp_hi,event_timestamp_hi.u32,2);
   {
     event_trigger_time_hi.value = event_timestamp_hi.timestamp_hi;
   }
@@ -601,7 +623,7 @@ void FEBEX_EVENT::__unpack(__data_src_t &__buffer)
     };
     uint32  u32;
   } event_timestamp_lo;
-  READ_FROM_BUFFER_FULL(46,uint32 ,event_timestamp_lo,event_timestamp_lo.u32,3);
+  READ_FROM_BUFFER_FULL(47,uint32 ,event_timestamp_lo,event_timestamp_lo.u32,3);
   {
     event_trigger_time_lo.value = event_timestamp_lo.timestamp_lo;
   }
@@ -626,7 +648,7 @@ void FEBEX_EVENT::__unpack(__data_src_t &__buffer)
     };
     uint32  u32;
   } hp;
-  READ_FROM_BUFFER_FULL(52,uint32 ,hp,hp.u32,4);
+  READ_FROM_BUFFER_FULL(53,uint32 ,hp,hp.u32,4);
   {
     hit_pattern.value = hp.hp;
   }
@@ -647,8 +669,8 @@ void FEBEX_EVENT::__unpack(__data_src_t &__buffer)
     };
     uint32  u32;
   } deadbeef;
-  READ_FROM_BUFFER_FULL(56,uint32 ,deadbeef,deadbeef.u32,5);
-  CHECK_BITS_EQUAL(55,deadbeef.unnamed_0_31,0xdeadbeef);
+  READ_FROM_BUFFER_FULL(57,uint32 ,deadbeef,deadbeef.u32,5);
+  CHECK_BITS_EQUAL(56,deadbeef.unnamed_0_31,0xdeadbeef);
   // list(0<=index<((channel_size.size / 4) - 1))
 
   for (uint32 index = 0; index < (uint32) (((channel_size.size / 4) - 1)); ++index)
@@ -678,19 +700,19 @@ void FEBEX_EVENT::__unpack(__data_src_t &__buffer)
       };
       uint32  u32;
     } channelids;
-    READ_FROM_BUFFER_FULL(66,uint32 ,channelids,channelids.u32,6);
-    CHECK_BITS_EQUAL(63,channelids.unnamed_24_31,240);
+    READ_FROM_BUFFER_FULL(67,uint32 ,channelids,channelids.u32,6);
+    CHECK_BITS_EQUAL(64,channelids.unnamed_24_31,240);
     {
       {
         typedef __typeof__(*(&(channel_id))) __array_t;
         typedef typename __array_t::item_t __item_t;
-        __item_t &__item = channel_id.insert_index(64,index);
+        __item_t &__item = channel_id.insert_index(65,index);
         __item.value = channelids.channel_id_bits;
       }
       {
         typedef __typeof__(*(&(channel_trigger_time_hi))) __array_t;
         typedef typename __array_t::item_t __item_t;
-        __item_t &__item = channel_trigger_time_hi.insert_index(65,index);
+        __item_t &__item = channel_trigger_time_hi.insert_index(66,index);
         __item.value = channelids.chan_ts_hi;
       }
     }
@@ -712,11 +734,11 @@ void FEBEX_EVENT::__unpack(__data_src_t &__buffer)
       };
       uint32  u32;
     } channel_ts;
-    READ_FROM_BUFFER_FULL(71,uint32 ,channel_ts,channel_ts.u32,7);
+    READ_FROM_BUFFER_FULL(72,uint32 ,channel_ts,channel_ts.u32,7);
     {
       typedef __typeof__(*(&(channel_trigger_time_lo))) __array_t;
       typedef typename __array_t::item_t __item_t;
-      __item_t &__item = channel_trigger_time_lo.insert_index(70,index);
+      __item_t &__item = channel_trigger_time_lo.insert_index(71,index);
       __item.value = channel_ts.chan_ts_lo;
     }
     // UINT32 chan_enrgy NOENCODE
@@ -725,6 +747,7 @@ void FEBEX_EVENT::__unpack(__data_src_t &__buffer)
       // 24_29: TSF;
       //    30: pileup_flag;
       //    31: overflow_flag;
+      // ENCODE(channel_cfd[index],(value=TSF));
       // ENCODE(channel_energy[index],(value=chan_energy));
       // ENCODE(pileup[index],(value=pileup_flag));
       // ENCODE(overflow[index],(value=overflow_flag));
@@ -748,24 +771,30 @@ void FEBEX_EVENT::__unpack(__data_src_t &__buffer)
       };
       uint32  u32;
     } chan_enrgy;
-    READ_FROM_BUFFER_FULL(81,uint32 ,chan_enrgy,chan_enrgy.u32,8);
+    READ_FROM_BUFFER_FULL(83,uint32 ,chan_enrgy,chan_enrgy.u32,8);
     {
+      {
+        typedef __typeof__(*(&(channel_cfd))) __array_t;
+        typedef typename __array_t::item_t __item_t;
+        __item_t &__item = channel_cfd.insert_index(79,index);
+        __item.value = chan_enrgy.TSF;
+      }
       {
         typedef __typeof__(*(&(channel_energy))) __array_t;
         typedef typename __array_t::item_t __item_t;
-        __item_t &__item = channel_energy.insert_index(78,index);
+        __item_t &__item = channel_energy.insert_index(80,index);
         __item.value = chan_enrgy.chan_energy;
       }
       {
         typedef __typeof__(*(&(pileup))) __array_t;
         typedef typename __array_t::item_t __item_t;
-        __item_t &__item = pileup.insert_index(79,index);
+        __item_t &__item = pileup.insert_index(81,index);
         __item.value = chan_enrgy.pileup_flag;
       }
       {
         typedef __typeof__(*(&(overflow))) __array_t;
         typedef typename __array_t::item_t __item_t;
-        __item_t &__item = overflow.insert_index(80,index);
+        __item_t &__item = overflow.insert_index(82,index);
         __item.value = chan_enrgy.overflow_flag;
       }
     }
@@ -786,8 +815,8 @@ void FEBEX_EVENT::__unpack(__data_src_t &__buffer)
       };
       uint32  u32;
     } future_use;
-    READ_FROM_BUFFER_FULL(85,uint32 ,future_use,future_use.u32,9);
-    CHECK_BITS_EQUAL(84,future_use.unnamed_0_31,0);
+    READ_FROM_BUFFER_FULL(87,uint32 ,future_use,future_use.u32,9);
+    CHECK_BITS_EQUAL(86,future_use.unnamed_0_31,0);
   }
 }
 FORCE_IMPL_DATA_SRC_FCN(void,FEBEX_EVENT::__unpack);
@@ -816,6 +845,7 @@ bool FEBEX_EVENT::__match(__data_src_t &__buffer)
   // MEMBER(DATA32 channel_trigger_time_lo[16] ZERO_SUPPRESS);
   // MEMBER(DATA8 pileup[16]);
   // MEMBER(DATA8 overflow[16]);
+  // MEMBER(DATA8 channel_cfd[16] ZERO_SUPPRESS);
   // MEMBER(DATA32 channel_energy[16] ZERO_SUPPRESS);
   // UINT32 sumchannel NOENCODE
   // {
@@ -847,9 +877,9 @@ bool FEBEX_EVENT::__match(__data_src_t &__buffer)
     };
     uint32  u32;
   } sumchannel;
-  MATCH_READ_FROM_BUFFER_FULL(29,uint32 ,sumchannel,sumchannel.u32,10);
-  MATCH_BITS_EQUAL(23,sumchannel.unnamed_0_7,52);
-  MATCH_BITS_EQUAL(27,sumchannel.unnamed_24_31,255);
+  MATCH_READ_FROM_BUFFER_FULL(30,uint32 ,sumchannel,sumchannel.u32,10);
+  MATCH_BITS_EQUAL(24,sumchannel.unnamed_0_7,52);
+  MATCH_BITS_EQUAL(28,sumchannel.unnamed_24_31,255);
   return true;
   return false;
 }
@@ -879,6 +909,7 @@ void PACKER_FEBEX_EVENT::__packer(__data_dest_t &__buffer)
   // MEMBER(DATA32 channel_trigger_time_lo[16] ZERO_SUPPRESS);
   // MEMBER(DATA8 pileup[16]);
   // MEMBER(DATA8 overflow[16]);
+  // MEMBER(DATA8 channel_cfd[16] ZERO_SUPPRESS);
   // MEMBER(DATA32 channel_energy[16] ZERO_SUPPRESS);
   // UINT32 sumchannel NOENCODE
   // {
@@ -938,6 +969,7 @@ void PACKER_FEBEX_EVENT::__packer(__data_dest_t &__buffer)
       // 24_29: TSF;
       //    30: pileup_flag;
       //    31: overflow_flag;
+      // ENCODE(channel_cfd[index],(value=TSF));
       // ENCODE(channel_energy[index],(value=chan_energy));
       // ENCODE(pileup[index],(value=pileup_flag));
       // ENCODE(overflow[index],(value=overflow_flag));
@@ -1035,8 +1067,8 @@ void FEBEX_PADDING::__unpack(__data_src_t &__buffer)
     };
     uint32  u32;
   } pads_data;
-  READ_FROM_BUFFER_FULL(96,uint32 ,pads_data,pads_data.u32,11);
-  CHECK_BITS_EQUAL(95,pads_data.unnamed_20_31,0xadd);
+  READ_FROM_BUFFER_FULL(98,uint32 ,pads_data,pads_data.u32,11);
+  CHECK_BITS_EQUAL(97,pads_data.unnamed_20_31,0xadd);
 }
 FORCE_IMPL_DATA_SRC_FCN(void,FEBEX_PADDING::__unpack);
 
@@ -1077,8 +1109,8 @@ bool FEBEX_PADDING::__match(__data_src_t &__buffer)
     };
     uint32  u32;
   } pads_data;
-  MATCH_READ_FROM_BUFFER_FULL(96,uint32 ,pads_data,pads_data.u32,12);
-  MATCH_BITS_EQUAL(95,pads_data.unnamed_20_31,0xadd);
+  MATCH_READ_FROM_BUFFER_FULL(98,uint32 ,pads_data,pads_data.u32,12);
+  MATCH_BITS_EQUAL(97,pads_data.unnamed_20_31,0xadd);
   return true;
   return false;
 }
@@ -1237,10 +1269,10 @@ void TIMESTAMP_WHITERABBIT::__unpack(__data_src_t &__buffer,uint32 id)
     };
     uint32  u32;
   } header;
-  READ_FROM_BUFFER_FULL(113,uint32 ,header,header.u32,13);
-  CHECK_BITS_EQUAL(108,header.id,id);
-  CHECK_BITS_EQUAL(109,header.unnamed_12_15,0);
-  CHECK_BITS_EQUAL(111,header.unnamed_17_31,0);
+  READ_FROM_BUFFER_FULL(115,uint32 ,header,header.u32,13);
+  CHECK_BITS_EQUAL(110,header.id,id);
+  CHECK_BITS_EQUAL(111,header.unnamed_12_15,0);
+  CHECK_BITS_EQUAL(113,header.unnamed_17_31,0);
   {
     subsystem_id.value = header.id;
   }
@@ -1265,8 +1297,8 @@ void TIMESTAMP_WHITERABBIT::__unpack(__data_src_t &__buffer,uint32 id)
     };
     uint32  u32;
   } d1;
-  READ_FROM_BUFFER_FULL(119,uint32 ,d1,d1.u32,14);
-  CHECK_BITS_EQUAL(117,d1.unnamed_16_31,0x3e1);
+  READ_FROM_BUFFER_FULL(121,uint32 ,d1,d1.u32,14);
+  CHECK_BITS_EQUAL(119,d1.unnamed_16_31,0x3e1);
   {
     t1.value = d1.t1;
   }
@@ -1291,8 +1323,8 @@ void TIMESTAMP_WHITERABBIT::__unpack(__data_src_t &__buffer,uint32 id)
     };
     uint32  u32;
   } d2;
-  READ_FROM_BUFFER_FULL(125,uint32 ,d2,d2.u32,15);
-  CHECK_BITS_EQUAL(123,d2.unnamed_16_31,0x4e1);
+  READ_FROM_BUFFER_FULL(127,uint32 ,d2,d2.u32,15);
+  CHECK_BITS_EQUAL(125,d2.unnamed_16_31,0x4e1);
   {
     t2.value = d2.t2;
   }
@@ -1317,8 +1349,8 @@ void TIMESTAMP_WHITERABBIT::__unpack(__data_src_t &__buffer,uint32 id)
     };
     uint32  u32;
   } d3;
-  READ_FROM_BUFFER_FULL(131,uint32 ,d3,d3.u32,16);
-  CHECK_BITS_EQUAL(129,d3.unnamed_16_31,0x5e1);
+  READ_FROM_BUFFER_FULL(133,uint32 ,d3,d3.u32,16);
+  CHECK_BITS_EQUAL(131,d3.unnamed_16_31,0x5e1);
   {
     t3.value = d3.t3;
   }
@@ -1343,8 +1375,8 @@ void TIMESTAMP_WHITERABBIT::__unpack(__data_src_t &__buffer,uint32 id)
     };
     uint32  u32;
   } d4;
-  READ_FROM_BUFFER_FULL(137,uint32 ,d4,d4.u32,17);
-  CHECK_BITS_EQUAL(135,d4.unnamed_16_31,0x6e1);
+  READ_FROM_BUFFER_FULL(139,uint32 ,d4,d4.u32,17);
+  CHECK_BITS_EQUAL(137,d4.unnamed_16_31,0x6e1);
   {
     t4.value = d4.t4;
   }
@@ -1397,10 +1429,10 @@ bool TIMESTAMP_WHITERABBIT::__match(__data_src_t &__buffer,uint32 id)
     };
     uint32  u32;
   } header;
-  MATCH_READ_FROM_BUFFER_FULL(113,uint32 ,header,header.u32,18);
-  MATCH_BITS_EQUAL(108,header.id,id);
-  MATCH_BITS_EQUAL(109,header.unnamed_12_15,0);
-  MATCH_BITS_EQUAL(111,header.unnamed_17_31,0);
+  MATCH_READ_FROM_BUFFER_FULL(115,uint32 ,header,header.u32,18);
+  MATCH_BITS_EQUAL(110,header.id,id);
+  MATCH_BITS_EQUAL(111,header.unnamed_12_15,0);
+  MATCH_BITS_EQUAL(113,header.unnamed_17_31,0);
   return true;
   return false;
 }
@@ -1590,10 +1622,10 @@ void TIMESTAMP_WHITERABBIT_EXTENDED::__unpack(__data_src_t &__buffer,uint32 id)
     };
     uint32  u32;
   } header;
-  READ_FROM_BUFFER_FULL(154,uint32 ,header,header.u32,19);
-  CHECK_BITS_EQUAL(149,header.id,id);
-  CHECK_BITS_EQUAL(150,header.unnamed_13_15,0);
-  CHECK_BITS_EQUAL(152,header.unnamed_17_31,0);
+  READ_FROM_BUFFER_FULL(156,uint32 ,header,header.u32,19);
+  CHECK_BITS_EQUAL(151,header.id,id);
+  CHECK_BITS_EQUAL(152,header.unnamed_13_15,0);
+  CHECK_BITS_EQUAL(154,header.unnamed_17_31,0);
   {
     subsystem_id.value = header.id;
   }
@@ -1618,8 +1650,8 @@ void TIMESTAMP_WHITERABBIT_EXTENDED::__unpack(__data_src_t &__buffer,uint32 id)
     };
     uint32  u32;
   } d1;
-  READ_FROM_BUFFER_FULL(160,uint32 ,d1,d1.u32,20);
-  CHECK_BITS_EQUAL(158,d1.unnamed_16_31,0x3e1);
+  READ_FROM_BUFFER_FULL(162,uint32 ,d1,d1.u32,20);
+  CHECK_BITS_EQUAL(160,d1.unnamed_16_31,0x3e1);
   {
     t1.value = d1.t1;
   }
@@ -1644,8 +1676,8 @@ void TIMESTAMP_WHITERABBIT_EXTENDED::__unpack(__data_src_t &__buffer,uint32 id)
     };
     uint32  u32;
   } d2;
-  READ_FROM_BUFFER_FULL(166,uint32 ,d2,d2.u32,21);
-  CHECK_BITS_EQUAL(164,d2.unnamed_16_31,0x4e1);
+  READ_FROM_BUFFER_FULL(168,uint32 ,d2,d2.u32,21);
+  CHECK_BITS_EQUAL(166,d2.unnamed_16_31,0x4e1);
   {
     t2.value = d2.t2;
   }
@@ -1670,8 +1702,8 @@ void TIMESTAMP_WHITERABBIT_EXTENDED::__unpack(__data_src_t &__buffer,uint32 id)
     };
     uint32  u32;
   } d3;
-  READ_FROM_BUFFER_FULL(172,uint32 ,d3,d3.u32,22);
-  CHECK_BITS_EQUAL(170,d3.unnamed_16_31,0x5e1);
+  READ_FROM_BUFFER_FULL(174,uint32 ,d3,d3.u32,22);
+  CHECK_BITS_EQUAL(172,d3.unnamed_16_31,0x5e1);
   {
     t3.value = d3.t3;
   }
@@ -1696,8 +1728,8 @@ void TIMESTAMP_WHITERABBIT_EXTENDED::__unpack(__data_src_t &__buffer,uint32 id)
     };
     uint32  u32;
   } d4;
-  READ_FROM_BUFFER_FULL(178,uint32 ,d4,d4.u32,23);
-  CHECK_BITS_EQUAL(176,d4.unnamed_16_31,0x6e1);
+  READ_FROM_BUFFER_FULL(180,uint32 ,d4,d4.u32,23);
+  CHECK_BITS_EQUAL(178,d4.unnamed_16_31,0x6e1);
   {
     t4.value = d4.t4;
   }
@@ -1750,10 +1782,10 @@ bool TIMESTAMP_WHITERABBIT_EXTENDED::__match(__data_src_t &__buffer,uint32 id)
     };
     uint32  u32;
   } header;
-  MATCH_READ_FROM_BUFFER_FULL(154,uint32 ,header,header.u32,24);
-  MATCH_BITS_EQUAL(149,header.id,id);
-  MATCH_BITS_EQUAL(150,header.unnamed_13_15,0);
-  MATCH_BITS_EQUAL(152,header.unnamed_17_31,0);
+  MATCH_READ_FROM_BUFFER_FULL(156,uint32 ,header,header.u32,24);
+  MATCH_BITS_EQUAL(151,header.id,id);
+  MATCH_BITS_EQUAL(152,header.unnamed_13_15,0);
+  MATCH_BITS_EQUAL(154,header.unnamed_17_31,0);
   return true;
   return false;
 }
@@ -1903,7 +1935,7 @@ void WR_MULTI::__unpack(__data_src_t &__buffer)
     };
     uint32  u32;
   } hi;
-  READ_FROM_BUFFER_FULL(189,uint32 ,hi,hi.u32,25);
+  READ_FROM_BUFFER_FULL(191,uint32 ,hi,hi.u32,25);
   {
     time_hi.value = hi.time;
   }
@@ -1925,7 +1957,7 @@ void WR_MULTI::__unpack(__data_src_t &__buffer)
     };
     uint32  u32;
   } lo;
-  READ_FROM_BUFFER_FULL(194,uint32 ,lo,lo.u32,26);
+  READ_FROM_BUFFER_FULL(196,uint32 ,lo,lo.u32,26);
   {
     time_lo.value = lo.time;
   }
@@ -1966,7 +1998,7 @@ bool WR_MULTI::__match(__data_src_t &__buffer)
     };
     uint32  u32;
   } hi;
-  MATCH_READ_FROM_BUFFER_FULL(189,uint32 ,hi,hi.u32,27);
+  MATCH_READ_FROM_BUFFER_FULL(191,uint32 ,hi,hi.u32,27);
   return true;
   return false;
 }
@@ -2068,7 +2100,7 @@ template<typename __data_src_t>
 void germanium_subev::__unpack(__data_src_t &__buffer)
 {
   // ts = TIMESTAMP_WHITERABBIT(id=0x400);
-  UNPACK_DECL(199,TIMESTAMP_WHITERABBIT,ts,/*id*/0x400);
+  UNPACK_DECL(201,TIMESTAMP_WHITERABBIT,ts,/*id*/0x400);
   // select several
 
     // padding = FEBEX_PADDING();
@@ -2079,7 +2111,7 @@ void germanium_subev::__unpack(__data_src_t &__buffer)
     // optimized match 1: FEBEX_PADDING padding: (s32) => (0xfff00000,0xadd00000)
     {
     uint32 __match_peek;
-    PEEK_FROM_BUFFER(203,uint32,__match_peek);
+    PEEK_FROM_BUFFER(205,uint32,__match_peek);
     // differ = 00000000 :
     uint32 __match_index = 0;
     static const sint8 __match_index_array[1] = { 1, };
@@ -2090,8 +2122,8 @@ void germanium_subev::__unpack(__data_src_t &__buffer)
     switch (__match_no)
     {
       case 1:
-        CHECK_SPURIOUS_MATCH_DECL(202,spurious_match_abort_loop_0,FEBEX_PADDING);
-        UNPACK_DECL(202,FEBEX_PADDING,padding);
+        CHECK_SPURIOUS_MATCH_DECL(204,spurious_match_abort_loop_0,FEBEX_PADDING);
+        UNPACK_DECL(204,FEBEX_PADDING,padding);
         break;
     }
   }
@@ -2106,7 +2138,7 @@ void germanium_subev::__unpack(__data_src_t &__buffer)
     // optimized match 1: FEBEX_EVENT data: (s32) => (0xff0000ff,0xff000034)
     {
     uint32 __match_peek;
-    PEEK_FROM_BUFFER(207,uint32,__match_peek);
+    PEEK_FROM_BUFFER(209,uint32,__match_peek);
     // differ = 00000000 :
     uint32 __match_index = 0;
     static const sint8 __match_index_array[1] = { 1, };
@@ -2117,7 +2149,7 @@ void germanium_subev::__unpack(__data_src_t &__buffer)
     switch (__match_no)
     {
       case 1:
-        UNPACK_DECL(206,FEBEX_EVENT,data);
+        UNPACK_DECL(208,FEBEX_EVENT,data);
         break;
     }
   }
@@ -2152,18 +2184,18 @@ template<typename __data_dest_t>
 void PACKER_germanium_subev::__packer(__data_dest_t &__buffer)
 {
   // ts = TIMESTAMP_WHITERABBIT(id=0x400);
-  PACK_DECL(199,TIMESTAMP_WHITERABBIT,ts,/*id*/0x400);
+  PACK_DECL(201,TIMESTAMP_WHITERABBIT,ts,/*id*/0x400);
   // select several
 
     // padding = FEBEX_PADDING();
   {
-    PACK_DECL(202,FEBEX_PADDING,padding);
+    PACK_DECL(204,FEBEX_PADDING,padding);
   }
   // select several
 
     // data = FEBEX_EVENT();
   {
-    PACK_DECL(206,FEBEX_EVENT,data);
+    PACK_DECL(208,FEBEX_EVENT,data);
   }
 }
 FORCE_IMPL_DATA_SRC_FCN(void,germanium_subev::__packer);
@@ -2225,13 +2257,13 @@ int unpack_event::__unpack_subevent(subevent_header *__header,__data_src_t &__bu
   // ignore_unknown_subevent;
 {
   int __match_no = 0;
-  MATCH_SUBEVENT_DECL(217,__match_no,1,((VES10_1_type==10)&&(VES10_1_subtype==1)&&(VES10_1_control==20)&&(VES10_1_subcrate==0)&&(VES10_1_procid==60)),germanium);
+  MATCH_SUBEVENT_DECL(219,__match_no,1,((VES10_1_type==10)&&(VES10_1_subtype==1)&&(VES10_1_control==20)&&(VES10_1_subcrate==0)&&(VES10_1_procid==60)),germanium);
   if (!__match_no) return 0;
   switch (__match_no)
   {
     case 1:
-      UNPACK_SUBEVENT_CHECK_NO_REVISIT(217,germanium_subev,germanium,0);
-      UNPACK_SUBEVENT_DECL(217,0,germanium_subev,germanium);
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(219,germanium_subev,germanium,0);
+      UNPACK_SUBEVENT_DECL(219,0,germanium_subev,germanium);
       break;
   }
   return 0;
@@ -2272,13 +2304,13 @@ int unpack_event::__revoke_subevent(subevent_header *__header)
   // ignore_unknown_subevent;
 {
   int __match_no = 0;
-  MATCH_SUBEVENT_DECL(217,__match_no,1,((VES10_1_type==10)&&(VES10_1_subtype==1)&&(VES10_1_control==20)&&(VES10_1_subcrate==0)&&(VES10_1_procid==60)),germanium);
+  MATCH_SUBEVENT_DECL(219,__match_no,1,((VES10_1_type==10)&&(VES10_1_subtype==1)&&(VES10_1_control==20)&&(VES10_1_subcrate==0)&&(VES10_1_procid==60)),germanium);
   if (!__match_no) return 0;
   switch (__match_no)
   {
     case 1:
-      UNPACK_SUBEVENT_CHECK_NO_REVISIT(217,germanium_subev,germanium,0);
-      REVOKE_SUBEVENT_DECL(217,0,germanium_subev,germanium);
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(219,germanium_subev,germanium,0);
+      REVOKE_SUBEVENT_DECL(219,0,germanium_subev,germanium);
       break;
   }
   return 0;
@@ -2474,6 +2506,8 @@ class raw_event_channel
 {
 public:
 //DUMPY: 16 0
+  DATA8 cfd[16];
+//DUMPY: 16 0
   DATA32 energy[16];
 //DUMPY: 16 0
   DATA8 id[16];
@@ -2621,6 +2655,8 @@ public:
   /* {
   public:
 //DUMPY: 16 0
+    DATA8 cfd[16];
+//DUMPY: 16 0
     DATA32 energy[16];
 //DUMPY: 16 0
     DATA8 id[16];
@@ -2742,6 +2778,22 @@ public:
 // it is used to initialize a structure.
 
 SIGNAL_MAPPING(DATA8,board_id,germanium.data.board_id,board.id);
+SIGNAL_MAPPING(DATA8,channel_cfd1,germanium.data.channel_cfd[0],channel.cfd[0]);
+SIGNAL_MAPPING(DATA8,channel_cfd10,germanium.data.channel_cfd[9],channel.cfd[9]);
+SIGNAL_MAPPING(DATA8,channel_cfd11,germanium.data.channel_cfd[10],channel.cfd[10]);
+SIGNAL_MAPPING(DATA8,channel_cfd12,germanium.data.channel_cfd[11],channel.cfd[11]);
+SIGNAL_MAPPING(DATA8,channel_cfd13,germanium.data.channel_cfd[12],channel.cfd[12]);
+SIGNAL_MAPPING(DATA8,channel_cfd14,germanium.data.channel_cfd[13],channel.cfd[13]);
+SIGNAL_MAPPING(DATA8,channel_cfd15,germanium.data.channel_cfd[14],channel.cfd[14]);
+SIGNAL_MAPPING(DATA8,channel_cfd16,germanium.data.channel_cfd[15],channel.cfd[15]);
+SIGNAL_MAPPING(DATA8,channel_cfd2,germanium.data.channel_cfd[1],channel.cfd[1]);
+SIGNAL_MAPPING(DATA8,channel_cfd3,germanium.data.channel_cfd[2],channel.cfd[2]);
+SIGNAL_MAPPING(DATA8,channel_cfd4,germanium.data.channel_cfd[3],channel.cfd[3]);
+SIGNAL_MAPPING(DATA8,channel_cfd5,germanium.data.channel_cfd[4],channel.cfd[4]);
+SIGNAL_MAPPING(DATA8,channel_cfd6,germanium.data.channel_cfd[5],channel.cfd[5]);
+SIGNAL_MAPPING(DATA8,channel_cfd7,germanium.data.channel_cfd[6],channel.cfd[6]);
+SIGNAL_MAPPING(DATA8,channel_cfd8,germanium.data.channel_cfd[7],channel.cfd[7]);
+SIGNAL_MAPPING(DATA8,channel_cfd9,germanium.data.channel_cfd[8],channel.cfd[8]);
 SIGNAL_MAPPING(DATA32,channel_energy1,germanium.data.channel_energy[0],channel.energy[0]);
 SIGNAL_MAPPING(DATA32,channel_energy10,germanium.data.channel_energy[9],channel.energy[9]);
 SIGNAL_MAPPING(DATA32,channel_energy11,germanium.data.channel_energy[10],channel.energy[10]);
@@ -2886,7 +2938,7 @@ location spec_locations[] =
   { 6, 1, "<command-line>" },
   { 7, 1, "gen_s452a/reparse.uce" },
   { 8, 12, "gen_s452a/reparse.uce" },
-  { 221, 233, "gen_s452a/reparse.uce" },
+  { 223, 235, "gen_s452a/reparse.uce" },
 };
 
 /** END_LOCATIONS *****************************************************/

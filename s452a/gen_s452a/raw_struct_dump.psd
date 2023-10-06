@@ -60,6 +60,7 @@ class raw_event_channel_trigger
 class raw_event_channel
 {
   DATA8 id[16];
+  DATA8 cfd[16];
   raw_event_channel_trigger trigger;
   DATA32 energy[16];
 } ;
@@ -230,6 +231,9 @@ public:
   STRUCT_MIRROR_ITEM_CTRL(id);
   STRUCT_MIRROR_ITEM_CTRL_ARRAY(id__i0,,16);
   STRUCT_MIRROR_TYPE(DATA8) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(id[16]);
+  STRUCT_MIRROR_ITEM_CTRL(cfd);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(cfd__i0,,16);
+  STRUCT_MIRROR_TYPE(DATA8) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(cfd[16]);
   STRUCT_MIRROR_ITEM_CTRL(trigger);
   STRUCT_MIRROR_TYPE(raw_event_channel_trigger) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(trigger);
   STRUCT_MIRROR_ITEM_CTRL(energy);
@@ -563,6 +567,17 @@ FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_channel)::FCNCALL_NAME(raw_event_c
   }
   FCNCALL_SUBNAME_END;
   }
+  // DATA8 cfd[16];
+  {
+  FCNCALL_SUBNAME("cfd");
+  FCNCALL_FOR(__i0,16)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(cfd__i0,,__i0,cfd[__i0].FCNCALL_CALL(cfd[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
   // raw_event_channel_trigger trigger;
   {
   FCNCALL_SUBNAME("trigger");
@@ -885,6 +900,8 @@ FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_sticky)::FCNCALL_NAME(raw_sticky)
 // Corr struct for: raw_event_channel
 // DATA8  .id[16]
   // ---
+// DATA8  .cfd[16]
+  // ---
 // raw_event_channel_trigger  .trigger
   // raw_event_channel_trigger_time  .time
     // DATA16  .hi[16]
@@ -937,6 +954,8 @@ FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_sticky)::FCNCALL_NAME(raw_sticky)
   // ---
 // raw_event_channel  .channel
   // DATA8  .id[16]
+    // ---
+  // DATA8  .cfd[16]
     // ---
   // raw_event_channel_trigger  .trigger
     // raw_event_channel_trigger_time  .time

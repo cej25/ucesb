@@ -13,27 +13,6 @@ FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event)::FCNCALL_NAME(raw_event)
 {
   FCNCALL_INIT;
   FCNCALL_CALL_CTRL_WRAP(raw_event_base,FCNCALL_CLASS_NAME(raw_event_base)::FCNCALL_CALL_BASE());
-  // uint32 bPlastPMTLead[4][16][100];
-  {
-  FCNCALL_SUBNAME("bPlastPMTLead");
-  FCNCALL_FOR(__i0,4)
-  {
-    FCNCALL_SUBINDEX(__i0);
-    FCNCALL_FOR(__i1,16)
-    {
-      FCNCALL_SUBINDEX(__i1);
-      FCNCALL_FOR(__i2,100)
-      {
-        FCNCALL_SUBINDEX(__i2);
-        { FCNCALL_CALL_CTRL_WRAP_ARRAY(bPlastPMTLead__i0__i1__i2,[__i0][__i1],__i2,FCNCALL_CALL_TYPE(uint32,bPlastPMTLead[__i0][__i1][__i2])); }
-        FCNCALL_SUBINDEX_END(__i2);
-      }
-      FCNCALL_SUBINDEX_END(__i1);
-    }
-    FCNCALL_SUBINDEX_END(__i0);
-  }
-  FCNCALL_SUBNAME_END;
-  }
   FCNCALL_RET;
 }
 #endif//USER_DEF_raw_event

@@ -29,18 +29,7 @@ location spec_locations[] =
   { 570, 185, "s452.spec" },
   { 641, 264, "s452.spec" },
   { 645, 1, "mapping.hh" },
-  { 647, 1, "mapping_frs.hh" },
-  { 648, 3, "mapping.hh" },
-  { 649, 1, "mapping_ge_febex.hh" },
-  { 650, 4, "mapping.hh" },
-  { 651, 1, "mapping_fatima.hh" },
-  { 652, 5, "mapping.hh" },
-  { 653, 1, "mapping_bplast.hh" },
-  { 654, 1313, "mapping_bplast.hh" },
-  { 7055, 6, "mapping.hh" },
-  { 7056, 1, "mapping_aida.hh" },
-  { 7057, 6, "mapping.hh" },
-  { 7058, 267, "s452.spec" },
+  { 646, 267, "s452.spec" },
 };
 
 /** END_LOCATIONS *****************************************************/

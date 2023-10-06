@@ -32,7 +32,7 @@ TDC_DATA(PARAMS_DEF)
 {   
     MEMBERS
 
-    MEMBER(DATA8 multihit);
+    //MEMBER(DATA8 multihit);
 
     UINT32 tdc_data NOENCODE
     {
@@ -49,6 +49,7 @@ TDC_DATA(PARAMS_DEF)
 
 TDC_HEADER()
 {   
+    // don't think we need to encode this?
     UINT32 tdc_header NOENCODE
     {
         0_11: bunch_id;
@@ -60,7 +61,8 @@ TDC_HEADER()
 }
 
 TDC_ERROR()
-{
+{   
+    // don't need to encode
     UINT32 tdc_err NOENCODE
     {
         0_14: error_flags;
@@ -72,7 +74,8 @@ TDC_ERROR()
 }
 
 TDC_TRAILER()
-{
+{   
+    // don't need to encode any of this
     UINT32 tdc_trailer NOENCODE
     {
         0_11: word_count;

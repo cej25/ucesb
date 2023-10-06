@@ -3,7 +3,8 @@
 
 FEBEX_PADDING()
 {
-	UINT32 pads_data NOENCODE {
+	UINT32 pads_data NOENCODE 
+	{
 		0_11:  counter;
 		12_19: index;
 		20_31: 0xadd;

@@ -44,3 +44,9 @@
 
 #some compiled file from ucesb 
 *.dep
+
+ext_test/*
+
+s452/gen_s452/*
+s452/mc_gen_s452/*
+

@@ -36,7 +36,7 @@ void run_bm_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fEx
     FairRunOnline* run = new FairRunOnline();
     EventHeader* EvtHead = new EventHeader();
     run->SetEventHeader(EvtHead);
-    run->SetRunId(1); // no idea, does it even matter for this
+    run->SetRunId(1);
     run->SetSink(new FairRootFileSink(outputFileName));
     run->ActivateHttpServer(refresh, port);
 
@@ -74,7 +74,7 @@ void run_bm_online(const Int_t nev = -1, const Int_t fRunId = 1, const Int_t fEx
     cout << "\n\n" << endl;
 
     // Run
-    run->Run((nev < 0) ? nev : 0, (nev < 0) ? 0 : nev); // no idea
+    run->Run((nev < 0) ? nev : 0, (nev < 0) ? 0 : nev);
 
     // Finish
     timer.Stop();

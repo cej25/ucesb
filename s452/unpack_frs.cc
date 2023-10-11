@@ -1662,7 +1662,7 @@ void EXT_FRS::FRS_Unpack(__data_src_t &__buffer, frs_item &item, int procid, int
                             
                 } // second module loop
 
-                __buffer.advance(4);
+                __buffer.advance(4); // this advances beyond a barrier
                 len++;
                 if (len == lenMax)
                 {

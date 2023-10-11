@@ -26,14 +26,6 @@ DUMMY()
     UINT32 no NOENCODE;
 }
 
-SKIP(n)
-{
-    list (0 <= i < n)
-    {
-        UINT32 skip NOENCODE;
-    }
-}
-
 SUBEVENT(aida_subev)
 {   
 
@@ -175,27 +167,7 @@ SUBEVENT(frs_main_crate_subev)
 {
     if (FRS_USED)
     {   
-
-        skip = SKIP(n=2);
-        b1 = BARRIER();
-        select optional
-        {   
-            v1290 = VME_CAEN_V1290_FRS();
-        }
-        b2 = BARRIER();
-        select optional
-        {
-            v830 = VME_CAEN_V830_FRS();
-        }
-        select optional
-        {
-            v792 = VME_CAEN_V792_FRS();
-        }
-        b3 = BARRIER();
-        list (0 <= i < 4)
-        {
-            optional UINT32 eoe NOENCODE;
-        }
+        data = MAIN_CRATE_DATA();
         //external data = EXT_FRS(procid = 10, type = 12, subtype = 1);
     }
     else
@@ -211,7 +183,8 @@ SUBEVENT(frs_tpat_subev)
 {
     if (FRS_USED)
     {
-        external data = EXT_FRS(procid = 10, type = 36, subtype = 3600);
+        //external data = EXT_FRS(procid = 10, type = 36, subtype = 3600);
+        data = TPAT_DATA(id=0xCF);
     }
     else
     {
@@ -251,7 +224,8 @@ SUBEVENT(frs_tof_crate_subev)
 {   
     if (FRS_USED)
     {
-        external data = EXT_FRS(procid = 35, type = 12, subtype = 1);
+        //external data = EXT_FRS(procid = 35, type = 12, subtype = 1);
+        data = TOF_DATA();
     }
     else
     {
@@ -265,15 +239,15 @@ EVENT
     //germanium = germanium_subev(type = 10, subtype = 1, procid = 60, control = 20, subcrate = 0);
     //fatima_vme = fatima_vme_subev(type = 10, subtype = 1, procid = 70, control = 20, subcrate = 0);
     //fatima_tamex = fatima_tamex_subev(type = 10, subtype = 1, procid = 75, control = 20, subcrate = 0);
-    plastic = plastic_subev(type = 10, subtype = 1, procid = 80, control = 20, subcrate = 0);
+    //plastic = plastic_subev(type = 10, subtype = 1, procid = 80, control = 20, subcrate = 0);
 
     // frs stuff
-    /*frs_whiterabbit = frs_whiterabbit_subev(type = 10, subtype = 1, procid = 10, control = 20);
-    frs_main_crate = frs_main_crate_subev(type = 12, subtype = 1, procid = 10, control = 20); 
+    frs_whiterabbit = frs_whiterabbit_subev(type = 10, subtype = 1, procid = 10, control = 20); // whiterabbit read
+    frs_main_crate = frs_main_crate_subev(type = 12, subtype = 1, procid = 10, control = 20); // main crate read
     frs_tpat = frs_tpat_subev(type = 36, subtype = 3600, procid = 10, control = 20); // tpat
     frs_tof_crate = frs_tof_crate_subev(type = 12, subtype = 1, procid = 35, control = 20); // traw vftx // sci tof
-    frs_tpc_crate = frs_tpc_crate_subev(type = 12, subtype = 1, procid = 20, control = 21); // frs_main_scaler // music?
-    frs_crate = frs_crate_subev(type = 12, subtype = 1, procid = 30, control = 20); // sci_tx? // "frs crate"? // scaler_frs is here*/
+    //frs_tpc_crate = frs_tpc_crate_subev(type = 12, subtype = 1, procid = 20, control = 21); // frs_main_scaler // music?
+    //frs_crate = frs_crate_subev(type = 12, subtype = 1, procid = 30, control = 20); // sci_tx? // "frs crate"? // scaler_frs is here*/
 
     ignore_unknown_subevent;
 };

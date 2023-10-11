@@ -19,6 +19,13 @@
 	channel = channel, \
     leadOrTrail = leadOrTrail
 
+SKIP(n)
+{
+    list (0 <= i < n)
+    {
+        UINT32 skip NOENCODE;
+    }
+}
 
 BARRIER()
 {
@@ -107,14 +114,12 @@ VME_CAEN_V1290_FRS()
 
     MEMBERS
 
-    UINT32 header NOENCODE
+    UINT32 v1290_header NOENCODE
     {   
         0_4: geo;
         5_26: event_count;
         27_31: 0b01000;
     };
-
-
 
     select several
     {
@@ -129,7 +134,7 @@ VME_CAEN_V1290_FRS()
     {
         0_26: time_tag;
         27_31: 0b10001;
-    }
+    };
 
     UINT32 trailer NOENCODE
     {
@@ -147,7 +152,7 @@ VME_CAEN_V1290_FRS()
 
 VME_CAEN_V830_FRS()
 {
-    UINT32 header NOENCODE
+    UINT32 v830_header NOENCODE
     {   
         0_15: trigger_number;
         16_17: ts;
@@ -157,7 +162,7 @@ VME_CAEN_V830_FRS()
         27_31: geo;
     };
 
-    list (0 <= i < header.nwords)
+    list (0 <= i < v830_header.nwords)
     {
         UINT32 data_word NOENCODE
         {
@@ -176,7 +181,7 @@ VME_CAEN_V830_FRS()
 
 VME_CAEN_V792_FRS()
 {
-    UINT32 header NOENCODE
+    UINT32 v792_header NOENCODE
     {   
         0_7: unused;
         8_13: cnt;
@@ -186,11 +191,6 @@ VME_CAEN_V792_FRS()
         27_31: geo;
     };
     
-    /*select_several
-    {
-        adc = ADC_DATA();
-    }*/
-
     several UINT32 adc_data NOENCODE
     {   
         0_11: adc;
@@ -209,4 +209,125 @@ VME_CAEN_V792_FRS()
         24_26: 0b100;
         27_31: geo;
     };
+}
+
+
+MAIN_CRATE_DATA()
+{
+    skip[0] = SKIP(n=2);
+    barrier[0] = BARRIER();
+    select optional
+    {
+        v1290 = VME_CAEN_V1290_FRS();
+    }
+    barrier[1] = BARRIER();
+    select optional
+    {
+        v830 = VME_CAEN_V830_FRS();
+    }
+    select optional
+    {
+        v792 = VME_CAEN_V792_FRS();
+    }
+    barrier[2] = BARRIER();
+    list (0 <= i < 4)
+    {   
+        // end of event unused words
+        optional UINT32 eoe NOENCODE;
+    }
+}
+
+TPAT_DATA(id)
+{   
+    MEMBER(DATA32 n);
+	MEMBER(DATA16 tpat[170] NO_INDEX_LIST);
+	MEMBER(DATA8 trig[170] NO_INDEX_LIST);
+	MEMBER(DATA32 ts_lo[170] NO_INDEX_LIST);
+	MEMBER(DATA32 ts_hi[170] NO_INDEX_LIST);
+
+    // first word is 0x0000000 it seems
+    skip = SKIP(n=1);
+
+	UINT32 header NOENCODE {
+		0_11:  count;
+		12_23: eventno;
+		24_31: id = MATCH(id);
+		ENCODE(n, (value = count / 3));
+	}
+
+	list(0 <= index < header.count / 3) {
+		UINT32 time_lo NOENCODE {
+			0_31: ts;
+			ENCODE(ts_lo APPEND_LIST, (value = ts));
+		}
+		UINT32 time_hi NOENCODE {
+			0_30: ts;
+			31:   overflow;
+			ENCODE(ts_hi APPEND_LIST, (value = ts));
+		}
+		UINT32 trigger NOENCODE {
+			 0_15: tpat;
+			16_23: reserved;
+			24_27: trig;
+			28_31: reserved2;
+			ENCODE(tpat APPEND_LIST, (value = tpat));
+			ENCODE(trig APPEND_LIST, (value = trig));
+		}
+	}
+}
+
+MESYTEC_MQDC32_FRS()
+{   
+    // MEMBER
+
+    UINT32 header NOENCODE
+    {
+        0_11:  word_number; // includes end_of_event
+        12_14: 0b000;
+        16_23: geom;
+        24_29: 0b000000;
+        30_31: 0b01;
+    }
+}
+
+TOF_DATA()
+{   
+
+    MEMBER(DATA32 coarse_time[32] ZERO_SUPPRESS_MULTI);
+    MEMBER(DATA32 fine_time[32] ZERO_SUPPRESS_MULTI);
+
+    skip0 = SKIP(n=2);
+    barrier[0] = BARRIER();
+
+    // vftx at S2 sofia
+    UINT32 p32_tmp NOENCODE
+    {   
+        0_8: reserved;
+        9_17: count;
+        18_23: reserved2;
+        24_31: marker;
+    }
+    
+    if (p32_tmp.marker == 0xAB)
+    {
+        skip1 = SKIP(n=1);
+
+        list (0 <= i < p32_tmp.count - 1)
+        {
+            UINT32 data NOENCODE
+            {   
+                0_10: fine_time;
+                11_23: coarse_time;
+                24_25: reserved;
+                26_30: channel; // getbits(2,11,5) in Go4
+                //ENCODE();
+            }
+        }
+    }
+
+    barrier[1] = BARRIER();
+
+    // MESYTEC MQDC-32
+    qdc = MESYTEC_MQDC32_FRS();
+
 }

@@ -1,5 +1,31 @@
 // -*- C++ -*-
 
+/* Dear future user, if you are struggling to read or understand what this file does thats fine.
+	the .spec file just contains instructions for ucesb. The way this file is structured depends
+	on the data acquistion system used. Do not panic, open the user manual of your data acquisition
+	system. 
+	
+	The time data word is stored as follows:
+	 _____________________________________________________________________________________________________________________
+	| 1 bit - "1" | 2 bits - reserved | 7 bits - channel no. | 10 bits - fine time | 1 bit - edge | 11 bits - coarse time |
+	 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+	The EPOCH counter word:
+	 _____________________________________________________________
+	| 3 bits - "011" | 1 bit - reserved | 28 bits - EPOCH counter |
+	 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+	The TDC error word:
+	 ______________________________________
+	| 8 bits - "ee" | 24 bits - error bits |
+	 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+	The TDC trailer word:
+	 ________________________________________________________________________________________________________________
+	| 8 bits - 0xbb | 4 bits - trigger type | 3 bits - reserved | 1 bit - buffer no. | 16 bits - local event counter |
+	 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+
+	These just help guide the eye, for a more detailed description of each bit in each word, consult the TAMEX manual.
+
+*/
+
 #define MAX_TDC_HITS 512
 
 TAMEX4_HEADER()
